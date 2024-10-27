@@ -12,25 +12,51 @@ import java.beans.PropertyChangeSupport;
  */
 public class ViewModel<T> {
 
+    /**
+     * String viewName.
+     */
     private final String viewName;
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    /**
+     * New PropertyChangeSupport.
+     */
+    private final PropertyChangeSupport support = new PropertyChangeSupport(
+            this);
 
+    /**
+     * T state.
+     */
     private T state;
 
-    public ViewModel(String viewName) {
+    /**
+     * ViewModel method.
+     * @param viewName the viewName
+     */
+    public ViewModel(final String viewName) {
         this.viewName = viewName;
     }
 
+    /**
+     * Getter for viewName.
+     * @return viewName
+     */
     public String getViewName() {
         return this.viewName;
     }
 
+    /**
+     * Getter for state.
+     * @return the state
+     */
     public T getState() {
         return this.state;
     }
 
-    public void setState(T state) {
+    /**
+     * Setter for state.
+     * @param state the state
+     */
+    public void setState(final T state) {
         this.state = state;
     }
 
@@ -50,7 +76,7 @@ public class ViewModel<T> {
      * it can use the property name to distinguish which property has changed.
      * @param propertyName the label for the property that was changed
      */
-    public void firePropertyChanged(String propertyName) {
+    public void firePropertyChanged(final String propertyName) {
         this.support.firePropertyChange(propertyName, null, this.state);
     }
 
@@ -58,7 +84,8 @@ public class ViewModel<T> {
      * Adds a PropertyChangeListener to this ViewModel.
      * @param listener The PropertyChangeListener to be added
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public void addPropertyChangeListener(final PropertyChangeListener
+                                                  listener) {
         this.support.addPropertyChangeListener(listener);
     }
 }
