@@ -13,20 +13,39 @@ import use_case.logout.LogoutOutputData;
  */
 public class LogoutPresenter implements LogoutOutputBoundary {
 
+    /**
+     * LoggedInViewModel.
+     */
     private final LoggedInViewModel loggedInViewModel;
+    /**
+     * ViewManagerModel.
+     */
     private final ViewManagerModel viewManagerModel;
+    /**
+     * LoginViewModel.
+     */
     private final LoginViewModel loginViewModel;
 
-    public LogoutPresenter(ViewManagerModel viewManagerModel,
-                          LoggedInViewModel loggedInViewModel,
-                           LoginViewModel loginViewModel) {
+    /**
+     * Constructs a LogoutPresenter with the specified view models.
+     * @param viewManagerModel the model that manages the current view state
+     * @param loggedInViewModel the view model of the logged-in user's state
+     * @param loginViewModel the view model representing the login state
+     */
+    public LogoutPresenter(final ViewManagerModel viewManagerModel,
+                          final LoggedInViewModel loggedInViewModel,
+                           final LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
     }
 
+    /**
+     * Overrides prepareSuccessView method.
+     * @param response the output data
+     */
     @Override
-    public void prepareSuccessView(LogoutOutputData response) {
+    public void prepareSuccessView(final LogoutOutputData response) {
         // We need to switch to the login view, which should have
         // an empty username and password.
 
@@ -50,7 +69,7 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String error) {
+    public void prepareFailView(final String error) {
         // No need to add code here. We'll assume that logout can't fail.
         // Thought question: is this a reasonable assumption?
     }
