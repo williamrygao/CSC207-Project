@@ -70,7 +70,7 @@ As a team, your task is to fill in the missing code so that the Logout Use Case 
 - Clicking the "Log Out" button takes the user back to the Login View when you use the program.
 - The provided `LogoutInteractorTest` test passes.
 
-The "Log Out" button is an instance variable in class `LoggedInVew`. Go find it.
+The "Log Out" button is an instance variable in class `LoggedInView`. Go find it.
 Also look at the `interface_adapter.change_password.LoggedInViewModel`, which contains any
 data showing on the `LoggedInVew`.
 
