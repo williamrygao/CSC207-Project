@@ -116,7 +116,7 @@ The TODOs are summarized below (by file) to help your team decide how to split t
 
 - `LogoutInputData.java` (should be done with the LogoutInteractor TODOs below)
 
-  - [ ] TODO: save the current username in an instance variable and add a getter.
+  - [X] TODO: save the current username in an instance variable and add a getter.
 
 - `LogoutInteractor.java` (tip: refer to `ChangePasswordInteractor.java` for similar code)
 
