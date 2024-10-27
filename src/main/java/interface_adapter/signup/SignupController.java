@@ -8,9 +8,18 @@ import use_case.signup.SignupInputData;
  */
 public class SignupController {
 
+    /**
+     * SignupInputBoundary.
+     */
     private final SignupInputBoundary userSignupUseCaseInteractor;
 
-    public SignupController(SignupInputBoundary userSignupUseCaseInteractor) {
+    /**
+     * Constructs a SignupController with specified signup use case interactor.
+     * @param userSignupUseCaseInteractor the interactor responsible for
+     *                                    handling user signup operations
+     */
+    public SignupController(final SignupInputBoundary
+                                    userSignupUseCaseInteractor) {
         this.userSignupUseCaseInteractor = userSignupUseCaseInteractor;
     }
 
@@ -20,7 +29,8 @@ public class SignupController {
      * @param password1 the password
      * @param password2 the password repeated
      */
-    public void execute(String username, String password1, String password2) {
+    public void execute(final String username, final String password1,
+                        final String password2) {
         final SignupInputData signupInputData = new SignupInputData(
                 username, password1, password2);
 
