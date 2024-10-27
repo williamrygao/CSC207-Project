@@ -94,7 +94,7 @@ public class SignupState {
     }
 
     /**
-     * setPassword method.
+     * Setter for password.
      * @param password the password
      */
     public void setPassword(final String password) {
