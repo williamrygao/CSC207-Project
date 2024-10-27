@@ -127,7 +127,7 @@ The TODOs are summarized below (by file) to help your team decide how to split t
 
 - `LogoutOutputData.java`
 
-  - [ ] TODO: save the parameters in the instance variables.
+  - [X] TODO: save the parameters in the instance variables.
 
 * * *
 
