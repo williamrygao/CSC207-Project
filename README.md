@@ -96,14 +96,14 @@ The TODOs are summarized below (by file) to help your team decide how to split t
 
 - `Main.java`
 
-  - [ ] TODO: add the Logout Use Case to the app using the appBuilder
+  - [X] TODO: add the Logout Use Case to the app using the appBuilder
 
 * * *
 
 - `LoggedInView.java` (tip: refer to the other views for similar code)
 
-  - [ ] TODO: save the logout controller in the instance variable.
-  - [ ] TODO: execute the logout use case through the Controller
+  - [X] TODO: save the logout controller in the instance variable.
+  - [X] TODO: execute the logout use case through the Controller
 
 * * *
 
