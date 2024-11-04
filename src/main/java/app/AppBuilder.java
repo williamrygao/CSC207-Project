@@ -45,28 +45,69 @@ import view.ViewManager;
  * This is done by adding each View and then adding related Use Cases.
  */
 // Checkstyle note: you can ignore the "Class Data Abstraction Coupling"
-//                  and the "Class Fan-Out Complexity" issues for this lab; we encourage
-//                  your team to think about ways to refactor the code to resolve these
-//                  if your team decides to work with this as your starter code
-//                  for your final project this term.
+//                  and the "Class Fan-Out Complexity" issues for this lab; we
+//                  encourage your team to think about ways to refactor the code
+//                  to resolve these if your team decides to work with this as
+//                  your starter code for your final project this term.
 public class AppBuilder {
+    /**
+     * New JPanel.
+     */
     private final JPanel cardPanel = new JPanel();
+    /**
+     * New CardLayout.
+     */
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
+    /**
+     * New CommonUserFactory.
+     */
     private final UserFactory userFactory = new CommonUserFactory();
+    /**
+     * New ViewManagerModel.
+     */
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
+    /**
+     * New ViewManager.
+     */
+    private final ViewManager viewManager = new ViewManager(cardPanel,
+            cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    /**
+     * New InMemoryUserDataAccessObject.
+     */
+    private final InMemoryUserDataAccessObject userDataAccessObject = new
+            InMemoryUserDataAccessObject();
 
+    /**
+     * SignupView.
+     */
     private SignupView signupView;
+    /**
+     * SignupViewModel.
+     */
     private SignupViewModel signupViewModel;
+    /**
+     * LoginViewModel.
+     */
     private LoginViewModel loginViewModel;
+    /**
+     * LoggedInViewModel.
+     */
     private LoggedInViewModel loggedInViewModel;
+    /**
+     * LoggedInView.
+     */
     private LoggedInView loggedInView;
+    /**
+     * LoginView.
+     */
     private LoginView loginView;
 
+    /**
+     * AppBuilder method.
+     */
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
@@ -109,12 +150,14 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+        final SignupOutputBoundary signupOutputBoundary = new
+                SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
         final SignupInputBoundary userSignupInteractor = new SignupInteractor(
                 userDataAccessObject, signupOutputBoundary, userFactory);
 
-        final SignupController controller = new SignupController(userSignupInteractor);
+        final SignupController controller = new SignupController(
+                userSignupInteractor);
         signupView.setSignupController(controller);
         return this;
     }
@@ -124,12 +167,13 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
+                viewManagerModel, loggedInViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
-        final LoginController loginController = new LoginController(loginInteractor);
+        final LoginController loginController = new LoginController(
+                loginInteractor);
         loginView.setLoginController(loginController);
         return this;
     }
@@ -143,7 +187,8 @@ public class AppBuilder {
                 new ChangePasswordPresenter(loggedInViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+                new ChangePasswordInteractor(userDataAccessObject,
+                        changePasswordOutputBoundary, userFactory);
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
@@ -156,19 +201,22 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(
+                viewManagerModel, loggedInViewModel, loginViewModel);
 
         final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+                new LogoutInteractor(userDataAccessObject,
+                        logoutOutputBoundary);
 
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        final LogoutController logoutController = new LogoutController(
+                logoutInteractor);
         loggedInView.setLogoutController(logoutController);
         return this;
     }
 
     /**
-     * Creates the JFrame for the application and initially sets the SignupView to be displayed.
+     * Creates the JFrame for the application and initially sets the SignupView
+     * to be displayed.
      * @return the application
      */
     public JFrame build() {

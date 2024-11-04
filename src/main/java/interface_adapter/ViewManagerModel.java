@@ -6,6 +6,9 @@ package interface_adapter;
  */
 public class ViewManagerModel extends ViewModel<String> {
 
+    /**
+     * ViewManagerModel method.
+     */
     public ViewManagerModel() {
         super("view manager");
         this.setState("");

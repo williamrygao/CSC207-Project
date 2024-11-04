@@ -11,20 +11,39 @@ import use_case.signup.SignupOutputData;
  */
 public class SignupPresenter implements SignupOutputBoundary {
 
+    /**
+     * SignupViewModel.
+     */
     private final SignupViewModel signupViewModel;
+    /**
+     * LoginViewModel.
+     */
     private final LoginViewModel loginViewModel;
+    /**
+     * ViewManagerModel.
+     */
     private final ViewManagerModel viewManagerModel;
 
-    public SignupPresenter(ViewManagerModel viewManagerModel,
-                           SignupViewModel signupViewModel,
-                           LoginViewModel loginViewModel) {
+    /**
+     * Constructs a SignupPresenter with specified view models and view manager.
+     * @param viewManagerModel the model that manages the current view state
+     * @param signupViewModel the view model representing the signup process
+     * @param loginViewModel the view model representing the login state
+     */
+    public SignupPresenter(final ViewManagerModel viewManagerModel,
+                           final SignupViewModel signupViewModel,
+                           final LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.signupViewModel = signupViewModel;
         this.loginViewModel = loginViewModel;
     }
 
+    /**
+     * Override prepareSuccessView method.
+     * @param response the output data
+     */
     @Override
-    public void prepareSuccessView(SignupOutputData response) {
+    public void prepareSuccessView(final SignupOutputData response) {
         // On success, switch to the login view.
         final LoginState loginState = loginViewModel.getState();
         loginState.setUsername(response.getUsername());
@@ -35,13 +54,20 @@ public class SignupPresenter implements SignupOutputBoundary {
         viewManagerModel.firePropertyChanged();
     }
 
+    /**
+     * Override prepareFailView method.
+     * @param error the explanation of the failure
+     */
     @Override
-    public void prepareFailView(String error) {
+    public void prepareFailView(final String error) {
         final SignupState signupState = signupViewModel.getState();
         signupState.setUsernameError(error);
         signupViewModel.firePropertyChanged();
     }
 
+    /**
+     * Override switchToLoginView method.
+     */
     @Override
     public void switchToLoginView() {
         viewManagerModel.setState(loginViewModel.getViewName());

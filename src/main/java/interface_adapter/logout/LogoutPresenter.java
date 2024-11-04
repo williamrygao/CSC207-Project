@@ -1,7 +1,9 @@
 package interface_adapter.logout;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.logout.LogoutOutputData;
@@ -11,35 +13,55 @@ import use_case.logout.LogoutOutputData;
  */
 public class LogoutPresenter implements LogoutOutputBoundary {
 
-    private LoggedInViewModel loggedInViewModel;
-    private ViewManagerModel viewManagerModel;
-    private LoginViewModel loginViewModel;
+    /**
+     * LoggedInViewModel.
+     */
+    private final LoggedInViewModel loggedInViewModel;
+    /**
+     * ViewManagerModel.
+     */
+    private final ViewManagerModel viewManagerModel;
+    /**
+     * LoginViewModel.
+     */
+    private final LoginViewModel loginViewModel;
 
-    public LogoutPresenter(ViewManagerModel viewManagerModel,
-                          LoggedInViewModel loggedInViewModel,
-                           LoginViewModel loginViewModel) {
-        // TODO: assign to the three instance variables.
+    /**
+     * Constructs a LogoutPresenter with the specified view models.
+     * @param viewManagerModel the model that manages the current view state
+     * @param loggedInViewModel the view model of the logged-in user's state
+     * @param loginViewModel the view model representing the login state
+     */
+    public LogoutPresenter(final ViewManagerModel viewManagerModel,
+                          final LoggedInViewModel loggedInViewModel,
+                           final LoginViewModel loginViewModel) {
+        this.viewManagerModel = viewManagerModel;
+        this.loggedInViewModel = loggedInViewModel;
+        this.loginViewModel = loginViewModel;
     }
 
+    /**
+     * Overrides prepareSuccessView method.
+     * @param response the output data
+     */
     @Override
-    public void prepareSuccessView(LogoutOutputData response) {
+    public void prepareSuccessView(final LogoutOutputData response) {
         // We need to switch to the login view, which should have
         // an empty username and password.
 
         // We also need to set the username in the LoggedInState to
         // the empty string.
 
-        // TODO: have prepareSuccessView update the LoggedInState
-        // 1. get the LoggedInState out of the appropriate View Model,
-        // 2. set the username in the state to the empty string
-        // 3. set the state in the LoggedInViewModel to the updated state
-        // 4. firePropertyChanged so that the View that is listening is updated.
+        final LoggedInState loggedInState = loggedInViewModel.getState();
+        loggedInState.setUsername("");
+        this.loggedInViewModel.setState(loggedInState);
+        this.loggedInViewModel.firePropertyChanged();
 
-        // TODO: have prepareSuccessView update the LoginState
-        // 5. get the LoginState out of the appropriate View Model,
-        // 6. set the username and password in the state to the empty string
-        // 7. set the state in the LoginViewModel to the updated state
-        // 8. firePropertyChanged so that the View that is listening is updated.
+        final LoginState loginState = loginViewModel.getState();
+        loginState.setUsername("");
+        loginState.setPassword("");
+        loginViewModel.setState(loginState);
+        loginViewModel.firePropertyChanged();
 
         // This code tells the View Manager to switch to the LoginView.
         this.viewManagerModel.setState(loginViewModel.getViewName());
@@ -47,7 +69,7 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String error) {
+    public void prepareFailView(final String error) {
         // No need to add code here. We'll assume that logout can't fail.
         // Thought question: is this a reasonable assumption?
     }
