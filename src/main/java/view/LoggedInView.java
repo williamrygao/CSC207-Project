@@ -101,8 +101,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 // instantiates it.
                 evt -> {
                     if (evt.getSource().equals(logOut)) {
-                        final LoggedInState currentState = loggedInViewModel
-                                .getState();
+                        final LoggedInState currentState = loggedInViewModel.getState();
                         logoutController.execute(
                                 currentState.getUsername()
                         );
