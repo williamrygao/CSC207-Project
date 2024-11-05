@@ -7,20 +7,20 @@ import java.net.URL;
 Google Books API.
  */
 public class GoogleBooksApi {
-    private static final String API_KEY = "AIzaSyDtYWsQfS0HPcdpKrafrmCjZEGNZm9T_So";
+    private final String apiKey;
     private final String volumeID;
 
-    public GoogleBooksAPI(String volumeID) {
+    public GoogleBooksApi(String volumeID, String apiKey) {
         this.volumeID = volumeID;
+        this.apiKey = apiKey;
     }
 
-    public GoogleBooksAPI() {
-        this.volumeID = "9xHCAgAAQBAJ";
-    }
-
-    public static String getBookByVolumeId(String volumeId) {
+    /*
+    Given Google Books Volume ID return book data.
+     */
+    public String getBookByVolumeId(String volumeId) {
         try {
-            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeId + "?key=" + API_KEY;
+            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeId + "?key=" + apiKey;
             final URL url = new URL(urlString);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
