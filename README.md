@@ -1,5 +1,7 @@
 William Gao (williamrygao), Roy Gal (graoly), Victor Li (VictorLJZ), Tanush Arora (tanusharora), Zefeng Wu (ZefW)
-User stories:
+
+  User stories:
+  
   Team: Almut sells her old textbooks in this marketplace. 
     Use Cases: List book for sale 
     User interactions: Seller View (summary of books listed by this seller, and their status) 
