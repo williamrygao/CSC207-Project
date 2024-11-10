@@ -15,10 +15,15 @@ public class Book {
     private String title;
     private String author;
     private String description;
+    private String genre;
     private List<String> sellers;
 
-    public Book(String bookId) {
+    public Book(String bookId, String title, String author, String description, String genre) {
         this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.genre = genre;
         this.sellers = new ArrayList<>();
 
     }
@@ -55,6 +60,14 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public List<String> getSellers() {
@@ -108,6 +121,8 @@ public class Book {
                 ", author='" + author + '\''
                 +
                 ", description='" + description + '\''
+                +
+                ", genre='" + genre + '\''
                 +
                 ", sellers=" + sellers
                 +
