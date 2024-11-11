@@ -18,7 +18,7 @@ public class BookFactory {
      * @param volumeId Google Books API identifier
      * @return new Book object
      */
-    public Book createBook(String volumeId) {
+    public static Book createBook(String volumeId) {
         final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeId);
         if (jsonResponse != null) {
             // Parse the JSON response to extract the book details
@@ -38,7 +38,7 @@ public class BookFactory {
         return null;
     }
 
-    private String extractGenre(JSONObject volumeInfo) {
+    private static String extractGenre(JSONObject volumeInfo) {
         // Check if the 'categories' field exists and is not empty
         final StringBuilder genre = new StringBuilder();
         if (volumeInfo.has("categories")) {
