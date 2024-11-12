@@ -20,6 +20,7 @@ public class Book {
     public Book(String bookId) {
         this.bookId = bookId;
         this.sellers = new ArrayList<>();
+
     }
 
     // Getters and Setters for title, author, description
@@ -60,7 +61,10 @@ public class Book {
         return sellers;
     }
 
-    // Method to add a seller who is offering this book
+    /**
+    * Method to add a seller who is offering this book.
+     * @param sellerId represents the sellerID
+     */
     public void addSeller(String sellerId) {
         sellers.add(sellerId);
     }
