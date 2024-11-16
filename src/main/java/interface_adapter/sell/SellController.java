@@ -15,11 +15,11 @@ public class SellController {
 
     /**
      * Executes the Sell Use Case.
-     * @param password the new password
-     * @param username the user whose password to change
+     * @param username the user who is selling
+     * @param password the password of the user
      * @param bookID the book
      */
-    public void execute(String password, String username, String bookID) {
+    public void execute(String username, String password, String bookID) {
         final SellInputData sellInputData = new SellInputData(username, password, password, bookID);
 
         userSellUseCaseInteractor.execute(sellInputData);

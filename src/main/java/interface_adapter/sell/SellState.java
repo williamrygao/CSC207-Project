@@ -5,6 +5,7 @@ package interface_adapter.sell;
  */
 public class SellState {
     private String username = "";
+    private String bookID = "";
 
     private String password = "";
     private String passwordError;
@@ -38,5 +39,13 @@ public class SellState {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setBook(String book) {
+        this.bookID = book;
+    }
+
+    public String getBook() {
+        return bookID;
     }
 }
