@@ -17,7 +17,7 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.to_sell.ToSellController;
+import interface_adapter.to_sell_view.ToSellController;
 
 /**
  * The View for when the user is logged into the program.
