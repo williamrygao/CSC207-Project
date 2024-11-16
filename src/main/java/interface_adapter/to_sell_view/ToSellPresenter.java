@@ -46,20 +46,11 @@ public class ToSellPresenter implements ToSellOutputBoundary {
      */
     @Override
     public void prepareSuccessView(final ToSellOutputData response) {
-        // We need to switch to the sell view, which should have
-        // an empty username and password.
-
-        // We also need to set the username in the LoggedInState to
-        // the empty string.
-
         final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername("");
-        this.loggedInViewModel.setState(loggedInState);
-        this.loggedInViewModel.firePropertyChanged();
 
         final SellState sellState = sellViewModel.getState();
-        sellState.setUsername("");
-        sellState.setPassword("");
+        sellState.setUsername(loggedInState.getUsername());
+        sellState.setPassword(loggedInState.getPassword());
         sellViewModel.setState(sellState);
         sellViewModel.firePropertyChanged();
 
