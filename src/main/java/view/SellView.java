@@ -121,4 +121,12 @@ public class SellView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
 
     }
+
+    public void setSellController(SellController sellController) {
+        this.sellController = sellController;
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
 }

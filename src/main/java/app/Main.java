@@ -14,9 +14,12 @@ public class Main {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder.addLoginView().addSignupView()
                                             .addLoggedInView()
+                                            .addSellView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
+                                            .addToSellViewUseCase()
+                                            .addSellUseCase()
                                             .addChangePasswordUseCase().build();
 
         application.pack();

@@ -15,15 +15,16 @@ import okhttp3.Response;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
  * The DAO for user data.
  */
-public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
+public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface {
+        LogoutUserDataAccessInterface, SellUserDataAccessInterface {
     /**
      * Int 200.
      */
@@ -61,7 +62,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
      * DBUserDataAccessObject.
      * @param userFactory setting userFactory
      */
-    public DBUserDataAccessObject(final UserFactory userFactory) {
+    public FirebaseUserDataAccessObject(final UserFactory userFactory) {
         this.userFactory = userFactory;
         // No need to do anything to reinitialize a user list! The data is the
         // cloud that may be miles away.
