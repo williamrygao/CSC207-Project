@@ -17,6 +17,7 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.to_sell.ToSellController;
 
 /**
  * The View for when the user is logged into the program.
@@ -28,10 +29,12 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
+    private ToSellController toSellController;
 
     private final JLabel username;
 
     private final JButton logOut;
+    private final JButton toSell;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
@@ -52,6 +55,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         final JPanel buttons = new JPanel();
         logOut = new JButton("Log Out");
         buttons.add(logOut);
+
+        toSell = new JButton("Sell A Book");
+        buttons.add(toSell);
 
         changePassword = new JButton("Change Password");
         buttons.add(changePassword);
@@ -109,6 +115,17 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        toSell.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(toSell)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        toSellController.execute(
+                                currentState.getUsername()
+                        );
+                    }
+                }
+        );
+
         this.add(title);
         this.add(usernameInfo);
         this.add(username);
@@ -137,6 +154,10 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     public void setChangePasswordController(ChangePasswordController changePasswordController) {
         this.changePasswordController = changePasswordController;
+    }
+
+    public void setToSellController(ToSellController toSellController) {
+        this.toSellController = toSellController;
     }
 
     public void setLogoutController(LogoutController logoutController) {
