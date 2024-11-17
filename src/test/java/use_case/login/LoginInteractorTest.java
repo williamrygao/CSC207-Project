@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
+    public final UserFactory userFactory = new CommonUserFactory();
 
     @Test
     void successTest() {
