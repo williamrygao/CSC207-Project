@@ -140,7 +140,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
         }
-
     }
 
     public String getViewName() {

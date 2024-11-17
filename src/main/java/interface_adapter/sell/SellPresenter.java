@@ -20,7 +20,7 @@ public class SellPresenter implements SellOutputBoundary {
         // since the output data only contains the username, which remains the same.
         // We still fire the property changed event, but just to let the view know that
         // it can alert the user that their password was changed successfully.
-        sellViewModel.firePropertyChanged("password");
+        sellViewModel.firePropertyChanged("listed for sale");
     }
 
     @Override

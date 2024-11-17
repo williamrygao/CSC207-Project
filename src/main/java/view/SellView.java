@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.change_password.HomeState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -62,7 +63,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
             private void documentListenerHelper() {
                 final SellState currentState = sellViewModel.getState();
-                currentState.setBook(bookIDInputField.getText());
+                currentState.setBookID(bookIDInputField.getText());
                 sellViewModel.setState(currentState);
             }
 
@@ -98,7 +99,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(sell)) {
                         final SellState currentState = sellViewModel.getState();
                         sellController.execute(
-                                currentState.getUsername(), currentState.getPassword(), currentState.getBook()
+                                currentState.getUsername(), currentState.getPassword(), currentState.getBookID()
                         );
                     }
                 }
@@ -118,6 +119,10 @@ public class SellView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final SellState state = (SellState) evt.getNewValue();
             username.setText(state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("listed for sale")) {
+            final SellState state = (SellState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, state.getBookID() + "has been listed for sale.");
         }
     }
 
