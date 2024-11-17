@@ -1,12 +1,11 @@
 package interface_adapter.to_sell_view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.HomeState;
+import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
 import use_case.to_sell_view.ToSellOutputBoundary;
-import use_case.to_sell_view.ToSellOutputData;
 
 /**
  * The Presenter for the To Sell Use Case.
@@ -16,7 +15,7 @@ public class ToSellPresenter implements ToSellOutputBoundary {
     /**
      * LoggedInViewModel.
      */
-    private final LoggedInViewModel loggedInViewModel;
+    private final HomeViewModel homeViewModel;
     /**
      * ViewManagerModel.
      */
@@ -29,28 +28,27 @@ public class ToSellPresenter implements ToSellOutputBoundary {
     /**
      * Constructs a ToSellPresenter with the specified view models.
      * @param viewManagerModel the model that manages the current view state
-     * @param loggedInViewModel the view model of the logged-in user's state
+     * @param homeViewModel the view model of the logged-in user's state
      * @param sellViewModel the view model representing the sell state
      */
     public ToSellPresenter(final ViewManagerModel viewManagerModel,
-                           final LoggedInViewModel loggedInViewModel,
+                           final HomeViewModel homeViewModel,
                            final SellViewModel sellViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.homeViewModel = homeViewModel;
         this.sellViewModel = sellViewModel;
     }
 
     /**
      * Overrides prepareSuccessView method.
-     * @param response the output data
      */
     @Override
-    public void prepareSuccessView(final ToSellOutputData response) {
-        final LoggedInState loggedInState = loggedInViewModel.getState();
+    public void prepareSuccessView() {
+        final HomeState homeState = homeViewModel.getState();
 
         final SellState sellState = sellViewModel.getState();
-        sellState.setUsername(loggedInState.getUsername());
-        sellState.setPassword(loggedInState.getPassword());
+        sellState.setUsername(homeState.getUsername());
+        sellState.setPassword(homeState.getPassword());
         sellViewModel.setState(sellState);
         sellViewModel.firePropertyChanged();
 

@@ -15,6 +15,7 @@ class SignupInteractorTest {
 
     @Test
     void successTest() {
+        UserFactory userFactory = new CommonUserFactory();
         SignupInputData inputData = new SignupInputData("Paul", "password", "password");
         SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
@@ -44,6 +45,7 @@ class SignupInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
+        UserFactory userFactory = new CommonUserFactory();
         SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
         SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
@@ -72,6 +74,7 @@ class SignupInteractorTest {
 
     @Test
     void failureUserExistsTest() {
+        UserFactory userFactory = new CommonUserFactory();
         SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
         SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 

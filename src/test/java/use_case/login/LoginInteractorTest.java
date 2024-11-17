@@ -15,6 +15,7 @@ class LoginInteractorTest {
 
     @Test
     void successTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
         LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
@@ -42,6 +43,7 @@ class LoginInteractorTest {
 
     @Test
     void successUserLoggedInTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
         LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
@@ -71,6 +73,7 @@ class LoginInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "wrong");
         LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
@@ -100,6 +103,7 @@ class LoginInteractorTest {
 
     @Test
     void failureUserDoesNotExistTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
         LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 

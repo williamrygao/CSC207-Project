@@ -1,8 +1,8 @@
 package interface_adapter.logout;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.HomeState;
+import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import use_case.logout.LogoutOutputBoundary;
@@ -16,7 +16,7 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     /**
      * LoggedInViewModel.
      */
-    private final LoggedInViewModel loggedInViewModel;
+    private final HomeViewModel homeViewModel;
     /**
      * ViewManagerModel.
      */
@@ -29,14 +29,14 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     /**
      * Constructs a LogoutPresenter with the specified view models.
      * @param viewManagerModel the model that manages the current view state
-     * @param loggedInViewModel the view model of the logged-in user's state
+     * @param homeViewModel the view model of the logged-in user's state
      * @param loginViewModel the view model representing the login state
      */
     public LogoutPresenter(final ViewManagerModel viewManagerModel,
-                          final LoggedInViewModel loggedInViewModel,
+                          final HomeViewModel homeViewModel,
                            final LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.homeViewModel = homeViewModel;
         this.loginViewModel = loginViewModel;
     }
 
@@ -52,10 +52,10 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // We also need to set the username in the LoggedInState to
         // the empty string.
 
-        final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername("");
-        this.loggedInViewModel.setState(loggedInState);
-        this.loggedInViewModel.firePropertyChanged();
+        final HomeState homeState = homeViewModel.getState();
+        homeState.setUsername("");
+        this.homeViewModel.setState(homeState);
+        this.homeViewModel.firePropertyChanged();
 
         final LoginState loginState = loginViewModel.getState();
         loginState.setUsername("");
