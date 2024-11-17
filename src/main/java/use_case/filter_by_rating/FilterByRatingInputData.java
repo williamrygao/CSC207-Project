@@ -9,4 +9,8 @@ public class FilterByRatingInputData {
     public FilterByRatingInputData(int rating) {
         this.rating = rating;
     }
+
+    int getRating() {
+        return rating;
+    }
 }
