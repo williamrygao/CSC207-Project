@@ -1,6 +1,6 @@
 package use_case.logout;
 
-import data_access.InMemoryUserDataAccessObject;
+import data_access.FirebaseUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutInteractorTest {
+    public final UserFactory userFactory = new CommonUserFactory();
 
     @Test
     void successTest() {
         LogoutInputData inputData = new LogoutInputData("Paul");
-        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
+        FirebaseUserDataAccessObject userRepository = new FirebaseUserDataAccessObject(userFactory);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();

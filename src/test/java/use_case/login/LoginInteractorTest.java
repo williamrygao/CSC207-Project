@@ -1,6 +1,6 @@
 package use_case.login;
 
-import data_access.InMemoryUserDataAccessObject;
+import data_access.FirebaseUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
@@ -11,11 +11,13 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
+    public final UserFactory userFactory = new CommonUserFactory();
 
     @Test
     void successTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
@@ -41,8 +43,9 @@ class LoginInteractorTest {
 
     @Test
     void successUserLoggedInTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
@@ -70,8 +73,9 @@ class LoginInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "wrong");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
         // For this failure test, we need to add Paul to the data access repository before we log in, and
         // the passwords should not match.
@@ -99,8 +103,9 @@ class LoginInteractorTest {
 
     @Test
     void failureUserDoesNotExistTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
 
         // Add Paul to the repo so that when we check later they already exist
 

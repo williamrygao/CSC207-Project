@@ -6,7 +6,6 @@ package use_case.to_sell_view;
 public interface ToSellInputBoundary {
     /**
      * Executes the To Sell use case.
-     * @param ToSellInputData the input data
      */
-    void execute(ToSellInputData ToSellInputData);
+    void execute();
 }

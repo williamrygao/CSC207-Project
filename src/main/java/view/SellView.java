@@ -1,7 +1,6 @@
 package view;
 
-import interface_adapter.back_to_logged_in.BackToLoggedInController;
-import interface_adapter.change_password.LoggedInState;
+import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -10,8 +9,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -22,7 +19,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "sell";
     private final SellViewModel sellViewModel;
-    private BackToLoggedInController backToLoggedInController;
+    private BackToHomeController backToHomeController;
     private SellController sellController;
 
     private final JLabel username;
@@ -82,12 +79,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(back)) {
-                        final SellState currentState = sellViewModel.getState();
-
-                        this.backToLoggedInController.execute(
-                                currentState.getUsername(),
-                                currentState.getPassword()
-                        );
+                        backToHomeController.execute();
                     }
                 }
         );
@@ -127,5 +119,9 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
     public String getViewName() {
         return viewName;
+    }
+
+    public void setBackToHomeController(BackToHomeController backToHomeController) {
+        this.backToHomeController = backToHomeController;
     }
 }

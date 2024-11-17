@@ -6,9 +6,8 @@ package use_case.to_sell_view;
 public interface ToSellOutputBoundary {
     /**
      * Prepares the success view for the To Sell Use Case.
-     * @param outputData the output data
      */
-    void prepareSuccessView(ToSellOutputData outputData);
+    void prepareSuccessView();
 
     /**
      * Prepares the failure view for the Login Use Case.

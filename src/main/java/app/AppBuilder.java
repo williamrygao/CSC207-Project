@@ -14,7 +14,7 @@ import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -28,6 +28,8 @@ import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
+import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.back_to_home.BackToHomePresenter;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -44,6 +46,9 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.to_sell_view.ToSellInputBoundary;
 import use_case.to_sell_view.ToSellInteractor;
 import use_case.to_sell_view.ToSellOutputBoundary;
+import use_case.back_to_home.BackToHomeInputBoundary;
+import use_case.back_to_home.BackToHomeInteractor;
+import use_case.back_to_home.BackToHomeOutputBoundary;
 import view.*;
 
 /**
@@ -96,13 +101,13 @@ public class AppBuilder {
      */
     private LoginViewModel loginViewModel;
     /**
-     * LoggedInViewModel.
+     * HomeViewModel.
      */
-    private LoggedInViewModel loggedInViewModel;
+    private HomeViewModel homeViewModel;
     /**
-     * LoggedInView.
+     * HomeView.
      */
-    private LoggedInView loggedInView;
+    private HomeView homeView;
     /**
      * LoginView.
      */
@@ -142,13 +147,13 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the LoggedIn View to the application.
+     * Adds the Home View to the application.
      * @return this builder
      */
-    public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
+    public AppBuilder addHomeView() {
+        homeViewModel = new HomeViewModel();
+        homeView = new HomeView(homeViewModel);
+        cardPanel.add(homeView, homeView.getViewName());
         return this;
     }
 
@@ -186,7 +191,7 @@ public class AppBuilder {
      */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
-                viewManagerModel, loggedInViewModel, loginViewModel);
+                viewManagerModel, homeViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -202,7 +207,7 @@ public class AppBuilder {
      */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
+                new ChangePasswordPresenter(homeViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject,
@@ -210,7 +215,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        homeView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -220,7 +225,7 @@ public class AppBuilder {
      */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(
-                viewManagerModel, loggedInViewModel, loginViewModel);
+                viewManagerModel, homeViewModel, loginViewModel);
 
         final LogoutInputBoundary logoutInteractor =
                 new LogoutInteractor(userDataAccessObject,
@@ -228,7 +233,7 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(
                 logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
+        homeView.setLogoutController(logoutController);
         return this;
     }
 
@@ -238,12 +243,12 @@ public class AppBuilder {
      */
     public AppBuilder addToSellViewUseCase() {
         final ToSellOutputBoundary toSellOutputBoundary = new ToSellPresenter(
-                viewManagerModel, loggedInViewModel, sellViewModel);
+                viewManagerModel, homeViewModel, sellViewModel);
 
         final ToSellInputBoundary toSellInteractor = new ToSellInteractor(toSellOutputBoundary);
 
         final ToSellController toSellController = new ToSellController(toSellInteractor);
-        loggedInView.setToSellController(toSellController);
+        homeView.setToSellController(toSellController);
         return this;
     }
 
@@ -261,6 +266,20 @@ public class AppBuilder {
         final SellController sellController = new SellController(
                 sellInteractor);
         sellView.setSellController(sellController);
+        return this;
+    }
+
+    /**
+     * Adds the Back To Home Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addBackToHomeUseCase() {
+        final BackToHomeOutputBoundary backToHomeOutputBoundary = new BackToHomePresenter(viewManagerModel, homeViewModel, sellViewModel);
+
+        final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomeOutputBoundary);
+
+        final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
+        sellView.setBackToHomeController(backToHomeController);
         return this;
     }
 
