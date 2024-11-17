@@ -40,11 +40,11 @@ public class SellState {
         return password;
     }
 
-    public void setBook(String book) {
+    public void setBookID(String book) {
         this.bookID = book;
     }
 
-    public String getBook() {
+    public String getBookID() {
         return bookID;
     }
 }
