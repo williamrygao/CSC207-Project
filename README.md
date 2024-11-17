@@ -18,7 +18,7 @@ William Gao (williamrygao), Roy Gal (graoly), Victor Li (VictorLJZ), Tanush Aror
     Use Cases: Rating 
     User Interactions: Filter books by rating 
 
-  Tanush: Sherlock is a voracious reader who enjoys acquiring books that align with his diverse academic interests. He uses the genre              filter to search books within specific genres, particularly science fiction, thriller, and mystery. 
+  Tanush: Sherlock is a voracious reader who enjoys acquiring books that align with his diverse academic interests. He uses the category              filter to search books within specific genres/categories, especially those that captivate his intellectual curiosity. 
     Use Case: Genre 
     User Interactions: Filter books by genre 
 

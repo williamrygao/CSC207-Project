@@ -8,7 +8,7 @@ import interface_adapter.ViewModel;
 public class SellViewModel extends ViewModel<SellState> {
 
     public SellViewModel() {
-        super("logged in");
+        super("sell");
         setState(new SellState());
     }
 

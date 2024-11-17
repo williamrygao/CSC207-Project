@@ -8,9 +8,6 @@ import use_case.logout.LogoutInputData;
  */
 public class LogoutController {
 
-    /**
-     * logoutUseCaseInteractor.
-     */
     private LogoutInputBoundary logoutUseCaseInteractor;
 
     /**
