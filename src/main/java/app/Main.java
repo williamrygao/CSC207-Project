@@ -10,17 +10,17 @@ public class Main {
      * Builds and runs the CA architecture of the application.
      * @param args unused arguments
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
-        final JFrame application = appBuilder
-                                            .addLoginView()
-                                            .addSignupView()
+        final JFrame application = appBuilder.addLoginView().addSignupView()
                                             .addLoggedInView()
+                                            .addSellView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
-                                            .addChangePasswordUseCase()
-                                            .build();
+                                            .addToSellViewUseCase()
+                                            .addSellUseCase()
+                                            .addChangePasswordUseCase().build();
 
         application.pack();
         application.setVisible(true);

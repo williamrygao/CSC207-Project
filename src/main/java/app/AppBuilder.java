@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import data_access.InMemoryUserDataAccessObject;
+import data_access.FirebaseBookDataAccessObject;
+import data_access.FirebaseUserDataAccessObject;
+import entity.BookFactory;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -18,9 +20,14 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.sell.SellController;
+import interface_adapter.sell.SellPresenter;
+import interface_adapter.sell.SellViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.to_sell_view.ToSellPresenter;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -30,13 +37,14 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.sell.*;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import use_case.to_sell_view.ToSellInputBoundary;
+import use_case.to_sell_view.ToSellInteractor;
+import use_case.to_sell_view.ToSellOutputBoundary;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -44,29 +52,69 @@ import view.ViewManager;
  * <p/>
  * This is done by adding each View and then adding related Use Cases.
  */
-// Checkstyle note: you can ignore the "Class Data Abstraction Coupling"
-//                  and the "Class Fan-Out Complexity" issues for this lab; we encourage
-//                  your team to think about ways to refactor the code to resolve these
-//                  if your team decides to work with this as your starter code
-//                  for your final project this term.
 public class AppBuilder {
+    /**
+     * New JPanel.
+     */
     private final JPanel cardPanel = new JPanel();
+    /**
+     * New CardLayout.
+     */
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
+    /**
+     * New CommonUserFactory.
+     */
     private final UserFactory userFactory = new CommonUserFactory();
+    private final BookFactory bookFactory = new BookFactory();
+
+    /**
+     * New ViewManagerModel.
+     */
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
+    /**
+     * New ViewManager.
+     */
+    private final ViewManager viewManager = new ViewManager(cardPanel,
+            cardLayout, viewManagerModel);
 
-    // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final FirebaseUserDataAccessObject userDataAccessObject = new
+            FirebaseUserDataAccessObject(userFactory);
 
+    private final FirebaseBookDataAccessObject bookDataAccessObject = new
+            FirebaseBookDataAccessObject(bookFactory);
+    /**
+     * SignupView.
+     */
     private SignupView signupView;
+    /**
+     * SignupViewModel.
+     */
     private SignupViewModel signupViewModel;
+    /**
+     * LoginViewModel.
+     */
     private LoginViewModel loginViewModel;
+    /**
+     * LoggedInViewModel.
+     */
     private LoggedInViewModel loggedInViewModel;
+    /**
+     * LoggedInView.
+     */
     private LoggedInView loggedInView;
+    /**
+     * LoginView.
+     */
     private LoginView loginView;
 
+    private SellViewModel sellViewModel;
+
+    private SellView sellView;
+
+    /**
+     * AppBuilder method.
+     */
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
@@ -105,16 +153,29 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Sell View to the application.
+     * @return this builder
+     */
+    public AppBuilder addSellView() {
+        sellViewModel = new SellViewModel();
+        sellView = new SellView(sellViewModel);
+        cardPanel.add(sellView, sellView.getViewName());
+        return this;
+    }
+
+    /**
      * Adds the Signup Use Case to the application.
      * @return this builder
      */
     public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+        final SignupOutputBoundary signupOutputBoundary = new
+                SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
         final SignupInputBoundary userSignupInteractor = new SignupInteractor(
                 userDataAccessObject, signupOutputBoundary, userFactory);
 
-        final SignupController controller = new SignupController(userSignupInteractor);
+        final SignupController controller = new SignupController(
+                userSignupInteractor);
         signupView.setSignupController(controller);
         return this;
     }
@@ -124,12 +185,13 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
+                viewManagerModel, loggedInViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
-        final LoginController loginController = new LoginController(loginInteractor);
+        final LoginController loginController = new LoginController(
+                loginInteractor);
         loginView.setLoginController(loginController);
         return this;
     }
@@ -143,7 +205,8 @@ public class AppBuilder {
                 new ChangePasswordPresenter(loggedInViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+                new ChangePasswordInteractor(userDataAccessObject,
+                        changePasswordOutputBoundary, userFactory);
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
@@ -156,19 +219,54 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(
+                viewManagerModel, loggedInViewModel, loginViewModel);
 
         final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+                new LogoutInteractor(userDataAccessObject,
+                        logoutOutputBoundary);
 
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        final LogoutController logoutController = new LogoutController(
+                logoutInteractor);
         loggedInView.setLogoutController(logoutController);
         return this;
     }
 
     /**
-     * Creates the JFrame for the application and initially sets the SignupView to be displayed.
+     * Adds the To Sell View Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addToSellViewUseCase() {
+        final ToSellOutputBoundary toSellOutputBoundary = new ToSellPresenter(
+                viewManagerModel, loggedInViewModel, sellViewModel);
+
+        final ToSellInputBoundary toSellInteractor = new ToSellInteractor(toSellOutputBoundary);
+
+        final ToSellController toSellController = new ToSellController(toSellInteractor);
+        loggedInView.setToSellController(toSellController);
+        return this;
+    }
+
+    /**
+     * Adds the Sell Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSellUseCase() {
+        final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel);
+
+        final SellInputBoundary sellInteractor =
+                new SellInteractor(userDataAccessObject,
+                        bookDataAccessObject, sellOutputBoundary);
+
+        final SellController sellController = new SellController(
+                sellInteractor);
+        sellView.setSellController(sellController);
+        return this;
+    }
+
+    /**
+     * Creates the JFrame for the application and initially sets the SignupView
+     * to be displayed.
      * @return the application
      */
     public JFrame build() {
