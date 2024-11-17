@@ -120,4 +120,8 @@ public class SellView extends JPanel implements PropertyChangeListener {
     public String getViewName() {
         return viewName;
     }
+
+    public void setBackToHomeController(BackToHomeController backToHomeController) {
+        this.backToHomeController = backToHomeController;
+    }
 }
