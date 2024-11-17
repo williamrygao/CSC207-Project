@@ -6,7 +6,6 @@ import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
 import use_case.to_sell_view.ToSellOutputBoundary;
-import use_case.to_sell_view.ToSellOutputData;
 
 /**
  * The Presenter for the To Sell Use Case.
@@ -42,10 +41,9 @@ public class ToSellPresenter implements ToSellOutputBoundary {
 
     /**
      * Overrides prepareSuccessView method.
-     * @param response the output data
      */
     @Override
-    public void prepareSuccessView(final ToSellOutputData response) {
+    public void prepareSuccessView() {
         final HomeState homeState = homeViewModel.getState();
 
         final SellState sellState = sellViewModel.getState();

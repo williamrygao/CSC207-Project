@@ -79,7 +79,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(back)) {
-                        this.backToHomeController.execute();
+                        backToHomeController.execute();
                     }
                 }
         );

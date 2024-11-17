@@ -116,10 +116,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         toSell.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(toSell)) {
-                        final HomeState currentState = homeViewModel.getState();
-                        toSellController.execute(
-                                currentState.getUsername()
-                        );
+                        toSellController.execute();
                     }
                 }
         );
