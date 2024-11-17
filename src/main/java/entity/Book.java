@@ -16,6 +16,7 @@ public class Book {
     private String author;
     private String description;
     private String genre;
+    private float rating;
     private List<String> sellers;
 
     public Book(String bookId, String title, String author, String description, String genre) {
@@ -24,8 +25,8 @@ public class Book {
         this.author = author;
         this.description = description;
         this.genre = genre;
+        this.rating = 0;
         this.sellers = new ArrayList<>();
-
     }
 
     // Getters and Setters for title, author, description
@@ -68,6 +69,14 @@ public class Book {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public float getRating() {
+        return rating;
     }
 
     public List<String> getSellers() {
