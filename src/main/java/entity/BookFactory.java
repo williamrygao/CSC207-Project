@@ -9,7 +9,6 @@ import data_access.GoogleBooksApi;
  * Factory for creating Book objects.
  */
 public class BookFactory {
-
     public static void main(String[] args) {
         final BookFactory bookFactory = new BookFactory();
         bookFactory.createBook("9xHCAgAAQBAJ");

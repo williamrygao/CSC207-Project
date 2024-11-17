@@ -6,7 +6,6 @@ package interface_adapter.sell;
 public class SellState {
     private String username = "";
     private String bookID = "";
-
     private String password = "";
     private String passwordError;
 

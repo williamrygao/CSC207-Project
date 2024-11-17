@@ -10,7 +10,7 @@ public class SellInteractor implements SellInputBoundary {
     private final SellUserDataAccessInterface userDataAccessObject;
     private final SellBookDataAccessInterface bookDataAccessObject;
     private final SellOutputBoundary userPresenter;
-
+    
     public SellInteractor(SellUserDataAccessInterface sellUserDataAccessInterface,
                           SellBookDataAccessInterface sellBookDataAccessInterface,
                           SellOutputBoundary sellOutputBoundary) {
