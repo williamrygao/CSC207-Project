@@ -14,7 +14,7 @@ import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -98,11 +98,11 @@ public class AppBuilder {
     /**
      * LoggedInViewModel.
      */
-    private LoggedInViewModel loggedInViewModel;
+    private HomeViewModel homeViewModel;
     /**
      * LoggedInView.
      */
-    private LoggedInView loggedInView;
+    private HomeView homeView;
     /**
      * LoginView.
      */
@@ -146,9 +146,9 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
+        homeViewModel = new HomeViewModel();
+        homeView = new HomeView(homeViewModel);
+        cardPanel.add(homeView, homeView.getViewName());
         return this;
     }
 
@@ -186,7 +186,7 @@ public class AppBuilder {
      */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
-                viewManagerModel, loggedInViewModel, loginViewModel);
+                viewManagerModel, homeViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -202,7 +202,7 @@ public class AppBuilder {
      */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
+                new ChangePasswordPresenter(homeViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject,
@@ -210,7 +210,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        homeView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -220,7 +220,7 @@ public class AppBuilder {
      */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(
-                viewManagerModel, loggedInViewModel, loginViewModel);
+                viewManagerModel, homeViewModel, loginViewModel);
 
         final LogoutInputBoundary logoutInteractor =
                 new LogoutInteractor(userDataAccessObject,
@@ -228,7 +228,7 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(
                 logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
+        homeView.setLogoutController(logoutController);
         return this;
     }
 
@@ -238,12 +238,12 @@ public class AppBuilder {
      */
     public AppBuilder addToSellViewUseCase() {
         final ToSellOutputBoundary toSellOutputBoundary = new ToSellPresenter(
-                viewManagerModel, loggedInViewModel, sellViewModel);
+                viewManagerModel, homeViewModel, sellViewModel);
 
         final ToSellInputBoundary toSellInteractor = new ToSellInteractor(toSellOutputBoundary);
 
         final ToSellController toSellController = new ToSellController(toSellInteractor);
-        loggedInView.setToSellController(toSellController);
+        homeView.setToSellController(toSellController);
         return this;
     }
 

@@ -14,18 +14,18 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.HomeState;
+import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.to_sell_view.ToSellController;
 
 /**
  * The View for when the user is logged into the program.
  */
-public class LoggedInView extends JPanel implements PropertyChangeListener {
+public class HomeView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
-    private final LoggedInViewModel loggedInViewModel;
+    private final HomeViewModel homeViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
@@ -39,9 +39,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
 
-    public LoggedInView(LoggedInViewModel loggedInViewModel) {
-        this.loggedInViewModel = loggedInViewModel;
-        this.loggedInViewModel.addPropertyChangeListener(this);
+    public HomeView(HomeViewModel homeViewModel) {
+        this.homeViewModel = homeViewModel;
+        this.homeViewModel.addPropertyChangeListener(this);
 
         final JLabel title = new JLabel("Logged In Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -67,9 +67,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
-                final LoggedInState currentState = loggedInViewModel.getState();
+                final HomeState currentState = homeViewModel.getState();
                 currentState.setPassword(passwordInputField.getText());
-                loggedInViewModel.setState(currentState);
+                homeViewModel.setState(currentState);
             }
 
             @Override
@@ -92,7 +92,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
+                        final HomeState currentState = homeViewModel.getState();
 
                         this.changePasswordController.execute(
                                 currentState.getUsername(),
@@ -105,7 +105,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         logOut.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(logOut)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
+                        final HomeState currentState = homeViewModel.getState();
                         logoutController.execute(
                                 currentState.getUsername()
                         );
@@ -116,7 +116,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         toSell.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(toSell)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
+                        final HomeState currentState = homeViewModel.getState();
                         toSellController.execute(
                                 currentState.getUsername()
                         );
@@ -136,11 +136,11 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            final HomeState state = (HomeState) evt.getNewValue();
             username.setText(state.getUsername());
         }
         else if (evt.getPropertyName().equals("password")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
         }
 
