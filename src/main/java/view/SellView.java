@@ -23,15 +23,18 @@ public class SellView extends JPanel implements PropertyChangeListener {
     private SellController sellController;
 
     private final JLabel username;
+    private JLabel priceLabel;
 
     private final JTextField bookIDInputField = new JTextField(15);
     private final JButton sell;
-
     private final JButton back;
 
     public SellView(SellViewModel sellViewModel) {
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
+
+        // Initialize the 'priceLabel' before adding it to the UI
+        this.priceLabel = new JLabel("Price: N/A");
 
         final JLabel title = new JLabel("Sell Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -41,6 +44,10 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         username = new JLabel();
+
+        // Create priceLabel to display price
+        priceLabel = new JLabel("Price will be displayed here.");
+        priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JPanel buttons = new JPanel();
         back = new JButton("Back");
@@ -102,6 +109,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
         this.add(username);
 
         this.add(bookInfo);
+        this.add(priceLabel);
         this.add(buttons);
     }
 
@@ -123,5 +131,13 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
     public void setBackToHomeController(BackToHomeController backToHomeController) {
         this.backToHomeController = backToHomeController;
+    }
+
+    /**
+     * Updates the price label with the fetched price.
+     * @param priceMessage a string of the fetched price
+     */
+    public void updatePriceLabel(String priceMessage) {
+        priceLabel.setText(priceMessage);
     }
 }

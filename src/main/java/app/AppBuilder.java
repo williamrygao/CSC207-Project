@@ -264,7 +264,7 @@ public class AppBuilder {
                         bookDataAccessObject, sellOutputBoundary);
 
         final SellController sellController = new SellController(
-                sellInteractor);
+                sellInteractor, sellView);
         sellView.setSellController(sellController);
         return this;
     }
@@ -274,7 +274,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addBackToHomeUseCase() {
-        final BackToHomeOutputBoundary backToHomeOutputBoundary = new BackToHomePresenter(viewManagerModel, homeViewModel, sellViewModel);
+        final BackToHomeOutputBoundary backToHomeOutputBoundary = new BackToHomePresenter(viewManagerModel,
+                homeViewModel, sellViewModel);
 
         final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomeOutputBoundary);
 

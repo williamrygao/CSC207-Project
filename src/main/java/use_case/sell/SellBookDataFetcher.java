@@ -8,13 +8,14 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
+import data_access.GoogleBooksApi;
 import entity.Book;
 
 /**
  * SellBookDataFetcher Fetches Book Selling Data.
  */
 public class SellBookDataFetcher implements SellBookDataAccessInterface {
-    private static final String API_KEY = "your_api_key";
+    private static final String API_KEY = GoogleBooksApi.loadApiKey();
 
     @Override
     public boolean existsByBookID(String bookID) {
