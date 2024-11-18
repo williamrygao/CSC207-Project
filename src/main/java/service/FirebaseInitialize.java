@@ -30,7 +30,6 @@ public class FirebaseInitialize {
             System.err.println("Error initializing Firebase: " + ex.getMessage());
             // Rethrow to indicate failure
             throw ex;
-
         }
     }
 }
