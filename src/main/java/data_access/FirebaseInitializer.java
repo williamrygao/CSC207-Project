@@ -1,26 +1,39 @@
 package data_access;
 
-import java.io.FileInputStream;
-
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class FirebaseInitializer {
-    public static void initializeFirebase() {
-        try {
-            FileInputStream serviceAccount = new FileInputStream("src/main/resources/google-services.json");
 
+    // This method initializes Firebase and returns a Firestore instance
+    public static Firestore getFirestore() {
+        try {
+            // Load the google-services.json from the resources folder
+            FileInputStream serviceAccount =
+                    new FileInputStream("src/main/resources/google-services.json");
+
+            // Set up FirebaseOptions with credentials from the json file
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://<csc207-d5985>.firebaseio.com") // Replace <your-project-id> with your Firebase project ID
                     .build();
 
-            FirebaseApp.initializeApp(options);
-            System.out.println("Firebase initialized successfully!");
-        } catch (Exception e) {
+            // Initialize FirebaseApp only if it hasn't been initialized already
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);  // Initialize Firebase App
+            }
+
+            // Return the Firestore instance
+            return FirestoreClient.getFirestore();
+        } catch (IOException e) {
+            // Print error and return null if Firebase initialization fails
             e.printStackTrace();
-            throw new RuntimeException("Firebase initialization failed: " + e.getMessage());
+            return null;
         }
     }
 }
