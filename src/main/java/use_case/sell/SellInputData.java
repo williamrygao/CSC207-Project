@@ -37,5 +37,6 @@ public class SellInputData {
     }
 
     public Integer getPrice() {
+        return price;
     }
 }
