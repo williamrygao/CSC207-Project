@@ -8,14 +8,16 @@ public class SellInputData {
     private final String username;
     private final String password;
     private final String repeatPassword;
+    private final Integer price;
 
     private final String bookID;
 
-    public SellInputData(String username, String password, String repeatPassword, String bookID) {
+    public SellInputData(String username, String password, String repeatPassword, String bookID, Integer price) {
         this.username = username;
         this.password = password;
         this.repeatPassword = repeatPassword;
         this.bookID = bookID;
+        this.price = price;
     }
 
     String getUsername() {
@@ -32,5 +34,8 @@ public class SellInputData {
 
     public String getBookID() {
         return bookID;
+    }
+
+    public Integer getPrice() {
     }
 }
