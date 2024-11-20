@@ -1,5 +1,9 @@
 package interface_adapter.change_password;
 
+import java.util.ArrayList;
+
+import entity.Listing;
+
 /**
  * The State information representing the logged-in user.
  */
@@ -9,10 +13,13 @@ public class HomeState {
     private String password = "";
     private String passwordError;
 
+    private ArrayList<Listing> listings;
+
     public HomeState(HomeState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
+        listings = copy.listings;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -38,5 +45,17 @@ public class HomeState {
 
     public String getPassword() {
         return password;
+    }
+
+    public ArrayList<Listing> getListings() {
+        return listings;
+    }
+
+    /**
+     * Add a new listing.
+     * @param listing the new listing
+     */
+    public void addListing(Listing listing) {
+        this.listings.add(listing);
     }
 }

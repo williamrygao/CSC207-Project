@@ -257,7 +257,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSellUseCase() {
-        final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel);
+        final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel, homeViewModel);
 
         final SellInputBoundary sellInteractor =
                 new SellInteractor(userDataAccessObject,

@@ -136,6 +136,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             username.setText(state.getUsername());
         }
+        else if (evt.getPropertyName().equals("listing")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+        }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());

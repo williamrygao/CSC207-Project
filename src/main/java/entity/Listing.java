@@ -30,7 +30,7 @@ public class Listing {
         return book;
     }
 
-    public void setBooD(Book book) {
+    public void setBook(Book book) {
         this.book = book;
     }
 
