@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * A listing of a book.
+ */
 public class Listing {
 
     private String listingID;
