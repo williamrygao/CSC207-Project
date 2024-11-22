@@ -6,5 +6,12 @@ package interface_adapter.filter_by_category;
  */
 
 public class FilterByGenreOutputBoundary {
+    /**
+     * Presents the filtered books and any related information to the view.
+     *
+     * @param outputData the data containing the filtered list of books
+     */
+
+    void presentFilteredBooks(FilterByGenreOutputData outputData);
 
 }
