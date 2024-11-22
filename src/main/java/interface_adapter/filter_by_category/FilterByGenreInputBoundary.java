@@ -7,4 +7,12 @@ package interface_adapter.filter_by_category;
 
 public class FilterByGenreInputBoundary {
 
+    /**
+     * Executes the filtering process based on the provided input data.
+     *
+     * @param inputData the data required to filter books by genre
+     */
+
+    void filterBooks(FilterByGenreInputData inputData);
+
 }
