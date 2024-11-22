@@ -12,6 +12,8 @@ public class FilterByGenreOutputBoundary {
      * @param outputData the data containing the filtered list of books
      */
 
-    void presentFilteredBooks(FilterByGenreOutputData outputData);
+    void presentFilteredBooks(FilterByGenreOutputData outputData) {
+        
+    }
 
 }
