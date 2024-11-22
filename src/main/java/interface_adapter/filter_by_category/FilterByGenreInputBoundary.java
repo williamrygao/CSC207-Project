@@ -13,6 +13,9 @@ public class FilterByGenreInputBoundary {
      * @param inputData the data required to filter books by genre
      */
 
-    void filterBooks(FilterByGenreInputData inputData);
+    void filterBooks(FilterByGenreInputData inputData) {
+        
+    }
 
 }
+
