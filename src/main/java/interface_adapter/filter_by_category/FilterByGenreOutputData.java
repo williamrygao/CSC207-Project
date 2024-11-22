@@ -18,4 +18,3 @@ public class FilterByGenreOutputData {
     // Constructor, getters, and setters omitted for brevity.
 
 }
-

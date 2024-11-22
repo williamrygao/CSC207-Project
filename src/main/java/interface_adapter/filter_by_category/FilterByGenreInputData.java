@@ -9,8 +9,8 @@ public class FilterByGenreInputData {
     /**
      * The genre used to filter books.
      */
+
     private String genre;
-
     // Constructor, getters, and setters to be added upon implementation
-
 }
+

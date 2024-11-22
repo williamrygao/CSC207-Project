@@ -14,8 +14,7 @@ public class FilterByGenreInputBoundary {
      */
 
     void filterBooks(FilterByGenreInputData inputData) {
-        
+
     }
 
 }
-
