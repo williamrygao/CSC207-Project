@@ -71,6 +71,15 @@ public class Book {
         this.genre = genre;
     }
 
+    /**
+     * Adds a genre to the list of genres/categories for the book.
+     *
+     * @param addition the genre to be added
+     */
+    public void addGenre(String addition) {
+        this.genre.add(addition);
+    }
+
     public void setRating(float rating) {
         this.rating = rating;
     }
