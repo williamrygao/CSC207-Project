@@ -15,11 +15,11 @@ public class Book {
     private String title;
     private String author;
     private String description;
-    private String genre;
+    private List<String> genre;
     private float rating;
     private List<String> sellers;
 
-    public Book(String bookId, String title, String author, String description, String genre) {
+    public Book(String bookId, String title, String author, String description, List<String> genre) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -63,11 +63,11 @@ public class Book {
         this.description = description;
     }
 
-    public String getGenre() {
+    public List<String> getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(List<String> genre) {
         this.genre = genre;
     }
 
@@ -98,6 +98,7 @@ public class Book {
      * @param o the object to compare this book to
      * @return true if the books have the same bookId, false otherwise
      */
+
     @Override
     public boolean equals(Object o) {
         final Book book = (Book) o;

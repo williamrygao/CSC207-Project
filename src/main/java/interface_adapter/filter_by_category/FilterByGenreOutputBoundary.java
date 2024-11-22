@@ -13,7 +13,7 @@ public class FilterByGenreOutputBoundary {
      */
 
     void presentFilteredBooks(FilterByGenreOutputData outputData) {
-        
+
     }
 
 }
