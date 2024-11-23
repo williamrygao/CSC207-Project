@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.google.cloud.firestore.Firestore;
+import data_access.FirebaseInitializer;
+
 import data_access.FirebaseBookDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
 import entity.BookFactory;
@@ -82,6 +85,8 @@ public class AppBuilder {
      */
     private final ViewManager viewManager = new ViewManager(cardPanel,
             cardLayout, viewManagerModel);
+
+    private final Firestore firestore = FirebaseInitializer.getFirestore();
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
             FirebaseUserDataAccessObject(userFactory);
@@ -257,7 +262,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSellUseCase() {
-        final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel);
+        final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel, homeViewModel);
 
         final SellInputBoundary sellInteractor =
                 new SellInteractor(userDataAccessObject,

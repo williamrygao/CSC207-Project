@@ -1,10 +1,14 @@
 package interface_adapter.login;
 
+import entity.Listing;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Presenter for the Login Use Case.
@@ -29,6 +33,8 @@ public class LoginPresenter implements LoginOutputBoundary {
 
         final HomeState homeState = homeViewModel.getState();
         homeState.setUsername(response.getUsername());
+        final ArrayList<Listing> listings = new ArrayList<>();
+        homeState.setListings(listings);
         this.homeViewModel.setState(homeState);
         this.homeViewModel.firePropertyChanged();
 
