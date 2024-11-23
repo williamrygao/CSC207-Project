@@ -1,6 +1,6 @@
 package interface_adapter.sell;
 
-import use_case.sell.SellBookDataFetcher;
+import data_access.GoogleBooksApi;
 import use_case.sell.SellInputBoundary;
 import use_case.sell.SellInputData;
 import view.SellView;
@@ -38,9 +38,7 @@ public class SellController {
      * @return a string representing the price message (including currency)
      */
     private String getBookPrice(String bookID) {
-        final SellBookDataFetcher priceFetcher = new SellBookDataFetcher();
-        // return a string of the price with currency
-        return priceFetcher.getBookPrice(bookID);
+        return GoogleBooksApi.getBookPrice(bookID);
     }
 
     /**
