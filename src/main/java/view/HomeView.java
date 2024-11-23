@@ -11,6 +11,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import entity.Book;
+import entity.Listing;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
@@ -159,6 +161,19 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+        }
+    }
+
+    private void updateTable(List<Listing> listings) {
+        tableModel.setRowCount(0);
+        for (Listing listing : listings) {
+            final Object[] rowData = {
+                    listing.getBook().getTitle(),
+                    listing.getBook().getAuthors(),
+                    listing.getPrice(),
+                    listing.getBook().getRating(),
+            };
+            tableModel.addRow(rowData);
         }
     }
 
