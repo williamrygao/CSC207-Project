@@ -156,4 +156,8 @@ public class Book {
                 +
                 '}';
     }
+
+    public void updateRating(int rating) {
+
+    }
 }

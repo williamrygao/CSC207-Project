@@ -5,6 +5,9 @@ import org.json.JSONObject;
 
 import data_access.GoogleBooksApi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Factory for creating Book objects from data retrieved via the Google Books API.
  */
@@ -40,8 +43,13 @@ public class BookFactory {
             final String description = volumeInfo.optString("description", "No description available");
             final String genre = extractGenre(volumeInfo);
 
+            final List<String> authors = new ArrayList<>();
+            authors.add(author);
+            final List<String> genres = new ArrayList<>();
+            genres.add(genre);
+
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeId, title, author, description, genre);
+            final Book book = new Book(volumeId, title, authors, description, genres);
             System.out.println(book);
             return book;
         }

@@ -51,6 +51,10 @@ public class HomeState {
         return listings;
     }
 
+    public void setListings(ArrayList<Listing> listings) {
+        this.listings = listings;
+    }
+
     /**
      * Add a new listing.
      * @param listing the new listing

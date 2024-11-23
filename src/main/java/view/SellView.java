@@ -27,6 +27,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
     private JLabel priceLabel;
 
     private final JTextField bookIDInputField = new JTextField(15);
+    private final JTextField priceInputField = new JTextField(15);
     private final JButton sell;
     private final JButton back;
 
@@ -50,6 +51,8 @@ public class SellView extends JPanel implements PropertyChangeListener {
         priceLabel = new JLabel("Price will be displayed here.");
         priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        final LabelTextPanel priceInfo = new LabelTextPanel(new JLabel("Your Price"), priceInputField);
+
         final JPanel buttons = new JPanel();
         back = new JButton("Back");
         buttons.add(back);
@@ -64,6 +67,30 @@ public class SellView extends JPanel implements PropertyChangeListener {
             private void documentListenerHelper() {
                 final SellState currentState = sellViewModel.getState();
                 currentState.setBookID(bookIDInputField.getText());
+                sellViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
+        priceInputField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final SellState currentState = sellViewModel.getState();
+                currentState.setPrice(Integer.valueOf(priceInputField.getText()));
                 sellViewModel.setState(currentState);
             }
 
@@ -99,7 +126,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(sell)) {
                         final SellState currentState = sellViewModel.getState();
                         sellController.execute(
-                                currentState.getUsername(), currentState.getPassword(), currentState.getBookID()
+                                currentState.getUsername(), currentState.getPassword(), currentState.getBookID(), currentState.getPrice()
                         );
                     }
                 }
@@ -110,6 +137,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
         this.add(username);
 
         this.add(bookInfo);
+        this.add(priceInfo);
         this.add(priceLabel);
         this.add(buttons);
     }
