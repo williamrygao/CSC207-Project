@@ -1,12 +1,12 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import data_access.GoogleBooksApi;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Factory for creating Book objects from data retrieved via the Google Books API.
@@ -18,9 +18,7 @@ public class BookFactory {
      * Entry point for demonstrating the creation of a Book object.
      * @param args command-line arguments (not used)
      */
-
     public static void main(String[] args) {
-
         final BookFactory bookFactory = new BookFactory();
         bookFactory.createBook("9xHCAgAAQBAJ");
     }
