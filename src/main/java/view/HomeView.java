@@ -1,17 +1,15 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
@@ -39,6 +37,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
 
+    private final JTable bookTable;
+    private final DefaultTableModel tableModel;
+
     public HomeView(HomeViewModel homeViewModel) {
         this.homeViewModel = homeViewModel;
         this.homeViewModel.addPropertyChangeListener(this);
@@ -51,6 +52,20 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         username = new JLabel();
+
+        // Table column names
+        String[] columnNames = {"Title", "Author", "Price", "Rating"};
+
+        // Initial data for the table (empty)
+        tableModel = new DefaultTableModel(columnNames, 0);
+        bookTable = new JTable(tableModel);
+
+        // Add scroll pane for the table
+        JScrollPane tableScrollPane = new JScrollPane(bookTable);
+
+        final JPanel listings = new JPanel();
+        listings.setLayout(new BorderLayout());
+        listings.add(tableScrollPane, BorderLayout.CENTER);
 
         final JPanel buttons = new JPanel();
         logOut = new JButton("Log Out");
@@ -124,6 +139,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.add(title);
         this.add(usernameInfo);
         this.add(username);
+
+        this.add(listings);
 
         this.add(passwordInfo);
         this.add(passwordErrorField);
