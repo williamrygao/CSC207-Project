@@ -10,8 +10,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-import entity.Book;
 import entity.Listing;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
@@ -41,6 +41,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     private final JTable bookTable;
     private final DefaultTableModel tableModel;
+    private final TableRowSorter<DefaultTableModel> sorter;
 
     public HomeView(HomeViewModel homeViewModel) {
         this.homeViewModel = homeViewModel;
@@ -59,8 +60,28 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         String[] columnNames = {"Title", "Author", "Price", "Rating"};
 
         // Initial data for the table (empty)
-        tableModel = new DefaultTableModel(columnNames, 0);
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            public boolean isCellEditable(int row, int column) {
+                // Return false to make all cells non-editable
+                return false;
+            }
+
+            public Class<?> getColumnClass(int columnIndex) {
+                // Specify column data types to allow proper sorting
+                if (columnIndex == 2) {
+                    return Double.class;
+                }
+                if (columnIndex == 3) {
+                    return Double.class;
+                }
+                return String.class;
+            }
+        };
+
         bookTable = new JTable(tableModel);
+
+        sorter = new TableRowSorter<>(tableModel);
+        bookTable.setRowSorter(sorter);
 
         // Add scroll pane for the table
         JScrollPane tableScrollPane = new JScrollPane(bookTable);
@@ -157,6 +178,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("listing")) {
             final HomeState state = (HomeState) evt.getNewValue();
+            updateTable(state.getListings());
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
@@ -164,14 +186,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    private void updateTable(List<Listing> listings) {
+    private void updateTable(List<Listing> newListings) {
         tableModel.setRowCount(0);
-        for (Listing listing : listings) {
+        for (Listing newListing : newListings) {
             final Object[] rowData = {
-                    listing.getBook().getTitle(),
-                    listing.getBook().getAuthors(),
-                    listing.getPrice(),
-                    listing.getBook().getRating(),
+                    newListing.getBook().getTitle(),
+                    newListing.getBook().getAuthors(),
+                    newListing.getPrice(),
+                    newListing.getBook().getRating(),
             };
             tableModel.addRow(rowData);
         }

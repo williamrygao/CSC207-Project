@@ -150,7 +150,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("listed for sale")) {
             final SellState state = (SellState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, state.getBookID() + "has been listed for sale.");
+            JOptionPane.showMessageDialog(null, state.getBookID() + " has been listed for sale.");
         }
     }
 
