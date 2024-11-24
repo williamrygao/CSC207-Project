@@ -10,6 +10,7 @@ import com.google.firebase.FirebaseOptions;
 /**
  * This class initializes Firebase for the application.
  */
+
 public class FirebaseInitialize {
 
     /**
@@ -21,6 +22,7 @@ public class FirebaseInitialize {
         try (FileInputStream serviceAccount = new FileInputStream("./serviceAccount.json")) {
             final FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://csc207project-ed2f9.firebaseio.com")
                     .build();
             FirebaseApp.initializeApp(options);
         }
@@ -28,7 +30,6 @@ public class FirebaseInitialize {
             System.err.println("Error initializing Firebase: " + ex.getMessage());
             // Rethrow to indicate failure
             throw ex;
-
         }
     }
 }

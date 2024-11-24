@@ -3,24 +3,24 @@ package interface_adapter.back_to_home;
 import use_case.back_to_home.BackToHomeInputBoundary;
 
 /**
- * The controller for the Back To Logged In Use Case.
+ * The controller for the Back To Home Use Case.
  */
 public class BackToHomeController {
 
-    private BackToHomeInputBoundary backToLoggedInUseCaseInteractor;
+    private BackToHomeInputBoundary backToHomeInteractor;
 
     /**
-     * Back To Logged In Controller method.
-     * @param backToLoggedInUseCaseInteractor the use case interactor
+     * Back To Home Controller method.
+     * @param backToHomeInteractor the use case interactor
      */
-    public BackToHomeController(final BackToHomeInputBoundary backToLoggedInUseCaseInteractor) {
-        this.backToLoggedInUseCaseInteractor = backToLoggedInUseCaseInteractor;
+    public BackToHomeController(final BackToHomeInputBoundary backToHomeInteractor) {
+        this.backToHomeInteractor = backToHomeInteractor;
     }
 
     /**
      * Executes the Back To Home Use Case.
      */
     public void execute() {
-        backToLoggedInUseCaseInteractor.execute();
+        backToHomeInteractor.execute();
     }
 }

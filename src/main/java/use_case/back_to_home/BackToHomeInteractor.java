@@ -6,8 +6,8 @@ package use_case.back_to_home;
 public class BackToHomeInteractor implements BackToHomeInputBoundary {
     private BackToHomeOutputBoundary backToHomePresenter;
 
-    public BackToHomeInteractor(final BackToHomeOutputBoundary backToHomeOutputBoundary) {
-        this.backToHomePresenter = backToHomeOutputBoundary;
+    public BackToHomeInteractor(final BackToHomeOutputBoundary backToHomePresenter) {
+        this.backToHomePresenter = backToHomePresenter;
     }
 
     /**

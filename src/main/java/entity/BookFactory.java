@@ -1,23 +1,34 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import data_access.GoogleBooksApi;
 
 /**
- * Factory for creating Book objects.
+ * Factory for creating Book objects from data retrieved via the Google Books API.
  */
+
 public class BookFactory {
+
+    /**
+     * Entry point for demonstrating the creation of a Book object.
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         final BookFactory bookFactory = new BookFactory();
         bookFactory.createBook("9xHCAgAAQBAJ");
     }
+
     /**
      * Create a Book.
      * @param volumeId Google Books API identifier
      * @return new Book object
      */
+
     public static Book createBook(String volumeId) {
         final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeId);
         if (jsonResponse != null) {
@@ -30,13 +41,25 @@ public class BookFactory {
             final String description = volumeInfo.optString("description", "No description available");
             final String genre = extractGenre(volumeInfo);
 
+            final List<String> authors = new ArrayList<>();
+            authors.add(author);
+            final List<String> genres = new ArrayList<>();
+            genres.add(genre);
+
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeId, title, author, description, genre);
+            final Book book = new Book(volumeId, title, authors, description, genres);
             System.out.println(book);
             return book;
         }
         return null;
     }
+
+    /**
+     * Extracts the genre(s) from the volume's JSON data.
+     *
+     * @param volumeInfo the JSON object containing volume details
+     * @return a comma-separated string of genres, or "Unknown Genre" if none are found
+     */
 
     private static String extractGenre(JSONObject volumeInfo) {
         // Check if the 'categories' field exists and is not empty
