@@ -218,7 +218,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public void removeListing(Listing listing) {
+    public void removeListing(User user, Listing listing) {
 
     }
 
