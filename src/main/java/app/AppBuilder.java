@@ -301,7 +301,7 @@ public class AppBuilder {
      */
     public AppBuilder addBackToHomeUseCase() {
         final BackToHomeOutputBoundary backToHomebackToHomePresenter = new BackToHomePresenter(viewManagerModel,
-                homeViewModel, sellViewModel);
+                homeViewModel);
 
         final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomebackToHomePresenter);
 
