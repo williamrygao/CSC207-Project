@@ -25,12 +25,12 @@ public class BookFactory {
 
     /**
      * Create a Book.
-     * @param volumeId Google Books API identifier
+     * @param volumeID Google Books API identifier
      * @return new Book object
      */
 
-    public static Book createBook(String volumeId) {
-        final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeId);
+    public static Book createBook(String volumeID) {
+        final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeID);
         if (jsonResponse != null) {
             // Parse the JSON response to extract the book details
             final JSONObject bookJson = new JSONObject(jsonResponse);
@@ -47,7 +47,7 @@ public class BookFactory {
             genres.add(genre);
 
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeId, title, authors, description, genres);
+            final Book book = new Book(volumeID, title, authors, description, genres);
             System.out.println(book);
             return book;
         }
