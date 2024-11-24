@@ -12,12 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
     public final UserFactory userFactory = new CommonUserFactory();
+    public final String firebaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     @Test
     void successTest() {
         UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
@@ -45,7 +46,7 @@ class LoginInteractorTest {
     void successUserLoggedInTest() {
         UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
@@ -75,7 +76,7 @@ class LoginInteractorTest {
     void failurePasswordMismatchTest() {
         UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "wrong");
-        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For this failure test, we need to add Paul to the data access repository before we log in, and
         // the passwords should not match.
@@ -105,7 +106,7 @@ class LoginInteractorTest {
     void failureUserDoesNotExistTest() {
         UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // Add Paul to the repo so that when we check later they already exist
 

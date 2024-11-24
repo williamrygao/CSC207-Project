@@ -1,11 +1,11 @@
-package use_case.remove_from_wishlist;
+package use_case.add_to_wishlist;
 
 import entity.Listing;
 
 /**
- * The Input Data for the Remove from wishlist Use Case.
+ * The Input Data for the Add to wishlist Use Case.
  */
-public class RemoveFromWishlistInputData {
+public class AddToWishlistInputData {
     /**
      * String username.
      */
@@ -16,13 +16,13 @@ public class RemoveFromWishlistInputData {
     private final Listing listing;
 
     /**
-     * RemoveFromWishlistInputData method.
+     * AddToWishlistInputData method.
      *
      * @param username the username
      * @param password the password
      * @param listing the listing
      */
-    public RemoveFromWishlistInputData(final String username, final String password, final Listing listing) {
+    public AddToWishlistInputData(final String username, final String password, final Listing listing) {
         this.username = username;
         this.password = password;
         this.listing = listing;

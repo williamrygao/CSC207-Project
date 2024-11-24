@@ -9,16 +9,16 @@ import view.WishlistView;
  * Controller for the Remove From Wishlist Use Case.
  */
 public class RemoveFromWishlistController {
-    private final RemoveFromWishlistInputBoundary userRemoveFromWishlistUseCaseInteractor;
+    private final RemoveFromWishlistInputBoundary removeFromWishlistInteractor;
     private final WishlistView wishlistView;
 
-    public RemoveFromWishlistController(RemoveFromWishlistInputBoundary userRemoveFromWishlistUseCaseInteractor, WishlistView wishlistView) {
-        this.userRemoveFromWishlistUseCaseInteractor = userRemoveFromWishlistUseCaseInteractor;
+    public RemoveFromWishlistController(RemoveFromWishlistInputBoundary removeFromWishlistInteractor, WishlistView wishlistView) {
+        this.removeFromWishlistInteractor = removeFromWishlistInteractor;
         this.wishlistView = wishlistView;
     }
 
-    public void execute(String username, Listing listing) {
-        final RemoveFromWishlistInputData removeFromWishlistInputData = new RemoveFromWishlistInputData(username, listing);
-        userRemoveFromWishlistUseCaseInteractor.execute(removeFromWishlistInputData);
+    public void execute(String username, String password, Listing listing) {
+        final RemoveFromWishlistInputData removeFromWishlistInputData = new RemoveFromWishlistInputData(username, password, listing);
+        removeFromWishlistInteractor.execute(removeFromWishlistInputData);
     }
 }

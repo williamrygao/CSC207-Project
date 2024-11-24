@@ -99,12 +99,13 @@ public class AppBuilder {
             cardLayout, viewManagerModel);
 
     private final Firestore firestore = FirebaseInitializer.getFirestore();
+    private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
-            FirebaseUserDataAccessObject(userFactory);
+            FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
 
     private final FirebaseBookDataAccessObject bookDataAccessObject = new
-            FirebaseBookDataAccessObject(bookFactory);
+            FirebaseBookDataAccessObject(bookFactory, firebaseBaseURL);
     /**
      * SignupView.
      */
@@ -331,7 +332,7 @@ public class AppBuilder {
      */
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
-        final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
+        final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary, userFactory);
         final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor, wishlistView);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
         return this;
