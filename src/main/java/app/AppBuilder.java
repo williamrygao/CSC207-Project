@@ -36,6 +36,8 @@ import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.back_to_home.BackToHomePresenter;
+import interface_adapter.view_wishlist.ViewWishlistController;
+import interface_adapter.view_wishlist.ViewWishlistPresenter;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -59,6 +61,9 @@ import use_case.to_sell_view.ToSellOutputBoundary;
 import use_case.back_to_home.BackToHomeInputBoundary;
 import use_case.back_to_home.BackToHomeInteractor;
 import use_case.back_to_home.BackToHomeOutputBoundary;
+import use_case.view_wishlist.ViewWishlistInputBoundary;
+import use_case.view_wishlist.ViewWishlistInteractor;
+import use_case.view_wishlist.ViewWishlistOutputBoundary;
 import view.*;
 
 /**
@@ -285,7 +290,7 @@ public class AppBuilder {
                         bookDataAccessObject, sellOutputBoundary);
 
         final SellController sellController = new SellController(
-                sellInteractor, sellView);
+                sellInteractor);
         sellView.setSellController(sellController);
         return this;
     }
@@ -295,13 +300,28 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addBackToHomeUseCase() {
-        final BackToHomeOutputBoundary backToHomeOutputBoundary = new BackToHomePresenter(viewManagerModel,
+        final BackToHomeOutputBoundary backToHomebackToHomePresenter = new BackToHomePresenter(viewManagerModel,
                 homeViewModel, sellViewModel);
 
-        final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomeOutputBoundary);
+        final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomebackToHomePresenter);
 
         final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
         sellView.setBackToHomeController(backToHomeController);
+        wishlistView.setBackToHomeController(backToHomeController);
+        return this;
+    }
+
+    /**
+     * Adds the View Wishlist Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addViewWishlistUseCase() {
+        final ViewWishlistOutputBoundary viewWishlistPresenter = new ViewWishlistPresenter(viewManagerModel, homeViewModel, wishlistViewModel);
+
+        final ViewWishlistInputBoundary viewWishlistInteractor = new ViewWishlistInteractor(viewWishlistPresenter);
+
+        final ViewWishlistController viewWishlistController = new ViewWishlistController(viewWishlistInteractor);
+        homeView.setViewWishlistController(viewWishlistController);
         return this;
     }
 

@@ -24,7 +24,7 @@ public class Main {
                                             .addLogoutUseCase()
                                             .addToSellViewUseCase()
                                             .addSellUseCase()
-                                            .addBackToHomeUseCase()
+                                            .addBackToHomeUseCase().addViewWishlistUseCase()
                                             .addRemoveFromWishlistUseCase()
                                             .addChangePasswordUseCase().build();
 

@@ -18,6 +18,7 @@ import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.view_wishlist.ViewWishlistController;
 
 /**
  * The View for when the user is logged into the program.
@@ -30,11 +31,13 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
     private ToSellController toSellController;
+    private ViewWishlistController viewWishlistController;
 
     private final JLabel username;
 
     private final JButton logOut;
     private final JButton toSell;
+    private final JButton viewWishlist;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
@@ -89,16 +92,20 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         final JPanel listings = new JPanel();
         listings.setLayout(new BorderLayout());
         listings.add(tableScrollPane, BorderLayout.CENTER);
-
-        final JPanel buttons = new JPanel();
-        logOut = new JButton("Log Out");
-        buttons.add(logOut);
-
+        
+        final JPanel topButtons = new JPanel();
         toSell = new JButton("Sell A Book");
-        buttons.add(toSell);
+        topButtons.add(toSell);
+        
+        viewWishlist = new JButton("My Wishlist");
+        topButtons.add(viewWishlist);
+
+        final JPanel bottomButtons = new JPanel();
+        logOut = new JButton("Log Out");
+        bottomButtons.add(logOut);
 
         changePassword = new JButton("Change Password");
-        buttons.add(changePassword);
+        bottomButtons.add(changePassword);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -158,16 +165,26 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
+        
+        viewWishlist.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(viewWishlist)) {
+                        viewWishlistController.execute();
+                    }
+                }
+        );
 
         this.add(title);
         this.add(usernameInfo);
         this.add(username);
 
+        this.add(topButtons);
+
         this.add(listings);
 
         this.add(passwordInfo);
         this.add(passwordErrorField);
-        this.add(buttons);
+        this.add(bottomButtons);
     }
 
     @Override
@@ -213,5 +230,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+    
+    public void setViewWishlistController(ViewWishlistController viewWishlistController) {
+        this.viewWishlistController = viewWishlistController;
     }
 }

@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.remove_from_wishlist.WishlistState;
 import interface_adapter.sell.SellState;
 import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.remove_from_wishlist.WishlistViewModel;
@@ -56,12 +57,11 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            final SellState state = (SellState) evt.getNewValue();
+            final WishlistState state = (WishlistState) evt.getNewValue();
             username.setText(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("listed for sale")) {
-            final SellState state = (SellState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, state.getBookID() + " has been listed for sale.");
+        else if (evt.getPropertyName().equals("wishlist")) {
+            final WishlistState state = (WishlistState) evt.getNewValue();
         }
     }
 
