@@ -8,5 +8,5 @@ public interface RemoveFromWishlistUserDataAccessInterface {
 
     void setCurrentUsername(String username);
 
-    void removeListing(User user, Listing listing);
+    void removeFromWishlist(User user, Listing listing);
 }

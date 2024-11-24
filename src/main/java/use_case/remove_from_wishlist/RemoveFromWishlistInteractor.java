@@ -43,7 +43,7 @@ public class RemoveFromWishlistInteractor implements RemoveFromWishlistInputBoun
         final User user = userFactory.create(username, password);
         final Listing listing = removeFromWishlistInputData.getListing();
 
-        userDataAccessObject.removeListing(user, listing);
+        userDataAccessObject.removeFromWishlist(user, listing);
         final RemoveFromWishlistOutputData removeFromWishlistOutputData = new RemoveFromWishlistOutputData(
                 username, false);
         removeFromWishlistPresenter.prepareSuccessView(removeFromWishlistOutputData);

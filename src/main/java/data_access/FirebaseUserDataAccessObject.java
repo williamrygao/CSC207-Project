@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import use_case.add_to_wishlist.AddToWishlistUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
@@ -26,7 +27,10 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface, SellUserDataAccessInterface, RemoveFromWishlistUserDataAccessInterface {
+        LogoutUserDataAccessInterface,
+        SellUserDataAccessInterface,
+        RemoveFromWishlistUserDataAccessInterface,
+        AddToWishlistUserDataAccessInterface {
     /**
      * Int 200.
      */
@@ -218,7 +222,12 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public void removeListing(User user, Listing listing) {
+    public void removeFromWishlist(User user, Listing listing) {
+
+    }
+
+    @Override
+    public void addToWishlist(User user, Listing listing) {
 
     }
 
