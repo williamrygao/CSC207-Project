@@ -13,16 +13,16 @@ public class Book {
 
     private String bookId;
     private String title;
-    private String author;
+    private String authors;
     private String description;
     private String genre;
     private float rating;
     private List<String> sellers;
 
-    public Book(String bookId, String title, String author, String description, String genre) {
+    public Book(String bookId, String title, String authors, String description, String genre) {
         this.bookId = bookId;
         this.title = title;
-        this.author = author;
+        this.authors = authors;
         this.description = description;
         this.genre = genre;
         this.rating = 0;
@@ -48,11 +48,11 @@ public class Book {
     }
 
     public String getAuthor() {
-        return author;
+        return authors;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.authors = authors;
     }
 
     public String getDescription() {
@@ -127,7 +127,7 @@ public class Book {
                 +
                 ", title='" + title + '\''
                 +
-                ", author='" + author + '\''
+                ", authors='" + authors + '\''
                 +
                 ", description='" + description + '\''
                 +
