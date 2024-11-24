@@ -54,6 +54,7 @@ public class SellState {
         return bookID;
     }
 
-    public Integer getPrice() {return price;
+    public Integer getPrice() {
+        return price;
     }
 }

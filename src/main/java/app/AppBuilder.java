@@ -23,6 +23,9 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.remove_from_wishlist.RemoveFromWishlistPresenter;
+import interface_adapter.remove_from_wishlist.WishlistViewModel;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellPresenter;
 import interface_adapter.sell.SellViewModel;
@@ -33,6 +36,8 @@ import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.back_to_home.BackToHomePresenter;
+import interface_adapter.view_wishlist.ViewWishlistController;
+import interface_adapter.view_wishlist.ViewWishlistPresenter;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -42,6 +47,10 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.remove_from_wishlist.RemoveFromWishlistInputBoundary;
+import use_case.remove_from_wishlist.RemoveFromWishlistInputData;
+import use_case.remove_from_wishlist.RemoveFromWishlistInteractor;
+import use_case.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.sell.*;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -52,6 +61,9 @@ import use_case.to_sell_view.ToSellOutputBoundary;
 import use_case.back_to_home.BackToHomeInputBoundary;
 import use_case.back_to_home.BackToHomeInteractor;
 import use_case.back_to_home.BackToHomeOutputBoundary;
+import use_case.view_wishlist.ViewWishlistInputBoundary;
+import use_case.view_wishlist.ViewWishlistInteractor;
+import use_case.view_wishlist.ViewWishlistOutputBoundary;
 import view.*;
 
 /**
@@ -119,8 +131,10 @@ public class AppBuilder {
     private LoginView loginView;
 
     private SellViewModel sellViewModel;
-
     private SellView sellView;
+
+    private WishlistViewModel wishlistViewModel;
+    private WishlistView wishlistView;
 
     /**
      * AppBuilder method.
@@ -170,6 +184,13 @@ public class AppBuilder {
         sellViewModel = new SellViewModel();
         sellView = new SellView(sellViewModel);
         cardPanel.add(sellView, sellView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addWishlistView() {
+        wishlistViewModel = new WishlistViewModel();
+        wishlistView = new WishlistView(wishlistViewModel);
+        cardPanel.add(wishlistView, wishlistView.getViewName());
         return this;
     }
 
@@ -269,7 +290,7 @@ public class AppBuilder {
                         bookDataAccessObject, sellOutputBoundary);
 
         final SellController sellController = new SellController(
-                sellInteractor, sellView);
+                sellInteractor);
         sellView.setSellController(sellController);
         return this;
     }
@@ -279,13 +300,40 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addBackToHomeUseCase() {
-        final BackToHomeOutputBoundary backToHomeOutputBoundary = new BackToHomePresenter(viewManagerModel,
-                homeViewModel, sellViewModel);
+        final BackToHomeOutputBoundary backToHomebackToHomePresenter = new BackToHomePresenter(viewManagerModel,
+                homeViewModel);
 
-        final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomeOutputBoundary);
+        final BackToHomeInputBoundary backToHomeInteractor = new BackToHomeInteractor(backToHomebackToHomePresenter);
 
         final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
         sellView.setBackToHomeController(backToHomeController);
+        wishlistView.setBackToHomeController(backToHomeController);
+        return this;
+    }
+
+    /**
+     * Adds the View Wishlist Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addViewWishlistUseCase() {
+        final ViewWishlistOutputBoundary viewWishlistPresenter = new ViewWishlistPresenter(viewManagerModel, homeViewModel, wishlistViewModel);
+
+        final ViewWishlistInputBoundary viewWishlistInteractor = new ViewWishlistInteractor(viewWishlistPresenter);
+
+        final ViewWishlistController viewWishlistController = new ViewWishlistController(viewWishlistInteractor);
+        homeView.setViewWishlistController(viewWishlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Remove From Wishlist Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addRemoveFromWishlistUseCase() {
+        final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
+        final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
+        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor, wishlistView);
+        wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
         return this;
     }
 

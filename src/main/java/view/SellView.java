@@ -165,12 +165,4 @@ public class SellView extends JPanel implements PropertyChangeListener {
     public void setBackToHomeController(BackToHomeController backToHomeController) {
         this.backToHomeController = backToHomeController;
     }
-
-    /**
-     * Updates the price label with the fetched price.
-     * @param priceMessage a string of the fetched price
-     */
-    public void updatePriceLabel(String priceMessage) {
-        priceLabel.setText(priceMessage);
-    }
 }
