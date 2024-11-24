@@ -15,6 +15,7 @@ import okhttp3.Response;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
 import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
@@ -24,7 +25,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface, SellUserDataAccessInterface {
+        LogoutUserDataAccessInterface, SellUserDataAccessInterface, RemoveFromWishlistUserDataAccessInterface {
     /**
      * Int 200.
      */

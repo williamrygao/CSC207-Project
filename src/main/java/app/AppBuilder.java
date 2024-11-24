@@ -23,6 +23,9 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.remove_from_wishlist.RemoveFromWishlistPresenter;
+import interface_adapter.remove_from_wishlist.WishlistViewModel;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellPresenter;
 import interface_adapter.sell.SellViewModel;
@@ -42,6 +45,10 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.remove_from_wishlist.RemoveFromWishlistInputBoundary;
+import use_case.remove_from_wishlist.RemoveFromWishlistInputData;
+import use_case.remove_from_wishlist.RemoveFromWishlistInteractor;
+import use_case.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.sell.*;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -119,8 +126,10 @@ public class AppBuilder {
     private LoginView loginView;
 
     private SellViewModel sellViewModel;
-
     private SellView sellView;
+
+    private WishlistViewModel wishlistViewModel;
+    private WishlistView wishlistView;
 
     /**
      * AppBuilder method.
@@ -170,6 +179,13 @@ public class AppBuilder {
         sellViewModel = new SellViewModel();
         sellView = new SellView(sellViewModel);
         cardPanel.add(sellView, sellView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addWishlistView() {
+        wishlistViewModel = new WishlistViewModel();
+        wishlistView = new WishlistView(wishlistViewModel);
+        cardPanel.add(wishlistView, wishlistView.getViewName());
         return this;
     }
 
@@ -286,6 +302,18 @@ public class AppBuilder {
 
         final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
         sellView.setBackToHomeController(backToHomeController);
+        return this;
+    }
+
+    /**
+     * Adds the Remove From Wishlist Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addRemoveFromWishlistUseCase() {
+        final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
+        final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
+        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor, wishlistView);
+        wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
         return this;
     }
 
