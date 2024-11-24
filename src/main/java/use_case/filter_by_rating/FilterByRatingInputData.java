@@ -14,3 +14,4 @@ public class FilterByRatingInputData {
         return rating;
     }
 }
+
