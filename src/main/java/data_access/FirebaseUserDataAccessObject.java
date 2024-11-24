@@ -2,6 +2,7 @@ package data_access;
 
 import java.io.IOException;
 
+import entity.Listing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -214,6 +215,11 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public void removeListing(Listing listing) {
+
     }
 
     /**

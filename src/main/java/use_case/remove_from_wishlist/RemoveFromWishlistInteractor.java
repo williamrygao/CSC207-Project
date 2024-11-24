@@ -1,5 +1,7 @@
 package use_case.remove_from_wishlist;
 
+import entity.Listing;
+
 /**
  * The RemoveFromWishlist Interactor.
  */
@@ -31,26 +33,12 @@ public class RemoveFromWishlistInteractor implements RemoveFromWishlistInputBoun
      */
     @Override
     public void execute(final RemoveFromWishlistInputData removeFromWishlistInputData) {
-        // * get the username out of the input data,
-        // * set the username to null in the DAO
-        // * instantiate the `RemoveFromWishlistOutputData`,which needs to contain username.
-        // * tell the presenter to prepare a success view.
         final String username = removeFromWishlistInputData.getUsername();
+        final Listing listing = removeFromWishlistInputData.getListing();
 
-        // I (Victor) added this fail condition but unsure if needed
-        if (username == null) {
-            removeFromWishlistPresenter.prepareFailView("Username not found.");
-        }
-        else {
-            userDataAccessObject.setCurrentUsername(null);
-
-            // I'm pretty sure the useCaseFailed argument is supposed to be
-            // false unless I interpreted it wrong
-            // Documenting here just in case (delete if all tests pass)
-            final RemoveFromWishlistOutputData removeFromWishlistOutputData = new RemoveFromWishlistOutputData(
-                    username, false);
-            removeFromWishlistPresenter.prepareSuccessView(removeFromWishlistOutputData);
-        }
+        userDataAccessObject.removeListing(listing);
+        final RemoveFromWishlistOutputData removeFromWishlistOutputData = new RemoveFromWishlistOutputData(
+                username, false);
+        removeFromWishlistPresenter.prepareSuccessView(removeFromWishlistOutputData);
     }
 }
-
