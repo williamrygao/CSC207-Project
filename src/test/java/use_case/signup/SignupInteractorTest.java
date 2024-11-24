@@ -12,12 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SignupInteractorTest {
     public final UserFactory userFactory = new CommonUserFactory();
+    public final String firebaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     @Test
     void successTest() {
         UserFactory userFactory = new CommonUserFactory();
         SignupInputData inputData = new SignupInputData("Paul", "password", "password");
-        SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // This creates a successPresenter that tests whether the test case is as we expect.
         SignupOutputBoundary successPresenter = new SignupOutputBoundary() {
@@ -47,7 +48,7 @@ class SignupInteractorTest {
     void failurePasswordMismatchTest() {
         UserFactory userFactory = new CommonUserFactory();
         SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
-        SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // This creates a presenter that tests whether the test case is as we expect.
         SignupOutputBoundary failurePresenter = new SignupOutputBoundary() {
@@ -76,7 +77,7 @@ class SignupInteractorTest {
     void failureUserExistsTest() {
         UserFactory userFactory = new CommonUserFactory();
         SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
-        SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory);
+        SignupUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // Add Paul to the repo so that when we check later they already exist
         UserFactory factory = new CommonUserFactory();

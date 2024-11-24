@@ -99,12 +99,13 @@ public class AppBuilder {
             cardLayout, viewManagerModel);
 
     private final Firestore firestore = FirebaseInitializer.getFirestore();
+    private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
-            FirebaseUserDataAccessObject(userFactory);
+            FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
 
     private final FirebaseBookDataAccessObject bookDataAccessObject = new
-            FirebaseBookDataAccessObject(bookFactory);
+            FirebaseBookDataAccessObject(bookFactory, firebaseBaseURL);
     /**
      * SignupView.
      */
