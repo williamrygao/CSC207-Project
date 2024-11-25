@@ -1,7 +1,5 @@
 package app;
 
-import data_access.FirebaseInitializer;
-
 import javax.swing.JFrame;
 
 /**

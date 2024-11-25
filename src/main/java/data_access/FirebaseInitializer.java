@@ -9,19 +9,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class FirebaseInitializer {
-
-    private static Firestore db;
-
-    // Initialize Firebase
-    public static void initializeFirebase() throws IOException {
-        if (db == null) {
-            // Load the service account key from the file path (ensure correct path)
-            FileInputStream serviceAccount =
-                    new FileInputStream("src/main/resources/csc207-d5985-firebase-adminsdk-vpvh9-e9b2410af1.json");
-
+    /**
+     * This method initializes Firebase and returns a Firestore instance.
+     */
+    public static Firestore getFirestore() {
+        try {
+            final FileInputStream serviceAccount =
+                    new FileInputStream("src/main/resources/serviceAccount.json");
             // Initialize Firebase options using the credentials
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://csc207project-ed2f9-default-rtdb.firebaseio.com/")
                     .build();
 
             // Initialize Firebase app with the options

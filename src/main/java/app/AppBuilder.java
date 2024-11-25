@@ -9,7 +9,7 @@ import javax.swing.WindowConstants;
 import com.google.cloud.firestore.Firestore;
 import data_access.FirebaseInitializer;
 
-import data_access.FirebaseBookDataAccessObject;
+import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
 import entity.BookFactory;
 import entity.CommonUserFactory;
@@ -48,7 +48,6 @@ import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.remove_from_wishlist.RemoveFromWishlistInputBoundary;
-import use_case.remove_from_wishlist.RemoveFromWishlistInputData;
 import use_case.remove_from_wishlist.RemoveFromWishlistInteractor;
 import use_case.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.sell.*;
@@ -81,7 +80,6 @@ public class AppBuilder {
      * New CardLayout.
      */
     private final CardLayout cardLayout = new CardLayout();
-    // thought question: is the hard dependency below a problem?
     /**
      * New CommonUserFactory.
      */
@@ -104,8 +102,8 @@ public class AppBuilder {
     private final FirebaseUserDataAccessObject userDataAccessObject = new
             FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
 
-    private final FirebaseBookDataAccessObject bookDataAccessObject = new
-            FirebaseBookDataAccessObject(bookFactory, firebaseBaseURL);
+    private final FirebaseListingDataAccessObject listingDataAccessObject = new
+            FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
     /**
      * SignupView.
      */
@@ -220,7 +218,7 @@ public class AppBuilder {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
                 viewManagerModel, homeViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+                userDataAccessObject, listingDataAccessObject, loginOutputBoundary);
 
         final LoginController loginController = new LoginController(
                 loginInteractor);
@@ -288,7 +286,7 @@ public class AppBuilder {
 
         final SellInputBoundary sellInteractor =
                 new SellInteractor(userDataAccessObject,
-                        bookDataAccessObject, sellOutputBoundary);
+                        listingDataAccessObject, sellOutputBoundary);
 
         final SellController sellController = new SellController(
                 sellInteractor);
@@ -344,7 +342,7 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("Joe Repka Bookstore");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

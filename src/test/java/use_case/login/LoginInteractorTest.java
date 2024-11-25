@@ -1,6 +1,8 @@
 package use_case.login;
 
+import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
+import entity.BookFactory;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
@@ -13,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoginInteractorTest {
     public final UserFactory userFactory = new CommonUserFactory();
     public final String firebaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
+    public final BookFactory bookFactory = new BookFactory();
+    public final LoginListingDataAccessInterface bookRepository = new FirebaseListingDataAccessObject(bookFactory, firebaseURL);
 
     @Test
     void successTest() {
@@ -38,7 +42,7 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, successPresenter);
         interactor.execute(inputData);
     }
 
@@ -66,7 +70,7 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, successPresenter);
         assertEquals(null, userRepository.getCurrentUsername());
 
         interactor.execute(inputData);
@@ -98,7 +102,7 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, failurePresenter);
         interactor.execute(inputData);
     }
 
@@ -124,7 +128,7 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, failurePresenter);
         interactor.execute(inputData);
     }
 }
