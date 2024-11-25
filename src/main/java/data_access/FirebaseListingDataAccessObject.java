@@ -80,7 +80,8 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
                     System.out.println("Failed to save listing: " + response.message());
                 }
             }
-        } catch (JSONException | IOException e) {
+        }
+        catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -107,6 +108,11 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
         catch (IOException | JSONException exception) {
             exception.printStackTrace();
         }
+        return "";
+    }
+
+    @Override
+    public String getUserSellingListing(String SellingPrice, String bookID) {
         return "";
     }
 

@@ -15,10 +15,10 @@ public interface SellBookDataAccessInterface {
     boolean existsByBookID(String bookID);
 
     /**
-     * Saves the book.
-     * @param book the book to save
+     * Saves the listing.
+     * @param listing the book to save
      */
-    void save(Book book);
+    void save(Listing listing);
 
     /**
      * Listing method.
