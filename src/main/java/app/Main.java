@@ -13,7 +13,6 @@ public class Main {
      * @param args unused arguments
      */
     public static void main(final String[] args) {
-        FirebaseInitializer.getFirestore();
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder.addLoginView().addSignupView()
                                             .addHomeView()

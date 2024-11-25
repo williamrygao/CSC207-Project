@@ -9,10 +9,10 @@ import entity.Book;
  */
 public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
     private final FilterByRatingDataAccessInterface filterByRatingDataAccessObject;
-    private final FilterByRatingOutputBoundary filterByRatingPresenter;
+    private final use_case.filterRating.FilterByRatingOutputBoundary filterByRatingPresenter;
 
     public FilterByRatingInteractor(FilterByRatingDataAccessInterface filterByRatingDataAccessInterface,
-                                    FilterByRatingOutputBoundary filterByRatingOutputBoundary) {
+                                    use_case.filterRating.FilterByRatingOutputBoundary filterByRatingOutputBoundary) {
         this.filterByRatingDataAccessObject = filterByRatingDataAccessInterface;
         this.filterByRatingPresenter = filterByRatingOutputBoundary;
     }

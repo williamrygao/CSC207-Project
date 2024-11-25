@@ -1,9 +1,8 @@
 package data_access;
-
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 
 import java.io.FileInputStream;
@@ -11,29 +10,36 @@ import java.io.IOException;
 
 public class FirebaseInitializer {
 
-    // This method initializes Firebase and returns a Firestore instance
-    public static Firestore getFirestore() {
-        try {
-            // Load the google-services.json from the resources folder
-            FileInputStream serviceAccount =
-                    new FileInputStream("src/main/resources/google-services.json");
+    private static Firestore db;
 
-            // Set up FirebaseOptions with credentials from the json file
-            FirebaseOptions options = new FirebaseOptions.Builder()
+    // Initialize Firebase
+    public static void initializeFirebase() throws IOException {
+        if (db == null) {
+            // Load the service account key from the file path (ensure correct path)
+            FileInputStream serviceAccount =
+                    new FileInputStream("src/main/resources/csc207-d5985-firebase-adminsdk-vpvh9-e9b2410af1.json");
+
+            // Initialize Firebase options using the credentials
+            FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
 
-            // Initialize FirebaseApp only if it hasn't been initialized already
-            if (FirebaseApp.getApps().isEmpty()) {
-                FirebaseApp.initializeApp(options);  // Initialize Firebase App
-            }
+            // Initialize Firebase app with the options
+            FirebaseApp.initializeApp(options);
 
-            // Return the Firestore instance
-            return FirestoreClient.getFirestore();
+            // Get Firestore instance
+            db = FirestoreClient.getFirestore();
+
+            System.out.println("Firebase initialized successfully.");
+        }
+    }
+
+    // Main method to test Firebase initialization independently
+    public static void main(String[] args) {
+        try {
+            initializeFirebase();  // Initialize Firebase
         } catch (IOException e) {
-            // Print error and return null if Firebase initialization fails
-            e.printStackTrace();
-            return null;
+            e.printStackTrace();  // Print any error
         }
     }
 }
