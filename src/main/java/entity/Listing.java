@@ -7,15 +7,15 @@ public class Listing {
 
     private String listingID;
     private Book book;
-    private double price;
+    private String sellingPrice;
     private String seller;
     private boolean isAvailable;
 
     // Constructor, getters, and setters
-    public Listing(String listingID, Book book, double price, String seller, boolean isAvailable) {
+    public Listing(String listingID, Book book, String sellingPrice, String seller, boolean isAvailable) {
         this.listingID = listingID;
         this.book = book;
-        this.price = price;
+        this.sellingPrice = sellingPrice;
         this.seller = seller;
         this.isAvailable = isAvailable;
     }
@@ -37,12 +37,12 @@ public class Listing {
         this.book = book;
     }
 
-    public double getPrice() {
-        return price;
+    public String getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(String price) {
+        this.sellingPrice = price;
     }
 
     public String getSeller() {

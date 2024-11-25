@@ -209,7 +209,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final Object[] rowData = {
                     newListing.getBook().getTitle(),
                     newListing.getBook().getAuthors(),
-                    newListing.getPrice(),
+                    newListing.getSellingPrice(),
                     newListing.getBook().getRating(),
             };
             tableModel.addRow(rowData);
