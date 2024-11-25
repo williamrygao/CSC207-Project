@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class Rating {
 
-    private Book book;
-    private List<Double> ratings;
+    public Book book;
+    public List<Double> ratings;
 
     // Constructor, getters, and setters
     public Rating(Book book) {
@@ -34,7 +34,8 @@ public class Rating {
     public void addRating(double rating) {
         if (rating >= 1 && rating <= 10) {
             this.ratings.add(rating);
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Rating must be between 1 and 10.");
         }
     }
@@ -42,12 +43,12 @@ public class Rating {
     // Method to calculate the average rating
     public double getAverageRating() {
         if (ratings.isEmpty()) {
-            return 0; // No ratings yet, return 0
+            return 0;
         }
         double total = 0;
         for (Double rating : ratings) {
             total += rating;
         }
-        return total / ratings.size(); // Return the average
+        return total / ratings.size();
     }
 }
