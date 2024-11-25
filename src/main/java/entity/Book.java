@@ -13,13 +13,13 @@ public class Book {
 
     private String bookId;
     private String title;
-    private List<String> authors;
+    private String authors;
     private String description;
-    private List<String> genre;
+    private String genre;
     private float rating;
     private List<String> sellers;
 
-    public Book(String bookId, String title, List<String> authors, String description, List<String> genre) {
+    public Book(String bookId, String title, String authors, String description, String genre) {
         this.bookId = bookId;
         this.title = title;
         this.authors = authors;
@@ -47,21 +47,12 @@ public class Book {
         this.title = title;
     }
 
-    public List<String> getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(String authors) {
         this.authors = authors;
-    }
-
-    /**
-     * Adds an author to the list of authors for the book.
-     *
-     * @param author the genre to be added
-     */
-    public void addAuthor(String author) {
-        this.authors.add(author);
     }
 
     public String getDescription() {
@@ -72,21 +63,12 @@ public class Book {
         this.description = description;
     }
 
-    public List<String> getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(List<String> genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
-    }
-
-    /**
-     * Adds a genre to the list of genres/categories for the book.
-     *
-     * @param addition the genre to be added
-     */
-    public void addGenre(String addition) {
-        this.genre.add(addition);
     }
 
     public void setRating(float rating) {
