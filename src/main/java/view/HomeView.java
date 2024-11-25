@@ -1,12 +1,19 @@
 package view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +31,6 @@ import interface_adapter.view_wishlist.ViewWishlistController;
  * The View for when the user is logged into the program.
  */
 public class HomeView extends JPanel implements PropertyChangeListener {
-
     private final String viewName = "logged in";
     private final HomeViewModel homeViewModel;
     private final JLabel passwordErrorField = new JLabel();
@@ -60,7 +66,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         username = new JLabel();
 
         // Table column names
-        String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
+        final String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {

@@ -1,17 +1,27 @@
 package view;
 
-import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.remove_from_wishlist.WishlistState;
-import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.remove_from_wishlist.WishlistViewModel;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.remove_from_wishlist.WishlistState;
+import interface_adapter.remove_from_wishlist.WishlistViewModel;
+
+/**
+ * The View for when the user is viewing their personal wishlist.
+ */
 public class WishlistView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "wishlist";
@@ -43,7 +53,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
+        final String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -73,7 +83,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         bookTable.setRowSorter(sorter);
 
         // Add scroll pane for the table
-        JScrollPane tableScrollPane = new JScrollPane(bookTable);
+        final JScrollPane tableScrollPane = new JScrollPane(bookTable);
 
         final JPanel listings = new JPanel();
         listings.setLayout(new BorderLayout());
