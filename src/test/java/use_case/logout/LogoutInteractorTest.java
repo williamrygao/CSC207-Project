@@ -10,11 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutInteractorTest {
     public final UserFactory userFactory = new CommonUserFactory();
+    public final String firebaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     @Test
     void successTest() {
         LogoutInputData inputData = new LogoutInputData("Paul");
-        FirebaseUserDataAccessObject userRepository = new FirebaseUserDataAccessObject(userFactory);
+        FirebaseUserDataAccessObject userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();

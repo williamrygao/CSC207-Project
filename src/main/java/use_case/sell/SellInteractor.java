@@ -2,6 +2,7 @@ package use_case.sell;
 
 import entity.Book;
 import entity.BookFactory;
+import entity.Listing;
 
 /**
  * The Sell Interactor.
@@ -23,9 +24,13 @@ public class SellInteractor implements SellInputBoundary {
     public void execute(SellInputData sellInputData) {
         final String bookID = sellInputData.getBookID();
         final Book book = BookFactory.createBook(bookID);
-        bookDataAccessObject.save(book);
+        final Integer price = sellInputData.getPrice();
+        final String seller = sellInputData.getUsername();
 
-        final SellOutputData sellOutputData = new SellOutputData(sellInputData.getUsername(), book, false);
+        final Listing listing = new Listing(bookID, book, price, seller, true);
+        bookDataAccessObject.save(listing);
+
+        final SellOutputData sellOutputData = new SellOutputData(sellInputData.getUsername(), listing, false);
         userPresenter.prepareSuccessView(sellOutputData);
     }
 }

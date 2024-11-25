@@ -22,7 +22,15 @@ public interface SellBookDataAccessInterface {
     /**
      * Gets the price of the book from Google API.
      * @param bookID the ID of the book
-     * @return price of the book (or -1 if not available)
+     * @return price of the book with currency
      */
     String getBookPrice(String bookID);
+
+    /**
+     * Gets the user listed selling price of chosen book.
+     * @param SellingPrice the listed Selling price of book
+     * @param bookID the ID of the book
+     * @return a message to the user telling them their book has been listed
+     */
+    String getUserSellingListing(String SellingPrice, String bookID);
 }

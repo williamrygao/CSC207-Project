@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import entity.Listing;
 import entity.User;
 import entity.UserFactory;
 import okhttp3.MediaType;
@@ -12,213 +13,163 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import use_case.add_to_wishlist.AddToWishlistUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
 import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
- * The DAO for user data.
+ * DAO for user data using Firebase.
  */
 public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface, SellUserDataAccessInterface {
-    /**
-     * Int 200.
-     */
+        LogoutUserDataAccessInterface,
+        SellUserDataAccessInterface,
+        RemoveFromWishlistUserDataAccessInterface,
+        AddToWishlistUserDataAccessInterface {
+
     private static final int SUCCESS_CODE = 200;
-    /**
-     * String "Content-Type".
-     */
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
-    /**
-     * Sring "application/json".
-     */
     private static final String CONTENT_TYPE_JSON = "application/json";
-    /**
-     * String "status_code".
-     */
-    private static final String STATUS_CODE_LABEL = "status_code";
-    /**
-     * String "username".
-     */
-    private static final String USERNAME = "username";
-    /**
-     * String "password".
-     */
-    private static final String PASSWORD = "password";
-    /**
-     * String "message".
-     */
-    private static final String MESSAGE = "message";
-    /**
-     * UserFactory.
-     */
+
     private final UserFactory userFactory;
+    private final OkHttpClient httpClient;
+    private final String firebaseBaseUrl;
 
     /**
-     * DBUserDataAccessObject.
-     * @param userFactory setting userFactory
+     * Constructor for FirebaseUserDataAccessObject.
+     *
+     * @param userFactory    Factory for creating User objects.
+     * @param firebaseBaseUrl Base URL for the Firebase database.
      */
-    public FirebaseUserDataAccessObject(final UserFactory userFactory) {
+    public FirebaseUserDataAccessObject(final UserFactory userFactory, final String firebaseBaseUrl) {
         this.userFactory = userFactory;
-        // No need to do anything to reinitialize a user list! The data is the
-        // cloud that may be miles away.
+        this.firebaseBaseUrl = firebaseBaseUrl;
+        this.httpClient = new OkHttpClient();
     }
 
-    /**
-     * Override get method.
-     * @param username the username to look up
-     * @return User
-     */
     @Override
     public User get(final String username) {
-        // Make an API call to get the user object.
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-        final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/"
-                        + "user?username=%s", username))
-                .addHeader("Content-Type", CONTENT_TYPE_JSON)
+        String url = firebaseBaseUrl + "/users/" + username + ".json";
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
-        try {
-            final Response response = client.newCall(request).execute();
 
-            final JSONObject responseBody = new JSONObject(response.body()
-                    .string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject(
-                        "user");
-                final String name = userJSONObject.getString(USERNAME);
-                final String password = userJSONObject.getString(PASSWORD);
-
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                JSONObject userJson = new JSONObject(response.body().string());
+                String name = userJson.getString("username");
+                String password = userJson.getString("password");
                 return userFactory.create(name, password);
             }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException("Error fetching user: " + e.getMessage(), e);
         }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
-        }
+
+        throw new RuntimeException("User not found");
     }
 
     @Override
     public void setCurrentUsername(final String name) {
-        // this isn't implemented for the lab
+        // This might involve storing the username in a local variable or shared preference if needed.
     }
 
-    /**
-     * Override existsByName method.
-     * @param username the username to look for
-     * @return True or False
-     */
     @Override
     public boolean existsByName(final String username) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/"
-                        + "checkIfUserExists?username=%s", username))
+        String url = firebaseBaseUrl + "/users/" + username + ".json";
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
-        try {
-            final Response response = client.newCall(request).execute();
 
-            final JSONObject responseBody = new JSONObject(response.body()
-                    .string());
-
-            return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
-        }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.isSuccessful() && response.body() != null && !response.body().string().equals("null");
+        } catch (IOException e) {
+            throw new RuntimeException("Error checking user existence: " + e.getMessage(), e);
         }
     }
 
-    /**
-     * Override save method.
-     * @param user the user to save
-     */
     @Override
     public void save(final User user) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-
-        // POST METHOD
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
-        final RequestBody body = RequestBody.create(requestBody.toString(),
-                mediaType);
-        final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
-                .method("POST", body)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
+        String url = firebaseBaseUrl + "/users/" + user.getName() + ".json";
+        JSONObject userJson = new JSONObject();
         try {
-            final Response response = client.newCall(request).execute();
+            userJson.put("username", user.getName());
+            userJson.put("password", user.getPassword());
 
-            final JSONObject responseBody = new JSONObject(response.body()
-                    .string());
+            RequestBody body = RequestBody.create(userJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
+            Request request = new Request.Builder()
+                    .url(url)
+                    .put(body) // Firebase uses PUT for individual resources
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
 
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                // success!
+            try (Response response = httpClient.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    throw new RuntimeException("Failed to save user: " + response.message());
+                }
             }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
-        }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        } catch (JSONException | IOException e) {
+            throw new RuntimeException("Error saving user: " + e.getMessage(), e);
         }
     }
 
-    /**
-     * Override changePassword method.
-     * @param user the user whose password is to be updated
-     */
     @Override
     public void changePassword(final User user) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        save(user);
+    }
 
-        // POST METHOD
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
-        final RequestBody body = RequestBody.create(requestBody.toString(),
-                mediaType);
+    @Override
+    public void removeFromWishlist(User user, Listing listing) {
+        final String url = firebaseBaseUrl + "/users/" + user.getName() + "/wishlist/" + listing.getBook().getBookId() + ".json";
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
-                .method("PUT", body)
+                .url(url)
+                .delete()
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
-        try {
-            final Response response = client.newCall(request).execute();
 
-            final JSONObject responseBody = new JSONObject(response.body()
-                    .string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                // success!
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new RuntimeException("Failed to remove listing from wishlist: " + response.message());
             }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
-        }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException e) {
+            throw new RuntimeException("Error removing listing from wishlist: " + e.getMessage(), e);
         }
     }
 
-    /**
-     * Override getCurrentUsername method.
-     * @return null
-     */
+    @Override
+    public void addToWishlist(User user, Listing listing) {
+        String url = firebaseBaseUrl + "/users/" + user.getName() + "/wishlist/" + listing.getBook().getBookId() + ".json";
+        JSONObject listingJson = new JSONObject();
+        try {
+            listingJson.put("bookID", listing.getBook().getBookId());
+            listingJson.put("price", listing.getPrice());
+
+            RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
+            Request request = new Request.Builder()
+                    .url(url)
+                    .put(body)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            try (Response response = httpClient.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    throw new RuntimeException("Failed to add listing to wishlist: " + response.message());
+                }
+            }
+        }
+        catch (JSONException | IOException e) {
+            throw new RuntimeException("Error adding listing to wishlist: " + e.getMessage(), e);
+        }
+    }
+
     @Override
     public String getCurrentUsername() {
         return null;

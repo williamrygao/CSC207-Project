@@ -17,12 +17,14 @@ public class Main {
         final JFrame application = appBuilder.addLoginView().addSignupView()
                                             .addHomeView()
                                             .addSellView()
+                                            .addWishlistView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
                                             .addToSellViewUseCase()
                                             .addSellUseCase()
-                                            .addBackToHomeUseCase()
+                                            .addBackToHomeUseCase().addViewWishlistUseCase()
+                                            .addRemoveFromWishlistUseCase()
                                             .addChangePasswordUseCase().build();
 
         application.pack();
