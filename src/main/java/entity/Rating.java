@@ -4,51 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A rating for a book.
+ * A class that represents the rating of a book.
  */
 public class Rating {
+    private List<Integer> ratings;
 
-    public Book book;
-    public List<Double> ratings;
-
-    // Constructor, getters, and setters
-    public Rating(Book book) {
-        this.book = book;
-        this.ratings = new ArrayList<>();
+    // Constructor initializes the ratings list
+    public Rating() {
+        ratings = new ArrayList<>();
     }
 
-    // Getters and Setters
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public List<Double> getRatings() {
-        return ratings;
-    }
-
-    // Method to add a rating to the list (validated between 1 and 10)
-    public void addRating(double rating) {
+    // Add a new rating (from 1 to 10)
+    public void addRating(int rating) {
         if (rating >= 1 && rating <= 10) {
-            this.ratings.add(rating);
-        }
-        else {
+            ratings.add(rating);
+        } else {
             throw new IllegalArgumentException("Rating must be between 1 and 10.");
         }
     }
 
-    // Method to calculate the average rating
+    // Calculate and return the average rating
     public double getAverageRating() {
         if (ratings.isEmpty()) {
-            return 0;
+            return 0.0;
         }
-        double total = 0;
-        for (Double rating : ratings) {
-            total += rating;
+
+        int sum = 0;
+        for (int rating : ratings) {
+            sum += rating;
         }
-        return total / ratings.size();
+        return sum / (double) ratings.size();
+    }
+
+    // Getter for the list of ratings (if needed)
+    public List<Integer> getRatings() {
+        return ratings;
     }
 }
