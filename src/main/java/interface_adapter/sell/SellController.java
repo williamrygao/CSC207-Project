@@ -2,7 +2,6 @@ package interface_adapter.sell;
 
 import use_case.sell.SellInputBoundary;
 import use_case.sell.SellInputData;
-import view.SellView;
 
 /**
  * Controller for the Sell Use Case.
