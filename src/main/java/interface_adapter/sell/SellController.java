@@ -18,9 +18,10 @@ public class SellController {
      * @param username the user who is selling
      * @param password the password of the user
      * @param bookID the book
+     * @param price the price
      */
-    public void execute(String username, String password, String bookID) {
-        final SellInputData sellInputData = new SellInputData(username, password, password, bookID);
+    public void execute(String username, String password, String bookID, Integer price) {
+        final SellInputData sellInputData = new SellInputData(username, password, password, bookID, price);
 
         userSellUseCaseInteractor.execute(sellInputData);
     }

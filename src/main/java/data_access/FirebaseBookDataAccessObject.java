@@ -27,4 +27,9 @@ public class FirebaseBookDataAccessObject implements SellBookDataAccessInterface
     public void save(Book book) {
 
     }
+
+    @Override
+    public String getBookPrice(String bookID) {
+        return "";
+    }
 }

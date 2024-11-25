@@ -1,5 +1,7 @@
 package interface_adapter.sell;
 
+import interface_adapter.change_password.HomeState;
+import interface_adapter.change_password.HomeViewModel;
 import use_case.sell.SellOutputBoundary;
 import use_case.sell.SellOutputData;
 
@@ -9,18 +11,23 @@ import use_case.sell.SellOutputData;
 public class SellPresenter implements SellOutputBoundary {
 
     private final SellViewModel sellViewModel;
+    private final HomeViewModel homeViewModel;
 
-    public SellPresenter(SellViewModel sellViewModel) {
+    public SellPresenter(SellViewModel sellViewModel, HomeViewModel homeViewModel) {
         this.sellViewModel = sellViewModel;
+        this.homeViewModel = homeViewModel;
     }
 
     @Override
     public void prepareSuccessView(SellOutputData outputData) {
-        // currently there isn't anything to change based on the output data,
-        // since the output data only contains the username, which remains the same.
-        // We still fire the property changed event, but just to let the view know that
-        // it can alert the user that their password was changed successfully.
-        sellViewModel.firePropertyChanged("password");
+        // Add Listing to Home View
+        final HomeState homeState = homeViewModel.getState();
+        homeState.addListing(outputData.getListing());
+        this.homeViewModel.setState(homeState);
+        this.homeViewModel.firePropertyChanged("listing");
+
+        // Pop-up in Sell View.
+        sellViewModel.firePropertyChanged("listed for sale");
     }
 
     @Override

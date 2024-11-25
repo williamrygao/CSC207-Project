@@ -18,4 +18,11 @@ public interface SellBookDataAccessInterface {
      * @param book the book to save
      */
     void save(Book book);
+
+    /**
+     * Gets the price of the book from Google API.
+     * @param bookID the ID of the book
+     * @return price of the book (or -1 if not available)
+     */
+    String getBookPrice(String bookID);
 }

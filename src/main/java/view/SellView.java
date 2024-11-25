@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.change_password.HomeState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -23,15 +24,19 @@ public class SellView extends JPanel implements PropertyChangeListener {
     private SellController sellController;
 
     private final JLabel username;
+    private JLabel priceLabel;
 
     private final JTextField bookIDInputField = new JTextField(15);
+    private final JTextField priceInputField = new JTextField(15);
     private final JButton sell;
-
     private final JButton back;
 
     public SellView(SellViewModel sellViewModel) {
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
+
+        // Initialize the 'priceLabel' before adding it to the UI
+        this.priceLabel = new JLabel("Price: N/A");
 
         final JLabel title = new JLabel("Sell Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -41,6 +46,12 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         username = new JLabel();
+
+        // Create priceLabel to display price
+        priceLabel = new JLabel("Price will be displayed here.");
+        priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        final LabelTextPanel priceInfo = new LabelTextPanel(new JLabel("Your Price"), priceInputField);
 
         final JPanel buttons = new JPanel();
         back = new JButton("Back");
@@ -55,7 +66,31 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
             private void documentListenerHelper() {
                 final SellState currentState = sellViewModel.getState();
-                currentState.setBook(bookIDInputField.getText());
+                currentState.setBookID(bookIDInputField.getText());
+                sellViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
+        priceInputField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final SellState currentState = sellViewModel.getState();
+                currentState.setPrice(Integer.valueOf(priceInputField.getText()));
                 sellViewModel.setState(currentState);
             }
 
@@ -91,7 +126,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(sell)) {
                         final SellState currentState = sellViewModel.getState();
                         sellController.execute(
-                                currentState.getUsername(), currentState.getPassword(), currentState.getBook()
+                                currentState.getUsername(), currentState.getPassword(), currentState.getBookID(), currentState.getPrice()
                         );
                     }
                 }
@@ -102,6 +137,8 @@ public class SellView extends JPanel implements PropertyChangeListener {
         this.add(username);
 
         this.add(bookInfo);
+        this.add(priceInfo);
+        this.add(priceLabel);
         this.add(buttons);
     }
 
@@ -110,6 +147,10 @@ public class SellView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final SellState state = (SellState) evt.getNewValue();
             username.setText(state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("listed for sale")) {
+            final SellState state = (SellState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, state.getBookID() + " has been listed for sale.");
         }
     }
 

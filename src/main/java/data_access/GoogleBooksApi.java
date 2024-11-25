@@ -1,5 +1,7 @@
 package data_access;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,18 +14,21 @@ import java.net.URL;
  */
 public class GoogleBooksApi {
     public static final String API_KEY = loadApiKey();
+    private static final int HTTP_OK = 200;
 
-    /*
-     * Test
+    /**
+     * Test.
+     * @param args the arguments
      */
     public static void main(String[] args) {
         System.out.println(getBookByVolumeId("9xHCAgAAQBAJ"));
     }
 
     /*
-    Load API Key from api_key.env file
+     * Load API Key from api_key.env file.
+     * @return ApiKey
      */
-    private static String loadApiKey() {
+    public static String loadApiKey() {
         try (BufferedReader reader = new BufferedReader(new FileReader("api_key.env"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -32,14 +37,17 @@ public class GoogleBooksApi {
                 }
             }
             throw new RuntimeException("API key not found in api_key.env file.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error reading api_key.env file", e);
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException("Error reading api_key.env file", exception);
         }
     }
 
-    /*
-    Given Google Books Volume ID, return book data.
+    /**
+     * Given Google Books Volume ID, return book data.
+     * @param volumeId the volumeId
+     * @return a json file containing all information returned from Google API
      */
     public static String getBookByVolumeId(String volumeId) {
         try {
@@ -49,7 +57,7 @@ public class GoogleBooksApi {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-            if (conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() != HTTP_OK) {
                 throw new RuntimeException("Failed: HTTP error code : " + conn.getResponseCode());
             }
 
@@ -63,9 +71,29 @@ public class GoogleBooksApi {
             conn.disconnect();
 
             return response.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+
+        catch (Exception exception) {
+            exception.printStackTrace();
             return null;
         }
+    }
+
+    public static String getBookPrice(String volumeID) {
+        String message = "";
+        String response = getBookByVolumeId(volumeID);
+        final JSONObject jsonResponse = new JSONObject(response.toString());
+        final JSONObject saleInfo = jsonResponse.optJSONObject("saleInfo");
+        if (saleInfo != null && saleInfo.has("retailPrice")) {
+            final JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
+            final double price = retailPrice.getDouble("amount");
+            final String currency = retailPrice.getString("currencyCode");
+
+            message = String.format("Price: %.2f %s", price, currency);
+        }
+        else {
+            message = "Price information not available.";
+        }
+        return message;
     }
 }

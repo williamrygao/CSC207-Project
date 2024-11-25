@@ -13,23 +13,23 @@ public class Book {
 
     private String bookId;
     private String title;
-    private String author;
+    private List<String> authors;
     private String description;
-    private String genre;
+    private List<String> genre;
     private float rating;
     private List<String> sellers;
 
-    public Book(String bookId, String title, String author, String description, String genre) {
+    public Book(String bookId, String title, List<String> authors, String description, List<String> genre) {
         this.bookId = bookId;
         this.title = title;
-        this.author = author;
+        this.authors = authors;
         this.description = description;
         this.genre = genre;
         this.rating = 0;
         this.sellers = new ArrayList<>();
     }
 
-    // Getters and Setters for title, author, description
+    // Getters and Setters for title, authors, description
 
     public String getBookId() {
         return bookId;
@@ -47,12 +47,21 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public List<String> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthors(List<String> authors) {
+        this.authors = authors;
+    }
+
+    /**
+     * Adds an author to the list of authors for the book.
+     *
+     * @param author the genre to be added
+     */
+    public void addAuthor(String author) {
+        this.authors.add(author);
     }
 
     public String getDescription() {
@@ -63,12 +72,21 @@ public class Book {
         this.description = description;
     }
 
-    public String getGenre() {
+    public List<String> getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(List<String> genre) {
         this.genre = genre;
+    }
+
+    /**
+     * Adds a genre to the list of genres/categories for the book.
+     *
+     * @param addition the genre to be added
+     */
+    public void addGenre(String addition) {
+        this.genre.add(addition);
     }
 
     public void setRating(float rating) {
@@ -98,6 +116,7 @@ public class Book {
      * @param o the object to compare this book to
      * @return true if the books have the same bookId, false otherwise
      */
+
     @Override
     public boolean equals(Object o) {
         final Book book = (Book) o;
@@ -127,7 +146,7 @@ public class Book {
                 +
                 ", title='" + title + '\''
                 +
-                ", author='" + author + '\''
+                ", authors='" + authors + '\''
                 +
                 ", description='" + description + '\''
                 +
@@ -136,5 +155,9 @@ public class Book {
                 ", sellers=" + sellers
                 +
                 '}';
+    }
+
+    public void updateRating(int rating) {
+
     }
 }
