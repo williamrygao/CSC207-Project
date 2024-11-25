@@ -1,6 +1,6 @@
 package use_case.sell;
 
-import entity.Listing;
+import entity.Book;
 
 /**
  * DAO for the Sell Use Case.
@@ -15,14 +15,22 @@ public interface SellBookDataAccessInterface {
 
     /**
      * Saves the book.
-     * @param listing the listing to save
+     * @param book the book to save
      */
-    void save(Listing listing);
+    void save(Book book);
 
     /**
      * Gets the price of the book from Google API.
      * @param bookID the ID of the book
-     * @return price of the book (or -1 if not available)
+     * @return price of the book with currency
      */
     String getBookPrice(String bookID);
+
+    /**
+     * Gets the user listed selling price of chosen book.
+     * @param SellingPrice the listed Selling price of book
+     * @param bookID the ID of the book
+     * @return a message to the user telling them their book has been listed
+     */
+    String getUserSellingListing(String SellingPrice, String bookID);
 }
