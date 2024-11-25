@@ -19,9 +19,8 @@ public class FirebaseInitializer {
      */
     public static Firestore getFirestore() {
         try {
-            // Load the google-services.json from the resources folder
             final FileInputStream serviceAccount =
-                    new FileInputStream("src/main/resources/google-services.json");
+                    new FileInputStream("");
 
             // Set up FirebaseOptions with credentials from the json file
             FirebaseOptions options = new FirebaseOptions.Builder()
