@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * The DAO for book data.
  */
-public class FirebaseBookDataAccessObject implements SellBookDataAccessInterface {
+public class FirebaseListingDataAccessObject implements SellBookDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -22,12 +22,12 @@ public class FirebaseBookDataAccessObject implements SellBookDataAccessInterface
     private final String firebaseBaseUrl;
 
     /**
-     * FirebaseBookDataAccessObject constructor.
+     * FirebaseListingDataAccessObject constructor.
      *
      * @param bookFactory   Factory for creating Book objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
-    public FirebaseBookDataAccessObject(final BookFactory bookFactory, final String firebaseBaseUrl) {
+    public FirebaseListingDataAccessObject(final BookFactory bookFactory, final String firebaseBaseUrl) {
         this.bookFactory = bookFactory;
         this.firebaseBaseUrl = firebaseBaseUrl;
         this.httpClient = new OkHttpClient();

@@ -9,7 +9,7 @@ import javax.swing.WindowConstants;
 import com.google.cloud.firestore.Firestore;
 import data_access.FirebaseInitializer;
 
-import data_access.FirebaseBookDataAccessObject;
+import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
 import entity.BookFactory;
 import entity.CommonUserFactory;
@@ -48,7 +48,6 @@ import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.remove_from_wishlist.RemoveFromWishlistInputBoundary;
-import use_case.remove_from_wishlist.RemoveFromWishlistInputData;
 import use_case.remove_from_wishlist.RemoveFromWishlistInteractor;
 import use_case.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.sell.*;
@@ -104,8 +103,8 @@ public class AppBuilder {
     private final FirebaseUserDataAccessObject userDataAccessObject = new
             FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
 
-    private final FirebaseBookDataAccessObject bookDataAccessObject = new
-            FirebaseBookDataAccessObject(bookFactory, firebaseBaseURL);
+    private final FirebaseListingDataAccessObject bookDataAccessObject = new
+            FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
     /**
      * SignupView.
      */
