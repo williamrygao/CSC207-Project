@@ -2,6 +2,7 @@ package interface_adapter.sell;
 
 import use_case.sell.SellInputBoundary;
 import use_case.sell.SellInputData;
+import view.SellView;
 
 /**
  * Controller for the Sell Use Case.
@@ -18,10 +19,10 @@ public class SellController {
      * @param username the user who is selling
      * @param password the password of the user
      * @param bookID the book
-     * @param price the price
+     * @param SellingPrice the user's listed selling price for book
      */
-    public void execute(String username, String password, String bookID, Integer price) {
-        final SellInputData sellInputData = new SellInputData(username, password, password, bookID, price);
+    public void execute(String username, String password, String bookID, String SellingPrice) {
+        final SellInputData sellInputData = new SellInputData(username, password, bookID, SellingPrice);
 
         userSellUseCaseInteractor.execute(sellInputData);
     }

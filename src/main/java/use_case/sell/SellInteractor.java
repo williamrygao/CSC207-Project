@@ -24,10 +24,10 @@ public class SellInteractor implements SellInputBoundary {
     public void execute(SellInputData sellInputData) {
         final String bookID = sellInputData.getBookID();
         final Book book = BookFactory.createBook(bookID);
-        final Integer price = sellInputData.getPrice();
+        final String sellingPrice = sellInputData.getSellingPrice();
         final String seller = sellInputData.getUsername();
 
-        final Listing listing = new Listing(bookID, book, price, seller, true);
+        final Listing listing = new Listing(bookID, book, sellingPrice, seller, true);
         bookDataAccessObject.save(listing);
 
         final SellOutputData sellOutputData = new SellOutputData(sellInputData.getUsername(), listing, false);

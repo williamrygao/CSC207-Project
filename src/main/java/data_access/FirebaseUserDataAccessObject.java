@@ -150,7 +150,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         JSONObject listingJson = new JSONObject();
         try {
             listingJson.put("bookID", listing.getBook().getBookId());
-            listingJson.put("price", listing.getPrice());
+            listingJson.put("price", listing.getSellingPrice());
 
             RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
             Request request = new Request.Builder()

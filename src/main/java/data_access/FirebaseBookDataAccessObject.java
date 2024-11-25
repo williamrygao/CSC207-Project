@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.Book;
 import entity.BookFactory;
 import entity.Listing;
 import okhttp3.*;
@@ -54,12 +55,17 @@ public class FirebaseBookDataAccessObject implements SellBookDataAccessInterface
     }
 
     @Override
+    public void save(Book book) {
+
+    }
+
+    @Override
     public void save(final Listing listing) {
         String url = firebaseBaseUrl + "/listings.json";
         JSONObject jsonListing = new JSONObject();
         try {
             jsonListing.put("bookID", listing.getBook().getBookId());
-            jsonListing.put("price", listing.getPrice());
+            jsonListing.put("price", listing.getSellingPrice());
             jsonListing.put("sellerUsername", listing.getSeller());
 
             RequestBody body = RequestBody.create(
@@ -103,6 +109,11 @@ public class FirebaseBookDataAccessObject implements SellBookDataAccessInterface
         catch (IOException | JSONException exception) {
             exception.printStackTrace();
         }
+        return "";
+    }
+
+    @Override
+    public String getUserSellingListing(String SellingPrice, String bookID, String userID) {
         return "";
     }
 }

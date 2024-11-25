@@ -7,36 +7,29 @@ public class SellInputData {
 
     private final String username;
     private final String password;
-    private final String repeatPassword;
-    private final Integer price;
-
+    private final String sellingPrice;
     private final String bookID;
 
-    public SellInputData(String username, String password, String repeatPassword, String bookID, Integer price) {
+    public SellInputData(String username, String password, String bookID, String sellingPrice) {
         this.username = username;
         this.password = password;
-        this.repeatPassword = repeatPassword;
         this.bookID = bookID;
-        this.price = price;
+        this.sellingPrice = sellingPrice;
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
-    }
-
-    public String getRepeatPassword() {
-        return repeatPassword;
     }
 
     public String getBookID() {
         return bookID;
     }
 
-    public Integer getPrice() {
-        return price;
+    public String getSellingPrice() {
+        return sellingPrice;
     }
 }
