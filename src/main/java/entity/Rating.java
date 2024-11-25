@@ -1,7 +1,8 @@
 package entity;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedList;  // You can also use other dynamic List implementations
 
 /**
  * A class that represents the rating of a book.
@@ -11,7 +12,7 @@ public class Rating {
 
     // Constructor initializes the ratings list
     public Rating() {
-        ratings = new ArrayList<>();
+        ratings = new LinkedList<>();
     }
 
     // Add a new rating (from 1 to 10)
@@ -30,14 +31,20 @@ public class Rating {
         }
 
         int sum = 0;
-        for (int rating : ratings) {
-            sum += rating;
+        Iterator<Integer> iterator = ratings.iterator();
+        while (iterator.hasNext()) {
+            sum += iterator.next();  // Sum up all the ratings
         }
         return sum / (double) ratings.size();
     }
 
-    // Getter for the list of ratings (if needed)
+    // Get the list of all ratings
     public List<Integer> getRatings() {
-        return ratings;
+        return new LinkedList<>(ratings);  // Return a copy to maintain encapsulation
+    }
+
+    // Get the total number of ratings
+    public int getRatingNumber() {
+        return ratings.size();
     }
 }
