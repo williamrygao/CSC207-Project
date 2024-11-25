@@ -1,14 +1,13 @@
 package interface_adapter.login;
 
+import java.util.List;
+
 import entity.Listing;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Presenter for the Login Use Case.
@@ -30,13 +29,14 @@ public class LoginPresenter implements LoginOutputBoundary {
     @Override
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the logged in view.
-
         final HomeState homeState = homeViewModel.getState();
         homeState.setUsername(response.getUsername());
-        final ArrayList<Listing> listings = new ArrayList<>();
+        final List<Listing> listings = response.getListings();
         homeState.setListings(listings);
+
         this.homeViewModel.setState(homeState);
         this.homeViewModel.firePropertyChanged();
+        this.homeViewModel.firePropertyChanged("listing");
 
         this.viewManagerModel.setState(homeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();

@@ -33,6 +33,7 @@
             <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
@@ -45,6 +46,8 @@
             <artifactId>google-cloud-firestore</artifactId>
             <version>3.26.5</version>
         </dependency>
+
+
 
     </dependencies>
 

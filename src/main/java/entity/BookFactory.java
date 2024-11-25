@@ -37,18 +37,17 @@ public class BookFactory {
             final JSONObject volumeInfo = bookJson.getJSONObject("volumeInfo");
 
             final String title = volumeInfo.optString("title", "Unknown Title");
-            final String author = volumeInfo.optString("authors", "Unknown Author");
+            final JSONArray authorsArray = volumeInfo.optJSONArray("authors");
+            final String authors = (authorsArray != null)
+                    ? String.join(", ", authorsArray.toList().stream()
+                    .map(Object::toString)
+                    .toArray(String[]::new))
+                    : "Unknown Author";
             final String description = volumeInfo.optString("description", "No description available");
             final String genre = extractGenre(volumeInfo);
 
-            final List<String> authors = new ArrayList<>();
-            authors.add(author);
-            final List<String> genres = new ArrayList<>();
-            genres.add(genre);
-
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeID, title, authors, description, genres);
-            System.out.println(book);
+            final Book book = new Book(volumeId, title, authors, description, genre);
             return book;
         }
         return null;
