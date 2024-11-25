@@ -3,7 +3,6 @@ package view;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -17,7 +16,7 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.to_sell.ToSellController;
 import interface_adapter.view_wishlist.ViewWishlistController;
 
 /**
