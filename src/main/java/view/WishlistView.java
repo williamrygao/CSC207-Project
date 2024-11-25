@@ -43,7 +43,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        String[] columnNames = {"Title", "Author", "Price", "Rating"};
+        String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -59,6 +59,9 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
                 }
                 if (columnIndex == 3) {
                     return Double.class;
+                }
+                if (columnIndex == 4) {
+                    return JButton.class;
                 }
                 return String.class;
             }

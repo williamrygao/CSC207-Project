@@ -60,7 +60,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         username = new JLabel();
 
         // Table column names
-        String[] columnNames = {"Title", "Author", "Price", "Rating"};
+        String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -76,6 +76,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
                 if (columnIndex == 3) {
                     return Double.class;
+                }
+                if (columnIndex == 4) {
+                    return JButton.class;
                 }
                 return String.class;
             }
