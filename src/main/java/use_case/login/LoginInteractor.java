@@ -1,5 +1,8 @@
 package use_case.login;
 
+import java.util.List;
+
+import entity.Listing;
 import entity.User;
 
 /**
@@ -7,11 +10,14 @@ import entity.User;
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
+    private final LoginListingDataAccessInterface listingDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
-    public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface,
+    public LoginInteractor(LoginUserDataAccessInterface userDataAccessObject,
+                           LoginListingDataAccessInterface listingDataAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
-        this.userDataAccessObject = userDataAccessInterface;
+        this.userDataAccessObject = userDataAccessObject;
+        this.listingDataAccessObject = listingDataAccessObject;
         this.loginPresenter = loginOutputBoundary;
     }
 
@@ -30,9 +36,11 @@ public class LoginInteractor implements LoginInputBoundary {
             else {
 
                 final User user = userDataAccessObject.get(loginInputData.getUsername());
-
                 userDataAccessObject.setCurrentUsername(user.getName());
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
+
+                final List<Listing> listings = listingDataAccessObject.getListings();
+
+                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false, listings);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

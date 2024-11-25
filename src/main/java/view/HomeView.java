@@ -50,7 +50,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.homeViewModel = homeViewModel;
         this.homeViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel("Logged In Screen");
+        final JLabel title = new JLabel("Home Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel passwordInfo = new LabelTextPanel(
@@ -65,12 +65,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                // Return false to make all cells non-editable
-                return false;
+                return column == 4;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                // Specify column data types to allow proper sorting
                 if (columnIndex == 2) {
                     return Double.class;
                 }
@@ -90,16 +88,16 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         bookTable.setRowSorter(sorter);
 
         // Add scroll pane for the table
-        JScrollPane tableScrollPane = new JScrollPane(bookTable);
+        final JScrollPane tableScrollPane = new JScrollPane(bookTable);
 
         final JPanel listings = new JPanel();
         listings.setLayout(new BorderLayout());
         listings.add(tableScrollPane, BorderLayout.CENTER);
-        
+
         final JPanel topButtons = new JPanel();
         toSell = new JButton("Sell A Book");
         topButtons.add(toSell);
-        
+
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
 
@@ -168,7 +166,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
-        
+
         viewWishlist.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(viewWishlist)) {
@@ -234,7 +232,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
-    
+
     public void setViewWishlistController(ViewWishlistController viewWishlistController) {
         this.viewWishlistController = viewWishlistController;
     }

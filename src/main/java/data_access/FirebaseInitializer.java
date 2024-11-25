@@ -20,11 +20,12 @@ public class FirebaseInitializer {
     public static Firestore getFirestore() {
         try {
             final FileInputStream serviceAccount =
-                    new FileInputStream("");
+                    new FileInputStream("src/main/resources/serviceAccount.json");
 
             // Set up FirebaseOptions with credentials from the json file
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://csc207project-ed2f9-default-rtdb.firebaseio.com/")
                     .build();
 
             // Initialize FirebaseApp only if it hasn't been initialized already

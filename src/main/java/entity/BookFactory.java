@@ -48,7 +48,6 @@ public class BookFactory {
 
             // Create and return a new Book object using the retrieved data
             final Book book = new Book(volumeId, title, authors, description, genres);
-            System.out.println(book);
             return book;
         }
         return null;
