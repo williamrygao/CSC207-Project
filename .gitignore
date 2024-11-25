@@ -3,6 +3,10 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .idea/easycode.ignore
+api_key.env
+homework-5.iml
+key.json
+src/main/resources
 
 target/
 

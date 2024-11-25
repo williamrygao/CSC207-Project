@@ -22,7 +22,7 @@ public class FirebaseInitializer {
                     new FileInputStream("src/main/resources/serviceAccount.json");
 
             // Set up FirebaseOptions with credentials from the json file
-            FirebaseOptions options = new FirebaseOptions.Builder()
+            final FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://csc207project-ed2f9-default-rtdb.firebaseio.com/")
                     .build();
