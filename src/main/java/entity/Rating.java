@@ -1,50 +1,79 @@
 package entity;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Iterator;
-import java.util.LinkedList;  // You can also use other dynamic List implementations
 
 /**
  * A class that represents the rating of a book.
  */
 public class Rating {
-    private List<Integer> ratings;
+    public static final int MAX = 10;
+    public static final int MIN = 1;
+    private final List<Integer> ratings;
+    private final String bookId;
 
-    // Constructor initializes the ratings list
-    public Rating() {
+    /**
+     * Constructs a Rating object for the specified book.
+     * @param bookId the title of the book
+     * @throws IllegalArgumentException when rating is out of boundary.
+     */
+    public Rating(String bookId) {
+        if (bookId == null || bookId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Book name cannot be null or empty.");
+        }
+        this.bookId = bookId;
         ratings = new LinkedList<>();
     }
 
-    // Add a new rating (from 1 to 10)
+    /**
+     * Adds a rating to the list if it is within the valid range.
+     * @param rating the rating to be added
+     * @throws IllegalArgumentException if the rating is out of the valid range
+     */
     public void addRating(int rating) {
-        if (rating >= 1 && rating <= 10) {
+        if (rating >= MIN && rating <= MAX) {
             ratings.add(rating);
-        } else {
-            throw new IllegalArgumentException("Rating must be between 1 and 10.");
+        }
+        else {
+            throw new IllegalArgumentException("Invalid rating: " + rating + ". Rating must be between " + MIN + " and " + MAX + ".");
         }
     }
 
-    // Calculate and return the average rating
+    /**
+     * Calculates and returns the average rating.
+     * @return the average rating, or 0.0 if there are no ratings
+     */
+
     public double getAverageRating() {
         if (ratings.isEmpty()) {
             return 0.0;
         }
-
-        int sum = 0;
-        Iterator<Integer> iterator = ratings.iterator();
-        while (iterator.hasNext()) {
-            sum += iterator.next();  // Sum up all the ratings
-        }
+        // Use Stream API for concise summation
+        final int sum = ratings.stream().mapToInt(Integer::intValue).sum();
         return sum / (double) ratings.size();
     }
 
-    // Get the list of all ratings
+    /**
+     * Returns a copy of the list of ratings to maintain encapsulation.
+     * @return a copy of the list of ratings
+     */
     public List<Integer> getRatings() {
-        return new LinkedList<>(ratings);  // Return a copy to maintain encapsulation
+        return new LinkedList<>(ratings);
     }
 
-    // Get the total number of ratings
+    /**
+     * Returns the total number of ratings.
+     * @return the total number of ratings
+     */
     public int getRatingNumber() {
         return ratings.size();
+    }
+
+    /**
+     * Returns the name of the book associated with the ratings.
+     * @return the book name
+     */
+    public String getBookId() {
+        return bookId;
     }
 }
