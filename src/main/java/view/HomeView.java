@@ -78,14 +78,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 2) {
-                    return Double.class;
-                }
                 if (columnIndex == 3) {
                     return Double.class;
-                }
-                if (columnIndex == 4) {
-                    return JButton.class;
                 }
                 return String.class;
             }
