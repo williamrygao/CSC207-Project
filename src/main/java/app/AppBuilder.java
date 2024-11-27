@@ -135,6 +135,8 @@ public class AppBuilder {
     private WishlistViewModel wishlistViewModel;
     private WishlistView wishlistView;
 
+    private final SellBookDataFetcher sellBookDataFetcher = new SellBookDataFetcher();
+
     /**
      * AppBuilder method.
      */
@@ -285,8 +287,8 @@ public class AppBuilder {
         final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel, homeViewModel);
 
         final SellInputBoundary sellInteractor =
-                new SellInteractor(userDataAccessObject,
-                        listingDataAccessObject, sellOutputBoundary);
+                new SellInteractor(userDataAccessObject, listingDataAccessObject,
+                        sellOutputBoundary, sellBookDataFetcher);
 
         final SellController sellController = new SellController(
                 sellInteractor);
