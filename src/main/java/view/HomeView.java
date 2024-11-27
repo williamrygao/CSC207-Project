@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -63,7 +64,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 new JLabel("Password"), passwordInputField);
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
         username = new JLabel();
+        username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Table column names
         final String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
@@ -75,9 +78,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 2) {
-                    return Double.class;
-                }
                 if (columnIndex == 3) {
                     return Double.class;
                 }
@@ -182,8 +182,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         );
 
         this.add(title);
+        this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
         this.add(username);
+        this.add(Box.createVerticalStrut(20));
 
         this.add(topButtons);
 
@@ -216,7 +218,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final Object[] rowData = {
                     newListing.getBook().getTitle(),
                     newListing.getBook().getAuthors(),
-                    newListing.getSellingPrice(),
+                    newListing.getPrice(),
                     newListing.getBook().getRating(),
             };
             tableModel.addRow(rowData);
