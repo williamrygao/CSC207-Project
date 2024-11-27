@@ -6,15 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -78,6 +70,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
 
             public Class<?> getColumnClass(int columnIndex) {
+                // Set the column type to Boolean for the "Wishlist" column
+                if (columnIndex == 4) {
+                    return Boolean.class;
+                }
+                // Other columns are String or Double, as before
                 if (columnIndex == 3) {
                     return Double.class;
                 }
@@ -89,6 +86,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
+
+        bookTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+        bookTable.getColumnModel().getColumn(4).setCellRenderer(bookTable.getDefaultRenderer(Boolean.class));
 
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(bookTable);
@@ -213,11 +213,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private void updateTable(List<Listing> newListings) {
         tableModel.setRowCount(0);
         for (Listing newListing : newListings) {
+            // Need to update Login logic to determine if each listing is in the user's wishlist.
+            final boolean isInWishlist = true;
+
             final Object[] rowData = {
                     newListing.getBook().getTitle(),
                     newListing.getBook().getAuthors(),
                     newListing.getPrice(),
-                    newListing.getBook().getRating(),
+                    newListing.getBook().getRating(), isInWishlist,
             };
             tableModel.addRow(rowData);
         }
