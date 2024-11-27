@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import entity.Listing;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.remove_from_wishlist.WishlistState;
@@ -115,11 +117,21 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("wishlist")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
+            updateTable(state.getWishlist());
         }
     }
 
-    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
-        this.removeFromWishlistController = removeFromWishlistController;
+    private void updateTable(List<Listing> newListings) {
+        tableModel.setRowCount(0);
+        for (Listing newListing : newListings) {
+            final Object[] rowData = {
+                    newListing.getBook().getTitle(),
+                    newListing.getBook().getAuthors(),
+                    newListing.getPrice(),
+                    newListing.getBook().getRating(),
+            };
+            tableModel.addRow(rowData);
+        }
     }
 
     public String getViewName() {
@@ -128,5 +140,9 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
     public void setBackToHomeController(BackToHomeController backToHomeController) {
         this.backToHomeController = backToHomeController;
+    }
+
+    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
+        this.removeFromWishlistController = removeFromWishlistController;
     }
 }

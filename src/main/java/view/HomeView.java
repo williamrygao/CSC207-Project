@@ -78,6 +78,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
 
             public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 2) {
+                    return Double.class;
+                }
                 if (columnIndex == 3) {
                     return Double.class;
                 }
@@ -176,7 +179,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         viewWishlist.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(viewWishlist)) {
-                        viewWishlistController.execute();
+                        final HomeState currentState = homeViewModel.getState();
+                        viewWishlistController.execute(currentState.getUsername());
                     }
                 }
         );

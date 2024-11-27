@@ -319,7 +319,7 @@ public class AppBuilder {
     public AppBuilder addViewWishlistUseCase() {
         final ViewWishlistOutputBoundary viewWishlistPresenter = new ViewWishlistPresenter(viewManagerModel, homeViewModel, wishlistViewModel);
 
-        final ViewWishlistInputBoundary viewWishlistInteractor = new ViewWishlistInteractor(viewWishlistPresenter);
+        final ViewWishlistInputBoundary viewWishlistInteractor = new ViewWishlistInteractor(userDataAccessObject, viewWishlistPresenter);
 
         final ViewWishlistController viewWishlistController = new ViewWishlistController(viewWishlistInteractor);
         homeView.setViewWishlistController(viewWishlistController);

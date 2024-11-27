@@ -1,6 +1,7 @@
 package data_access;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +21,7 @@ import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
 import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.view_wishlist.ViewWishlistUserDataAccessInterface;
 
 /**
  * DAO for user data using Firebase.
@@ -30,7 +32,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         LogoutUserDataAccessInterface,
         SellUserDataAccessInterface,
         RemoveFromWishlistUserDataAccessInterface,
-        AddToWishlistUserDataAccessInterface {
+        AddToWishlistUserDataAccessInterface,
+        ViewWishlistUserDataAccessInterface {
 
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -173,5 +176,10 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public String getCurrentUsername() {
         return null;
+    }
+
+    @Override
+    public List<Listing> getWishlist(User user) {
+        return List.of();
     }
 }
