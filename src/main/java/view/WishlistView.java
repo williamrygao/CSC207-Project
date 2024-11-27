@@ -66,9 +66,6 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
             public Class<?> getColumnClass(int columnIndex) {
                 // Specify column data types to allow proper sorting
-                if (columnIndex == 2) {
-                    return Double.class;
-                }
                 if (columnIndex == 3) {
                     return Double.class;
                 }
