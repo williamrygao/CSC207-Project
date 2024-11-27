@@ -6,7 +6,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -202,7 +212,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("listing")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            updateTable(state.getListings());
+            updateTable(state.getListings(), state.getWishlist());
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
@@ -210,17 +220,15 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    private void updateTable(List<Listing> newListings) {
+    private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
-        for (Listing newListing : newListings) {
-            // Need to update Login logic to determine if each listing is in the user's wishlist.
-            final boolean isInWishlist = true;
-
+        for (Listing listing : listings) {
             final Object[] rowData = {
-                    newListing.getBook().getTitle(),
-                    newListing.getBook().getAuthors(),
-                    newListing.getPrice(),
-                    newListing.getBook().getRating(), isInWishlist,
+                    listing.getBook().getTitle(),
+                    listing.getBook().getAuthors(),
+                    listing.getPrice(),
+                    listing.getBook().getRating(),
+                    wishlist.contains(listing),
             };
             tableModel.addRow(rowData);
         }

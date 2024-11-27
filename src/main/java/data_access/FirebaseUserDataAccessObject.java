@@ -182,4 +182,9 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     public List<Listing> getWishlist(User user) {
         return List.of();
     }
+
+    @Override
+    public List<Listing> getWishlist() {
+        return List.of();
+    }
 }

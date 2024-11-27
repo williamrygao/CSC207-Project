@@ -15,11 +15,14 @@ public class HomeState {
 
     private List<Listing> listings;
 
+    private List<Listing> wishlist;
+
     public HomeState(HomeState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
         listings = copy.listings;
+        wishlist = copy.wishlist;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -61,5 +64,13 @@ public class HomeState {
      */
     public void addListing(Listing listing) {
         this.listings.add(listing);
+    }
+
+    public void setWishlist(List<Listing> wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public List<Listing> getWishlist() {
+        return wishlist;
     }
 }
