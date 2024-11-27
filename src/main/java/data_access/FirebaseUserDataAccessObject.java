@@ -1,14 +1,13 @@
 package data_access;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import entity.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.Listing;
-import entity.User;
-import entity.UserFactory;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,6 +41,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     private final UserFactory userFactory;
     private final OkHttpClient httpClient;
     private final String firebaseBaseUrl;
+    private BookFactory bookFactory;
 
     /**
      * Constructor for FirebaseUserDataAccessObject.
@@ -49,8 +49,9 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
      * @param userFactory    Factory for creating User objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
-    public FirebaseUserDataAccessObject(final UserFactory userFactory, final String firebaseBaseUrl) {
+    public FirebaseUserDataAccessObject(final UserFactory userFactory, final BookFactory bookFactory, final String firebaseBaseUrl) {
         this.userFactory = userFactory;
+        this.bookFactory = bookFactory;
         this.firebaseBaseUrl = firebaseBaseUrl;
         this.httpClient = new OkHttpClient();
     }
@@ -179,12 +180,53 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public List<Listing> getWishlist(User user) {
-        return List.of();
-    }
-
-    @Override
     public List<Listing> getWishlist() {
-        return List.of();
+        // Assuming current username is stored somehow (e.g., in a member variable or method)
+        final String username = getCurrentUsername();
+
+        // Construct the URL to fetch the wishlist for the current user
+        final String url = firebaseBaseUrl + "/users/" + username + "/wishlist.json";
+
+        // Create a GET request to fetch the wishlist data
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                final String responseBody = response.body().string();
+                if (responseBody.equals("null")) {
+                    return List.of();
+                }
+
+                final JSONObject wishlistJson = new JSONObject(responseBody);
+
+                // Convert the JSON into a List of Listing objects
+                List<Listing> wishlist = new ArrayList<>();
+                for (String key : wishlistJson.keySet()) {
+                    final JSONObject listingJson = wishlistJson.getJSONObject(key);
+
+                    // Extract the details for each listing
+                    final String bookId = listingJson.getString("bookID");
+                    final String price = listingJson.getString("price");
+                    final Book book = bookFactory.createBook(bookId);
+                    final boolean isAvailable = listingJson.getBoolean("isAvailable");
+
+                    // Create a Listing object (you need to have a proper constructor for Listing)
+                    final Listing listing = new Listing(bookId, book, price, username, isAvailable);
+                    wishlist.add(listing);
+                }
+
+                return wishlist;
+            }
+            else {
+                throw new RuntimeException("Failed to fetch wishlist: " + response.message());
+            }
+        }
+        catch (IOException | JSONException e) {
+            throw new RuntimeException("Error fetching wishlist: " + e.getMessage(), e);
+        }
     }
 }

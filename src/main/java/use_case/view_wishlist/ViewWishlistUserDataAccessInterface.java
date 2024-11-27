@@ -18,8 +18,7 @@ public interface ViewWishlistUserDataAccessInterface {
 
     /**
      * Return this User's wishlist.
-     * @param user the user
      * @return the user's wishlist
      */
-    List<Listing> getWishlist(User user);
+    List<Listing> getWishlist();
 }
