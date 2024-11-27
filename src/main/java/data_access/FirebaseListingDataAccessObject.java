@@ -31,7 +31,7 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
      * @param bookFactory   Factory for creating Book objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
-    public FirebaseBookDataAccessObject(final BookFactory bookFactory, final String firebaseBaseUrl) {
+    public FirebaseListingDataAccessObject(final BookFactory bookFactory, final String firebaseBaseUrl) {
         this.bookFactory = bookFactory;
         this.firebaseBaseUrl = firebaseBaseUrl;
         this.httpClient = new OkHttpClient();
@@ -111,11 +111,6 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
         return "";
     }
 
-    @Override
-    public String getUserSellingListing(String SellingPrice, String bookID) {
-        return "";
-    }
-
     /**
      * Retrieves all listings from the Firebase database.
      *
@@ -144,7 +139,7 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
 
                     // Extract attributes from JSON and create a Listing
                     String bookID = jsonListing.getString("bookID");
-                    double price = jsonListing.getDouble("price");
+                    String price = jsonListing.getString("price");
                     String sellerUsername = jsonListing.getString("sellerUsername");
 
                     // Create the Listing object using the BookFactory and extracted attributes
