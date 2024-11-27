@@ -6,15 +6,15 @@ package interface_adapter.sell;
 public class SellState {
     private String username = "";
     private String bookID = "";
-    private String sellingPrice = "";
     private String password = "";
     private String passwordError;
+    private String price;
 
     public SellState(SellState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
-        sellingPrice = copy.sellingPrice;
+        price = copy.price;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -38,8 +38,8 @@ public class SellState {
         this.passwordError = passwordError;
     }
 
-    public void setSellingPrice(String sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getPassword() {
@@ -54,14 +54,7 @@ public class SellState {
         return bookID;
     }
 
-    /**
-     * The setSellingPrice method.
-     */
-    public void setSellingPrice() {
-        this.sellingPrice = sellingPrice;
-    }
-
-    public String getSellingPrice() {
-        return sellingPrice;
+    public String getPrice() {
+        return price;
     }
 }

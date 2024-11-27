@@ -1,32 +1,27 @@
 package use_case.sell;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 import org.json.JSONObject;
 
 import data_access.GoogleBooksApi;
-import entity.Book;
-import entity.BookFactory;
 import entity.Listing;
 
 /**
  * SellBookDataFetcher Fetches Book Selling Data.
  */
+
 public class SellBookDataFetcher implements SellBookDataAccessInterface {
     private static final String API_KEY = GoogleBooksApi.loadApiKey();
 
     @Override
     public boolean existsByBookID(String bookID) {
         return false;
-    }
-
-    @Override
-    public void save(Book book) {
     }
 
     @Override
@@ -83,45 +78,5 @@ public class SellBookDataFetcher implements SellBookDataAccessInterface {
             message = "Error retrieving price information.";
         }
         return message;
-    }
-
-    @Override
-    public String getUserSellingListing(String SellingPrice, String bookID, String userID) {
-        final Book book = BookFactory.createBook(bookID);
-        final String title = book.getTitle();
-        final List<String> authors = book.getAuthors();
-        String authorMessage = "";
-        String returnMessage = "";
-
-        if (authors.size() > 2) {
-            final String author1 = authors.get(0);
-            final String author2 = authors.get(1);
-            authorMessage = author1 + ", " + author2 + ", et al.";
-        }
-        else if (authors.size() == 2) {
-            final String author1 = authors.get(0);
-            final String author2 = authors.get(1);
-            authorMessage = author1 + " and " + author2;
-        }
-        else {
-            final String author1 = authors.get(0);
-            authorMessage = author1;
-        }
-
-        if (SellingPrice == null || SellingPrice.isEmpty()) {
-            returnMessage = "Error, please enter a valid price to list your book at on Book Marketplace.";
-        }
-
-        else {
-            returnMessage = "Hello " + userID + ", \nThank you for listing your book with us! We've"
-                + " successfully updated your listing for the book titled: " + "'" + title + "'"
-                + " by " + authorMessage + " with your preferred price of: " + SellingPrice + "."
-                + " \nOther users can now view your book at this price. You will be notified if"
-                + " anyone expresses interest or makes a purchase. If you'd like to edit your listing"
-                + " at any time, you can do so through your account.\nIf you have any questions or"
-                + " need assistance, don't hesitate to reach out. We're here to help\nBest regards";
-        }
-
-        return returnMessage;
     }
 }

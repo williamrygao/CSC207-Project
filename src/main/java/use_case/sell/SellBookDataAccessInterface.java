@@ -1,6 +1,5 @@
 package use_case.sell;
 
-import entity.Book;
 import entity.Listing;
 
 /**
@@ -21,24 +20,9 @@ public interface SellBookDataAccessInterface {
     void save(Listing listing);
 
     /**
-     * Listing method.
-     * @param listing the book listing
-     */
-    void save(Listing listing);
-
-    /**
      * Gets the price of the book from Google API.
      * @param bookID the ID of the book
      * @return price of the book with currency
      */
     String getBookPrice(String bookID);
-
-    /**
-     * Gets the user listed selling price of chosen book.
-     * @param SellingPrice the listed Selling price of book
-     * @param bookID the ID of the book
-     * @param userID the user's identification: username
-     * @return a message to the user telling them their book has been listed
-     */
-    String getUserSellingListing(String SellingPrice, String bookID, String userID);
 }

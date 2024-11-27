@@ -7,14 +7,14 @@ public class SellInputData {
 
     private final String username;
     private final String password;
-    private final String sellingPrice;
+    private final String price;
     private final String bookID;
 
-    public SellInputData(String username, String password, String bookID, String sellingPrice) {
+    public SellInputData(String username, String password, String bookID, String price) {
         this.username = username;
         this.password = password;
         this.bookID = bookID;
-        this.sellingPrice = sellingPrice;
+        this.price = price;
     }
 
     public String getUsername() {
@@ -29,7 +29,7 @@ public class SellInputData {
         return bookID;
     }
 
-    public String getSellingPrice() {
-        return sellingPrice;
+    public String getPrice() {
+        return price;
     }
 }
