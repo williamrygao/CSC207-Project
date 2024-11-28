@@ -20,5 +20,5 @@ public interface ViewWishlistUserDataAccessInterface {
      * Return this User's wishlist.
      * @return the user's wishlist
      */
-    List<Listing> getWishlist();
+    List<Listing> getWishlist(User user);
 }

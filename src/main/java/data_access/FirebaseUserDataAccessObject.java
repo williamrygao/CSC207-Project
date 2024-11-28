@@ -210,7 +210,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public List<Listing> getWishlist() {
+    public List<Listing> getWishlist(User user) {
         // Assuming current username is stored somehow (e.g., in a member variable or method)
         final String username = getCurrentUsername();
 
@@ -227,21 +227,21 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 final String responseBody = response.body().string();
-                if (responseBody.equals("null")) {
+                if ("null".equals(responseBody)) {
                     return List.of();
                 }
 
                 final JSONObject wishlistJson = new JSONObject(responseBody);
 
                 // Convert the JSON into a List of Listing objects
-                List<Listing> wishlist = new ArrayList<>();
+                final List<Listing> wishlist = new ArrayList<>();
                 for (String key : wishlistJson.keySet()) {
                     final JSONObject listingJson = wishlistJson.getJSONObject(key);
 
                     // Extract the details for each listing
                     final String bookId = listingJson.getString("bookID");
                     final String price = listingJson.getString("price");
-                    final Book book = bookFactory.createBook(bookId);
+                    final Book book = bookFactory.create(bookId);
                     final boolean isAvailable = listingJson.getBoolean("isAvailable");
 
                     // Create a Listing object (you need to have a proper constructor for Listing)

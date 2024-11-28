@@ -304,7 +304,7 @@ public class AppBuilder {
 
         final SellInputBoundary sellInteractor =
                 new SellInteractor(userDataAccessObject, listingDataAccessObject,
-                        sellOutputBoundary, sellBookDataFetcher);
+                        sellOutputBoundary, sellBookDataFetcher, bookFactory);
 
         final SellController sellController = new SellController(
                 sellInteractor);

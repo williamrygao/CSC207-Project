@@ -46,5 +46,5 @@ public interface LoginUserDataAccessInterface {
      * Get this user's wishlist.
      * @return wishlist
      */
-    List<Listing> getWishlist();
+    List<Listing> getWishlist(User user);
 }
