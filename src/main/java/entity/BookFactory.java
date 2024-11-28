@@ -1,8 +1,5 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,7 +17,7 @@ public class BookFactory {
      */
     public static void main(String[] args) {
         final BookFactory bookFactory = new BookFactory();
-        bookFactory.createBook("9xHCAgAAQBAJ");
+        bookFactory.create("9xHCAgAAQBAJ");
     }
 
     /**
@@ -29,7 +26,7 @@ public class BookFactory {
      * @return new Book object
      */
 
-    public static Book createBook(String volumeID) {
+    public Book create(String volumeID) {
         final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeID);
         if (jsonResponse != null) {
             // Parse the JSON response to extract the book details
@@ -38,11 +35,15 @@ public class BookFactory {
 
             final String title = volumeInfo.optString("title", "Unknown Title");
             final JSONArray authorsArray = volumeInfo.optJSONArray("authors");
-            final String authors = (authorsArray != null)
-                    ? String.join(", ", authorsArray.toList().stream()
-                    .map(Object::toString)
-                    .toArray(String[]::new))
-                    : "Unknown Author";
+            final String authors;
+            if (authorsArray != null) {
+                authors = String.join(", ", authorsArray.toList().stream()
+                        .map(Object::toString)
+                        .toArray(String[]::new));
+            }
+            else {
+                authors = "Unknown Author";
+            }
             final String description = volumeInfo.optString("description", "No description available");
             final String genre = extractGenre(volumeInfo);
 
@@ -59,7 +60,6 @@ public class BookFactory {
      * @param volumeInfo the JSON object containing volume details
      * @return a comma-separated string of genres, or "Unknown Genre" if none are found
      */
-
     private static String extractGenre(JSONObject volumeInfo) {
         // Check if the 'categories' field exists and is not empty
         final StringBuilder genre = new StringBuilder();
