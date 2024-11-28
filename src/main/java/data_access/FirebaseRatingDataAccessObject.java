@@ -25,6 +25,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
     private final OkHttpClient httpClient;
     private final String firebaseBaseUrl;
     private String userId;
+    private String bookId;
 
     /**
      * FirebaseRatingDataAccessObject constructor.
@@ -163,6 +164,10 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
     @Override
     public String getCurrentUsername() {
         return userId;
+    }
+
+    public String getCurrentBookId() {
+        return bookId;
     }
 
     @Override
