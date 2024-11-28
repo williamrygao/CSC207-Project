@@ -232,11 +232,23 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
 
     private Rating parseRatingFromJson(JSONObject jsonResponse) throws JSONException {
+        // Retrieve the first key (book ID) from the JSON response
         String bookId = jsonResponse.keys().next();
+        // Get the rating data for the book ID
         JSONObject ratingData = jsonResponse.getJSONObject(bookId);
+        // Create a new Rating object for this book
         Rating rating = new Rating(bookId);
 
-        List<Integer> currentRatings = ratingData.getJSONArray("ratings").toList();
+        // Parse the ratings array
+        JSONArray ratingsArray = ratingData.getJSONArray("ratings");
+        List<Integer> currentRatings = new ArrayList<>();
+
+        // Iterate through the JSONArray and convert it into a List<Integer>
+        for (int i = 0; i < ratingsArray.length(); i++) {
+            currentRatings.add(ratingsArray.getInt(i));
+        }
+
+        // Add ratings to the Rating object
         for (Integer rate : currentRatings) {
             rating.addRating(rate);
         }
