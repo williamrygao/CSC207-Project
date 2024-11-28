@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * The representation of a user in our program.
  */
@@ -17,4 +19,9 @@ public interface User {
      */
     String getPassword();
 
+    /**
+     * Returns the wishlist of the user.
+     * @return the wishlist of the user.
+     */
+    List<Listing> getWishlist();
 }

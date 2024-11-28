@@ -1,6 +1,9 @@
 package use_case.login;
 
+import entity.Listing;
 import entity.User;
+
+import java.util.List;
 
 /**
  * DAO for the Login Use Case.
@@ -38,4 +41,10 @@ public interface LoginUserDataAccessInterface {
      * @param username the new current username; null to indicate that no one is currently logged into the application.
      */
     void setCurrentUsername(String username);
+
+    /**
+     * Get this user's wishlist.
+     * @return wishlist
+     */
+    List<Listing> getWishlist();
 }
