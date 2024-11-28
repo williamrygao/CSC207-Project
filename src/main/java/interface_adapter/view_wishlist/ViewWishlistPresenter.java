@@ -20,7 +20,9 @@ public class ViewWishlistPresenter implements ViewWishlistOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final WishlistViewModel wishlistViewModel;
 
-    public ViewWishlistPresenter(final ViewManagerModel viewManagerModel, final HomeViewModel homeViewModel, final WishlistViewModel wishlistViewModel) {
+    public ViewWishlistPresenter(final ViewManagerModel viewManagerModel,
+                                 final HomeViewModel homeViewModel,
+                                 final WishlistViewModel wishlistViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.homeViewModel = homeViewModel;
         this.wishlistViewModel = wishlistViewModel;
