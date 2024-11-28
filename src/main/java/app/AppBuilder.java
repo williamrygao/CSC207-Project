@@ -10,6 +10,7 @@ import com.google.cloud.firestore.Firestore;
 import data_access.FirebaseInitializer;
 
 import data_access.FirebaseListingDataAccessObject;
+import data_access.FirebaseRatingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
 import entity.BookFactory;
 import entity.CommonUserFactory;
@@ -109,6 +110,9 @@ public class AppBuilder {
 
     private final FirebaseListingDataAccessObject listingDataAccessObject = new
             FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
+
+    private final FirebaseRatingDataAccessObject ratingDataAccessObject = new
+            FirebaseRatingDataAccessObject(firebaseBaseURL);
     /**
      * SignupView.
      */
