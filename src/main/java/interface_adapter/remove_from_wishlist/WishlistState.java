@@ -1,5 +1,6 @@
 package interface_adapter.remove_from_wishlist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entity.Listing;
@@ -10,7 +11,7 @@ import entity.Listing;
 public class WishlistState {
     private String username = "";
 
-    private List<Listing> wishlist;
+    private List<Listing> wishlist = new ArrayList<>();
 
     public WishlistState(WishlistState copy) {
         username = copy.username;

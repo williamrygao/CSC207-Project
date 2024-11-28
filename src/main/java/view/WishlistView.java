@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Listing;
+import interface_adapter.add_to_wishlist.AddToWishlistController;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.remove_from_wishlist.WishlistState;
@@ -30,6 +31,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
     private final WishlistViewModel wishlistViewModel;
     private BackToHomeController backToHomeController;
     private RemoveFromWishlistController removeFromWishlistController;
+    private AddToWishlistController addToWishlistController;
 
     private final JLabel username;
 
@@ -118,14 +120,14 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    private void updateTable(List<Listing> newListings) {
+    private void updateTable(List<Listing> listings) {
         tableModel.setRowCount(0);
-        for (Listing newListing : newListings) {
+        for (Listing listing : listings) {
             final Object[] rowData = {
-                    newListing.getBook().getTitle(),
-                    newListing.getBook().getAuthors(),
-                    newListing.getPrice(),
-                    newListing.getBook().getRating(),
+                    listing.getBook().getTitle(),
+                    listing.getBook().getAuthors(),
+                    listing.getPrice(),
+                    listing.getBook().getRating(),
             };
             tableModel.addRow(rowData);
         }
@@ -141,5 +143,9 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
     public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
         this.removeFromWishlistController = removeFromWishlistController;
+    }
+
+    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
+        this.addToWishlistController = addToWishlistController;
     }
 }

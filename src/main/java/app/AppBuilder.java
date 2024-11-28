@@ -15,6 +15,8 @@ import entity.BookFactory;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.add_to_wishlist.AddToWishlistController;
+import interface_adapter.add_to_wishlist.AddToWishlistPresenter;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.HomeViewModel;
@@ -38,6 +40,9 @@ import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.back_to_home.BackToHomePresenter;
 import interface_adapter.view_wishlist.ViewWishlistController;
 import interface_adapter.view_wishlist.ViewWishlistPresenter;
+import use_case.add_to_wishlist.AddToWishlistInputBoundary;
+import use_case.add_to_wishlist.AddToWishlistInteractor;
+import use_case.add_to_wishlist.AddToWishlistOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -100,7 +105,7 @@ public class AppBuilder {
     private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
-            FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
+            FirebaseUserDataAccessObject(userFactory, bookFactory, firebaseBaseURL);
 
     private final FirebaseListingDataAccessObject listingDataAccessObject = new
             FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
@@ -333,8 +338,22 @@ public class AppBuilder {
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
         final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary, userFactory);
-        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor, wishlistView);
+        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor);
+        homeView.setRemoveFromWishlistController(removeFromWishlistController);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Add To Wishlist Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addAddToWishlistUseCase() {
+        final AddToWishlistOutputBoundary addToWishlistOutputBoundary = new AddToWishlistPresenter(wishlistViewModel);
+        final AddToWishlistInputBoundary addToWishlistInteractor = new AddToWishlistInteractor(userDataAccessObject, addToWishlistOutputBoundary, userFactory);
+        final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor);
+        homeView.setAddToWishlistController(addToWishlistController);
+        wishlistView.setAddToWishlistController(addToWishlistController);
         return this;
     }
 

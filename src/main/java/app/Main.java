@@ -22,7 +22,7 @@ public class Main {
                                             .addToSellViewUseCase()
                                             .addSellUseCase()
                                             .addBackToHomeUseCase().addViewWishlistUseCase()
-                                            .addRemoveFromWishlistUseCase()
+                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
                                             .addChangePasswordUseCase().build();
 
         application.pack();
