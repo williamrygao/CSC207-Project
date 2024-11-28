@@ -134,8 +134,13 @@ public class SellView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(price)) {
                         final String bookID = bookIDInputField.getText();
-                        final String priceMessage = sellController.getBookPrice(bookID);
-                        updatePriceLabel(priceMessage);
+                        if (bookID == null || "".equals(bookID)) {
+                            updatePriceLabel("Error, please input a valid book ID");
+                        }
+                        else {
+                            final String priceMessage = sellController.getBookPrice(bookID);
+                            updatePriceLabel(priceMessage);
+                        }
                     }
                 }
         );
@@ -146,10 +151,14 @@ public class SellView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(sell)) {
                         final SellState currentState = sellViewModel.getState();
-                        sellController.execute(
-                                currentState.getUsername(), currentState.getPassword(),
-                                currentState.getBookID(), currentState.getPrice()
-                        );
+                        final String sellingPrice = priceInputField.getText();
+                        if (sellingPrice == null || "".equals(sellingPrice)) {
+                            updatePriceLabel("Error, please input a valid selling price");
+                        }
+                        else {
+                            sellController.execute(currentState.getUsername(), currentState.getPassword(),
+                                    currentState.getBookID(), currentState.getPrice());
+                        }
                     }
                 }
         );
