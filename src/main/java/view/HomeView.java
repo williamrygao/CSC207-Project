@@ -197,10 +197,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 if (row != -1) {
                     final HomeState currentState = homeViewModel.getState();
                     final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
+                    tableModel.fireTableDataChanged();
                     final Listing listing = currentState.getListings().get(row);
                     final String currentUsername = currentState.getUsername();
                     final String password = currentState.getPassword();
-                    if (isChecked) {
+                    if (!isChecked) {
                         // Call your controller's method to add to wishlist
                         addToWishlistController.execute(currentUsername, password, listing);
                     }

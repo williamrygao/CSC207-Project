@@ -1,5 +1,6 @@
 package interface_adapter.change_password;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entity.Listing;
@@ -13,9 +14,9 @@ public class HomeState {
     private String password = "";
     private String passwordError;
 
-    private List<Listing> listings;
+    private List<Listing> listings = new ArrayList<>();
 
-    private List<Listing> wishlist;
+    private List<Listing> wishlist = new ArrayList<>();
 
     public HomeState(HomeState copy) {
         username = copy.username;

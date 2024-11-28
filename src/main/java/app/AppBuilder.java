@@ -338,7 +338,7 @@ public class AppBuilder {
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
         final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary, userFactory);
-        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor, wishlistView);
+        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor);
         homeView.setRemoveFromWishlistController(removeFromWishlistController);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
         return this;
@@ -351,7 +351,7 @@ public class AppBuilder {
     public AppBuilder addAddToWishlistUseCase() {
         final AddToWishlistOutputBoundary addToWishlistOutputBoundary = new AddToWishlistPresenter(wishlistViewModel);
         final AddToWishlistInputBoundary addToWishlistInteractor = new AddToWishlistInteractor(userDataAccessObject, addToWishlistOutputBoundary, userFactory);
-        final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor, wishlistView);
+        final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor);
         homeView.setAddToWishlistController(addToWishlistController);
         wishlistView.setAddToWishlistController(addToWishlistController);
         return this;

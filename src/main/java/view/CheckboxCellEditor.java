@@ -17,9 +17,9 @@ public class CheckboxCellEditor extends AbstractCellEditor implements TableCellE
 
     public CheckboxCellEditor() {
         checkBox = new JCheckBox();
-        checkBox.addActionListener(e -> {
+        checkBox.addActionListener(evt -> {
             if (actionListener != null) {
-                actionListener.actionPerformed(e);
+                actionListener.actionPerformed(evt);
             }
             fireEditingStopped();
         });

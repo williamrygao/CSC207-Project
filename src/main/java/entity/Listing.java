@@ -1,9 +1,11 @@
 package entity;
 
+import java.io.Serializable;
+
 /**
  * A listing of a book.
  */
-public class Listing {
+public class Listing implements Serializable {
 
     private String listingID;
     private Book book;

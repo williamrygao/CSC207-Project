@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.*;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import entity.Book;
+import entity.BookFactory;
+import entity.Listing;
+import entity.User;
+import entity.UserFactory;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -72,7 +77,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                 String password = userJson.getString("password");
                 return userFactory.create(name, password);
             }
-        } catch (IOException | JSONException e) {
+        }
+        catch (IOException | JSONException e) {
             throw new RuntimeException("Error fetching user: " + e.getMessage(), e);
         }
 
@@ -102,16 +108,33 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void save(final User user) {
-        String url = firebaseBaseUrl + "/users/" + user.getName() + ".json";
-        JSONObject userJson = new JSONObject();
+        final String url = firebaseBaseUrl + "/users/" + user.getName() + ".json";
+        final JSONObject userJson = new JSONObject();
+
         try {
             userJson.put("username", user.getName());
             userJson.put("password", user.getPassword());
+            final List<Listing> wishlist = user.getWishlist();
+//            wishlist.add(new Listing("1", bookFactory.createBook("9xHCAgAAQBAJ"), "12", "me", true));
+            final JSONArray jsonArray = new JSONArray();
 
-            RequestBody body = RequestBody.create(userJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
-            Request request = new Request.Builder()
+            for (Listing listing : wishlist) {
+                final JSONObject listingJson = new JSONObject();
+                try {
+                    listingJson.put("bookID", listing.getBook().getBookId());
+                    listingJson.put("price", listing.getPrice());
+                    jsonArray.put(listingJson);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            userJson.put("wishlist", jsonArray);
+
+            final RequestBody body = RequestBody.create(userJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
+            final Request request = new Request.Builder()
                     .url(url)
-                    .put(body) // Firebase uses PUT for individual resources
+                    .put(body)
                     .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                     .build();
 
@@ -120,7 +143,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                     throw new RuntimeException("Failed to save user: " + response.message());
                 }
             }
-        } catch (JSONException | IOException e) {
+        }
+        catch (JSONException | IOException e) {
             throw new RuntimeException("Error saving user: " + e.getMessage(), e);
         }
     }
@@ -150,22 +174,28 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void addToWishlist(User user, Listing listing) {
-        String url = firebaseBaseUrl + "/users/" + user.getName() + "/wishlist/" + listing.getBook().getBookId() + ".json";
-        JSONObject listingJson = new JSONObject();
+        final String url = firebaseBaseUrl + "/users/" + user.getName() + "/wishlist.json";
+        final JSONObject listingJson = new JSONObject();
         try {
+            // Populate listing JSON
             listingJson.put("bookID", listing.getBook().getBookId());
             listingJson.put("price", listing.getPrice());
 
-            RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
-            Request request = new Request.Builder()
+            // Create request
+            final RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
+            final Request request = new Request.Builder()
                     .url(url)
-                    .put(body)
+                    .post(body)
                     .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                     .build();
 
+            // Execute request
             try (Response response = httpClient.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
                     throw new RuntimeException("Failed to add listing to wishlist: " + response.message());
+                }
+                else {
+                    System.out.println("Successfully added listing to wishlist.");
                 }
             }
         }

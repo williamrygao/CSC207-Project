@@ -39,8 +39,7 @@ public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
     @Override
     public void execute(final AddToWishlistInputData addToWishlistInputData) {
         final String username = addToWishlistInputData.getUsername();
-        final String password = addToWishlistInputData.getPassword();
-        final User user = userFactory.create(username, password);
+        final User user = userDataAccessObject.get(username);
         final Listing listing = addToWishlistInputData.getListing();
 
         userDataAccessObject.addToWishlist(user, listing);
