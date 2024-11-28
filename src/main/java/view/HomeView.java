@@ -8,9 +8,7 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,10 +21,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Listing;
+import interface_adapter.add_to_wishlist.AddToWishlistController;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.view_wishlist.ViewWishlistController;
 
@@ -41,6 +41,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private LogoutController logoutController;
     private ToSellController toSellController;
     private ViewWishlistController viewWishlistController;
+    private AddToWishlistController addToWishlistController;
+    private RemoveFromWishlistController removeFromWishlistController;
 
     private final JLabel username;
 
@@ -97,8 +99,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
 
-        bookTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JCheckBox()));
-        bookTable.getColumnModel().getColumn(4).setCellRenderer(bookTable.getDefaultRenderer(Boolean.class));
+        final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
+        bookTable.getColumnModel().getColumn(4).setCellEditor(checkboxEditor);
 
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(bookTable);
@@ -189,6 +191,27 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        checkboxEditor.addActionListener(
+                evt -> {
+                final int row = bookTable.getEditingRow();
+                if (row != -1) {
+                    final HomeState currentState = homeViewModel.getState();
+                    final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
+                    final Listing listing = currentState.getListings().get(row);
+                    final String currentUsername = currentState.getUsername();
+                    final String password = currentState.getPassword();
+                    if (isChecked) {
+                        // Call your controller's method to add to wishlist
+                        addToWishlistController.execute(currentUsername, password, listing);
+                    }
+                    else {
+                        // Call your controller's method to remove from wishlist
+                        removeFromWishlistController.execute(currentUsername, password, listing);
+                    }
+                }
+            }
+        );
+
         this.add(title);
         this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
@@ -252,5 +275,13 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setViewWishlistController(ViewWishlistController viewWishlistController) {
         this.viewWishlistController = viewWishlistController;
+    }
+
+    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
+        this.addToWishlistController = addToWishlistController;
+    }
+
+    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
+        this.removeFromWishlistController = removeFromWishlistController;
     }
 }
