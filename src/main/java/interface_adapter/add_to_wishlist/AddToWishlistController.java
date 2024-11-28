@@ -17,11 +17,10 @@ public class AddToWishlistController {
     /**
      * Execute the Add To Wishlist Use Case.
      * @param username username of wishlist user
-     * @param password password of wishlist user
      * @param listing listing to be added to wishlist
      */
-    public void execute(String username, String password, Listing listing) {
-        final AddToWishlistInputData addToWishlistInputData = new AddToWishlistInputData(username, password, listing);
+    public void execute(String username, Listing listing) {
+        final AddToWishlistInputData addToWishlistInputData = new AddToWishlistInputData(username, listing);
         addToWishlistInteractor.execute(addToWishlistInputData);
     }
 }

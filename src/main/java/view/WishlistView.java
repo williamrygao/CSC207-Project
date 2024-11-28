@@ -62,17 +62,17 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                // Return false to make all cells non-editable
-                return false;
+                return column == 4;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                // Specify column data types to allow proper sorting
+                // Set the column type to Boolean for the "Wishlist" column
+                if (columnIndex == 4) {
+                    return Boolean.class;
+                }
+                // Other columns are String or Double, as before
                 if (columnIndex == 3) {
                     return Double.class;
-                }
-                if (columnIndex == 4) {
-                    return JButton.class;
                 }
                 return String.class;
             }
@@ -82,6 +82,9 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
+
+        final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
+        bookTable.getColumnModel().getColumn(4).setCellEditor(checkboxEditor);
 
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(bookTable);
@@ -95,6 +98,27 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(back)) {
                         backToHomeController.execute();
+                    }
+                }
+        );
+
+        checkboxEditor.addActionListener(
+                evt -> {
+                    final int row = bookTable.getEditingRow();
+                    if (row != -1) {
+                        final WishlistState currentState = wishlistViewModel.getState();
+                        final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
+                        tableModel.fireTableDataChanged();
+                        final Listing listing = currentState.getWishlist().get(row);
+                        final String currentUsername = currentState.getUsername();
+                        if (!isChecked) {
+                            // Call your controller's method to add to wishlist
+                            addToWishlistController.execute(currentUsername, listing);
+                        }
+                        else {
+                            // Call your controller's method to remove from wishlist
+                            removeFromWishlistController.execute(currentUsername, listing);
+                        }
                     }
                 }
         );
@@ -120,14 +144,14 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    private void updateTable(List<Listing> listings) {
+    private void updateTable(List<Listing> wishlist) {
         tableModel.setRowCount(0);
-        for (Listing listing : listings) {
+        for (Listing listing : wishlist) {
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
-                    listing.getBook().getRating(),
+                    listing.getBook().getRating(), true,
             };
             tableModel.addRow(rowData);
         }

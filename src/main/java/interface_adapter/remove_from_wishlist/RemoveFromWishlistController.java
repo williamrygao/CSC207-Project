@@ -17,12 +17,11 @@ public class RemoveFromWishlistController {
     /**
      * Execute the Remove From Wishlist Use Case.
      * @param username username of wishlist user
-     * @param password password of wishlist user
      * @param listing listing to be removed from user's wishlist
      */
-    public void execute(String username, String password, Listing listing) {
+    public void execute(String username, Listing listing) {
         final RemoveFromWishlistInputData removeFromWishlistInputData = new RemoveFromWishlistInputData(
-                username, password, listing
+                username, listing
         );
         removeFromWishlistInteractor.execute(removeFromWishlistInputData);
     }
