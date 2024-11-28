@@ -15,7 +15,7 @@ public class RemoveFromWishlistPresenter implements RemoveFromWishlistOutputBoun
 
     @Override
     public void prepareSuccessView(RemoveFromWishlistOutputData removeFromWishlistOutputData) {
-        wishlistViewModel.firePropertyChanged("wishlist");
+        wishlistViewModel.firePropertyChanged();
     }
 
     @Override
