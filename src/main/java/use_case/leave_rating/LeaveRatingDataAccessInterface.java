@@ -9,5 +9,5 @@ public interface LeaveRatingDataAccessInterface {
 
     void setCurrentUsername(String username);
 
-    void addToWishlist(User user, Rating rating, Integer newRating, Listing listing);
+    void leaveRating(User user, Rating rating, Integer newRating, Listing listing);
 }

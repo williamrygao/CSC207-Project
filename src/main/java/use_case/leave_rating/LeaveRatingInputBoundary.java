@@ -6,9 +6,9 @@ package use_case.leave_rating;
 public interface LeaveRatingInputBoundary {
 
     /**
-     * Executes the Remove from wishlist use case.
-     * @param LeaveRatingInputData the input data
+     * Executes the Leave rating use case.
+     * @param leaveRatingInputData the input data
      */
-    void execute(LeaveRatingInputData LeaveRatingInputData);
+    void execute(LeaveRatingInputData leaveRatingInputData);
 }
 
