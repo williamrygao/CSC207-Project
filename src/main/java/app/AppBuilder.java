@@ -102,7 +102,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel,
             cardLayout, viewManagerModel);
 
-    private final Firestore firestore = FirebaseInitializer.getFirestore();
+    private final Firestore firestore = FirebaseInitializer.initializeFirebase();
     private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
