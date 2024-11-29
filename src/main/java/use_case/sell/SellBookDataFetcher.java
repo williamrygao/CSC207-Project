@@ -1,6 +1,5 @@
 package use_case.sell;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,11 +15,15 @@ import entity.Listing;
  * SellBookDataFetcher Fetches Book Selling Data.
  */
 
-public class SellBookDataFetcher implements SellBookDataAccessInterface {
+public class SellBookDataFetcher implements SellListingDataAccessInterface {
     private static final String API_KEY = GoogleBooksApi.loadApiKey();
 
-    @Override
     public boolean existsByBookID(String bookID) {
+        return false;
+    }
+
+    @Override
+    public boolean exists(String bookID, String seller) {
         return false;
     }
 
