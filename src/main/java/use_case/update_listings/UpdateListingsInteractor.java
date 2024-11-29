@@ -3,7 +3,7 @@ package use_case.update_listings;
 import java.util.List;
 
 import entity.Listing;
-import entity.User;
+import entity.user.User;
 
 /**
  * The Update Listings Interactor.

@@ -1,9 +1,8 @@
 package view;
 
-import entity.Book;
-import entity.BookFactory;
+import entity.book.Book;
+import entity.book.BookFactory;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.login.LoginState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;

@@ -2,7 +2,7 @@ package use_case.leave_rating;
 
 import entity.Listing;
 import entity.Rating;
-import entity.User;
+import entity.user.User;
 
 public interface LeaveRatingDataAccessInterface {
     boolean existsByBookID(String bookID);

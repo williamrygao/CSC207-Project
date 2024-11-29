@@ -2,10 +2,9 @@ package use_case.leave_rating;
 
 import com.google.api.core.ApiFuture;
 import entity.Listing;
-import entity.User;
-import entity.UserFactory;
+import entity.user.User;
+import entity.user.UserFactory;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -13,7 +12,6 @@ import data_access.FirebaseInitializer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The LeaveRating Interactor for Firebase Realtime Database.
