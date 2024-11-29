@@ -2,6 +2,7 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -115,7 +116,6 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
             userJson.put("username", user.getName());
             userJson.put("password", user.getPassword());
             final List<Listing> wishlist = user.getWishlist();
-//            wishlist.add(new Listing("1", bookFactory.createBook("9xHCAgAAQBAJ"), "12", "me", true));
             final JSONArray jsonArray = new JSONArray();
 
             for (Listing listing : wishlist) {
@@ -156,19 +156,81 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void removeFromWishlist(User user, Listing listing) {
-        final String url = firebaseBaseUrl + "/users/" + user.getName() + "/wishlist/" + listing.getBook().getBookId() + ".json";
+        final String username = user.getName();
+
+        // Construct the URL to get the user's wishlist from Firebase
+        final String url = firebaseBaseUrl + "/users/" + username + "/wishlist.json";
+
+        // Create a GET request to fetch the current wishlist of the user
         final Request request = new Request.Builder()
                 .url(url)
-                .delete()
+                .get()
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new RuntimeException("Failed to remove listing from wishlist: " + response.message());
+            if (response.isSuccessful() && response.body() != null) {
+                final String responseBody = response.body().string();
+                if ("null".equals(responseBody) || responseBody.isEmpty()) {
+                    System.out.println("Wishlist is empty or not found.");
+                    return;
+                }
+
+                final JSONObject wishlistJson = new JSONObject(responseBody);
+
+                final Iterator<String> keys = wishlistJson.keys();
+                String listingToRemoveKey = null;
+
+                while (keys.hasNext()) {
+                    final String key = keys.next();
+                    final JSONObject jsonListing = wishlistJson.getJSONObject(key);
+                    final String bookID = jsonListing.getString("bookID");
+                    final String price = jsonListing.getString("price");
+                    final String seller = jsonListing.getString("seller");
+                    final boolean isAvailable = jsonListing.getBoolean("isAvailable");
+
+                    final Listing currentListing = new Listing(bookID, bookFactory.create(bookID), price, seller, isAvailable);
+
+                    // Use the equals method to verify identity
+                    if (listing.equals(currentListing)) {
+                        listingToRemoveKey = key;
+                        break;
+                    }
+                }
+
+                // If the listing was found, remove it
+                if (listingToRemoveKey != null) {
+                    // Construct the URL to remove the listing from the wishlist
+                    final String removeUrl = firebaseBaseUrl + "/users/" + username + "/wishlist/" + listingToRemoveKey
+                            + ".json";
+
+                    // Create a DELETE request to remove the listing
+                    final Request deleteRequest = new Request.Builder()
+                            .url(removeUrl)
+                            .delete()
+                            .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                            .build();
+
+                    try (Response deleteResponse = httpClient.newCall(deleteRequest).execute()) {
+                        if (deleteResponse.isSuccessful()) {
+                            System.out.println("Listing successfully removed from wishlist.");
+                        }
+                        else {
+                            System.err.println("Failed to remove listing from wishlist: " + deleteResponse.message());
+                        }
+                    }
+                }
+                else {
+                    System.out.println("Listing not found in wishlist.");
+                }
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Error removing listing from wishlist: " + e.getMessage(), e);
+            else {
+                System.err.println("Failed to fetch wishlist: " + response.message());
+            }
+        }
+        catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+            System.err.println("Error removing listing from wishlist: " + exception.getMessage());
         }
     }
 
@@ -180,6 +242,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
             // Populate listing JSON
             listingJson.put("bookID", listing.getBook().getBookId());
             listingJson.put("price", listing.getPrice());
+            listingJson.put("seller", listing.getSeller());
+            listingJson.put("isAvailable", true);
 
             // Create request
             final RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
@@ -212,7 +276,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public List<Listing> getWishlist(User user) {
         // Assuming current username is stored somehow (e.g., in a member variable or method)
-        final String username = getCurrentUsername();
+        final String username = user.getName();
 
         // Construct the URL to fetch the wishlist for the current user
         final String url = firebaseBaseUrl + "/users/" + username + "/wishlist.json";

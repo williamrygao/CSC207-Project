@@ -3,6 +3,7 @@ package view;
 import entity.Book;
 import entity.BookFactory;
 import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.login.LoginState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -181,6 +182,10 @@ public class SellView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final SellState state = (SellState) evt.getNewValue();
             username.setText(state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("not sold")) {
+            final SellState state = (SellState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, state.getSellError());
         }
         else if (evt.getPropertyName().equals("listed for sale")) {
             final SellState state = (SellState) evt.getNewValue();

@@ -32,6 +32,8 @@ public class SellPresenter implements SellOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        // note: this use case currently can't fail
+        final SellState sellState = sellViewModel.getState();
+        sellState.setSellError(error);
+        sellViewModel.firePropertyChanged("not sold");
     }
 }
