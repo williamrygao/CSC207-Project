@@ -1,26 +1,28 @@
-package interface_adapter.sell;
+package interface_adapter.search;
 
 /**
- * The State information representing the selling user.
+ * The State information representing book characterization for search.
  */
-public class SellState {
+public class SearchState {
     private String username = "";
     private String bookID = "";
     private String password = "";
     private String passwordError;
+    private String authors;
+    private String title;
     private String price;
-    private String sellError;
 
-    public SellState(SellState copy) {
+    public SearchState(SearchState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
+        authors = copy.authors;
+        title = copy.title;
         price = copy.price;
-        sellError = copy.sellError;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
-    public SellState() {
+    public SearchState() {
 
     }
 
@@ -40,6 +42,14 @@ public class SellState {
         this.passwordError = passwordError;
     }
 
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void setPrice(String price) {
         this.price = price;
     }
@@ -56,15 +66,15 @@ public class SellState {
         return bookID;
     }
 
+    public String getAuthors() {
+        return authors;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public String getPrice() {
         return price;
-    }
-
-    public void setSellError(String error) {
-        this.sellError = error;
-    }
-
-    public String getSellError() {
-        return sellError;
     }
 }

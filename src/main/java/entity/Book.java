@@ -15,15 +15,17 @@ public class Book {
     private String title;
     private String authors;
     private String description;
+    private String price;
     private String genre;
     private float rating;
     private List<String> sellers;
 
-    public Book(String bookId, String title, String authors, String description, String genre) {
+    public Book(String bookId, String title, String authors, String description, String price, String genre) {
         this.bookId = bookId;
         this.title = title;
         this.authors = authors;
         this.description = description;
+        this.price = price;
         this.genre = genre;
         this.rating = 0;
         this.sellers = new ArrayList<>();
@@ -59,8 +61,16 @@ public class Book {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String bookDescription) {
+        this.description = bookDescription;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String bookPrice) {
+        this.price = bookPrice;
     }
 
     public String getGenre() {
@@ -132,6 +142,8 @@ public class Book {
                 +
                 ", description='" + description + '\''
                 +
+                ", price='" + price + '\''
+                +
                 ", genre='" + genre + '\''
                 +
                 ", sellers=" + sellers
@@ -139,7 +151,11 @@ public class Book {
                 '}';
     }
 
-    public void updateRating(int rating) {
-
+    /**
+     * Update book rating.
+     * @param bookRating the book's rating
+     */
+    public void updateRating(int bookRating) {
+        this.rating = bookRating;
     }
 }

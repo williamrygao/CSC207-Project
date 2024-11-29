@@ -28,6 +28,7 @@ import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.to_search_view.ToSearchController;
 import interface_adapter.view_wishlist.ViewWishlistController;
 
 /**
@@ -40,6 +41,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
     private ToSellController toSellController;
+    private ToSearchController toSearchController;
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
@@ -48,6 +50,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     private final JButton logOut;
     private final JButton toSell;
+    private final JButton toSearch;
     private final JButton viewWishlist;
     private final JButton toRate;
 
@@ -74,7 +77,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Table column names
-        final String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
+        final String[] columnNames = {"Title", "Author(s)", "Price", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -113,6 +116,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         final JPanel topButtons = new JPanel();
         toSell = new JButton("Sell A Book");
         topButtons.add(toSell);
+
+        toSearch = new JButton("Search for a Book");
+        topButtons.add(toSearch);
 
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
@@ -182,6 +188,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(toSell)) {
                         toSellController.execute();
+                    }
+                }
+        );
+
+        toSearch.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(toSearch)) {
+                        toSearchController.execute();
                     }
                 }
         );
@@ -271,6 +285,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setToSellController(ToSellController toSellController) {
         this.toSellController = toSellController;
+    }
+
+    public void setToSearchController(ToSearchController toSearchController) {
+        this.toSearchController = toSearchController;
     }
 
     public void setLogoutController(LogoutController logoutController) {

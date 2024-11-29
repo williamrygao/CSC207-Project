@@ -1,5 +1,4 @@
-package use_case.sell;
-
+package data_access;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +8,8 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
-import data_access.GoogleBooksApi;
 import entity.Listing;
+import use_case.sell.SellBookDataAccessInterface;
 
 /**
  * SellBookDataFetcher Fetches Book Selling Data.

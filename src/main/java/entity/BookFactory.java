@@ -10,14 +10,10 @@ import data_access.GoogleBooksApi;
  */
 
 public class BookFactory {
+    private final GoogleBooksApi googleBooksApi;
 
-    /**
-     * Entry point for demonstrating the creation of a Book object.
-     * @param args command-line arguments (not used)
-     */
-    public static void main(String[] args) {
-        final BookFactory bookFactory = new BookFactory();
-        bookFactory.create("9xHCAgAAQBAJ");
+    public BookFactory() {
+        this.googleBooksApi = new GoogleBooksApi();
     }
 
     /**
@@ -26,8 +22,8 @@ public class BookFactory {
      * @return new Book object
      */
 
-    public Book create(String volumeID) {
-        final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeID);
+    public Book createBook(String volumeID) {
+        final String jsonResponse = googleBooksApi.getBookByVolumeId(volumeID);
         if (jsonResponse != null) {
             // Parse the JSON response to extract the book details
             final JSONObject bookJson = new JSONObject(jsonResponse);
@@ -47,9 +43,21 @@ public class BookFactory {
             final String description = volumeInfo.optString("description", "No description available");
             final String genre = extractGenre(volumeInfo);
 
+            String bookPrice = "Price information not available.";
+            final JSONObject saleInfo = bookJson.optJSONObject("saleInfo");
+
+            // Check if price information is available
+            if (saleInfo != null && saleInfo.has("retailPrice")) {
+                final JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
+                final double price = retailPrice.getDouble("amount");
+                final String currency = retailPrice.getString("currencyCode");
+
+                // Format the message with the price and currency code
+                bookPrice = String.format("Price: %.2f %s", price, currency);
+            }
+
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeID, title, authors, description, genre);
-            return book;
+            return new Book(volumeID, title, authors, description, bookPrice, genre);
         }
         return null;
     }
@@ -60,7 +68,7 @@ public class BookFactory {
      * @param volumeInfo the JSON object containing volume details
      * @return a comma-separated string of genres, or "Unknown Genre" if none are found
      */
-    private static String extractGenre(JSONObject volumeInfo) {
+    private String extractGenre(JSONObject volumeInfo) {
         // Check if the 'categories' field exists and is not empty
         final StringBuilder genre = new StringBuilder();
         if (volumeInfo.has("categories")) {
