@@ -1,5 +1,11 @@
 package data_access;
 
+import entity.BookFactory;
+import entity.Listing;
+import okhttp3.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import use_case.login.LoginListingDataAccessInterface;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -180,7 +186,7 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
                     // Create the Listing object using the BookFactory and extracted attributes
                     listings.add(new Listing(
                             bookID,
-                            bookFactory.create(bookID),
+                            bookFactory.createBook(bookID),
                             price,
                             seller,
                             true

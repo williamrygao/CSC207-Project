@@ -21,7 +21,8 @@ public class BookFactory {
      * @param volumeID Google Books API identifier
      * @return new Book object
      */
-    public Book create(String volumeID) {
+
+    public Book createBook(String volumeID) {
         final String jsonResponse = googleBooksApi.getBookByVolumeId(volumeID);
         if (jsonResponse != null) {
             // Parse the JSON response to extract the book details
@@ -42,9 +43,21 @@ public class BookFactory {
             final String description = volumeInfo.optString("description", "No description available");
             final String genre = extractGenre(volumeInfo);
 
+            String bookPrice = "Price information not available.";
+            final JSONObject saleInfo = bookJson.optJSONObject("saleInfo");
+
+            // Check if price information is available
+            if (saleInfo != null && saleInfo.has("retailPrice")) {
+                final JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
+                final double price = retailPrice.getDouble("amount");
+                final String currency = retailPrice.getString("currencyCode");
+
+                // Format the message with the price and currency code
+                bookPrice = String.format("Price: %.2f %s", price, currency);
+            }
+
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeID, title, authors, description, genre);
-            return book;
+            return new Book(volumeID, title, authors, description, bookPrice, genre);
         }
         return null;
     }

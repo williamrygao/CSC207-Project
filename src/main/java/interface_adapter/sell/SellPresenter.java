@@ -6,7 +6,7 @@ import use_case.sell.SellOutputBoundary;
 import use_case.sell.SellOutputData;
 
 /**
- * The Presenter for the Change Password Use Case.
+ * The Presenter for the Sell Use Case.
  */
 public class SellPresenter implements SellOutputBoundary {
 

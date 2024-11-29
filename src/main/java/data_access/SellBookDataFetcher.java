@@ -1,4 +1,4 @@
-package use_case.sell;
+package data_access;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,22 +8,18 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
-import data_access.GoogleBooksApi;
 import entity.Listing;
+import use_case.sell.SellBookDataAccessInterface;
 
 /**
  * SellBookDataFetcher Fetches Book Selling Data.
  */
 
-public class SellBookDataFetcher implements SellListingDataAccessInterface {
+public class SellBookDataFetcher implements SellBookDataAccessInterface {
     private static final String API_KEY = GoogleBooksApi.loadApiKey();
 
-    public boolean existsByBookID(String bookID) {
-        return false;
-    }
-
     @Override
-    public boolean exists(String bookID, String seller) {
+    public boolean existsByBookID(String bookID) {
         return false;
     }
 

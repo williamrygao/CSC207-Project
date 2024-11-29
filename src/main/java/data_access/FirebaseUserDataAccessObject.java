@@ -189,7 +189,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                     final String seller = jsonListing.getString("seller");
                     final boolean isAvailable = jsonListing.getBoolean("isAvailable");
 
-                    final Listing currentListing = new Listing(bookID, bookFactory.create(bookID), price, seller, isAvailable);
+                    final Listing currentListing = new Listing(bookID, bookFactory.createBook(bookID), price, seller, isAvailable);
 
                     // Use the equals method to verify identity
                     if (listing.equals(currentListing)) {
@@ -306,7 +306,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                     final String bookId = listingJson.getString("bookID");
                     final String price = listingJson.getString("price");
                     final String seller = listingJson.getString("seller");
-                    final Book book = bookFactory.create(bookId);
+                    final Book book = bookFactory.createBook(bookId);
                     final boolean isAvailable = listingJson.getBoolean("isAvailable");
 
                     // Create a Listing object (you need to have a proper constructor for Listing)

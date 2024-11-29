@@ -44,8 +44,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
         final JLabel title = new JLabel("Sell Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final LabelTextPanel bookInfo = new LabelTextPanel(
-                new JLabel("Book ID"), bookIDInputField);
+        final LabelTextPanel bookInfo = new LabelTextPanel(new JLabel("Book ID"), bookIDInputField);
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -223,7 +222,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
      */
     public String createSellMessage(String SellingPrice, String bookID, String userID) {
         final BookFactory bookFactory = new BookFactory();
-        final Book book = bookFactory.create(bookID);
+        final Book book = bookFactory.createBook(bookID);
         final String title = book.getTitle();
         final String authors = book.getAuthors();
         String formattedAuthors = "";
