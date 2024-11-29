@@ -10,7 +10,7 @@ public interface ToSellOutputBoundary {
     void prepareSuccessView();
 
     /**
-     * Prepares the failure view for the Login Use Case.
+     * Prepares the failure view for the Sell Use Case.
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
