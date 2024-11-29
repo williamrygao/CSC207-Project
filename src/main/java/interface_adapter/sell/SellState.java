@@ -9,12 +9,14 @@ public class SellState {
     private String password = "";
     private String passwordError;
     private String price;
+    private String sellError;
 
     public SellState(SellState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
         price = copy.price;
+        sellError = copy.sellError;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -56,5 +58,13 @@ public class SellState {
 
     public String getPrice() {
         return price;
+    }
+
+    public void setSellError(String error) {
+        this.sellError = error;
+    }
+
+    public String getSellError() {
+        return sellError;
     }
 }

@@ -25,10 +25,10 @@ public class LeaveRatingInputData {
      * @param listing  the listing
      * @param newRating  the new rating
      */
-     public LeaveRatingInputData(final String username, final String password, Listing listing, final Integer newRating) {
+     public LeaveRatingInputData(final String username, final String password, String bookid, Listing listing, final Integer newRating) {
         this.username = username;
         this.password = password;
-        this.bookid = password;
+        this.bookid = bookid;
         this.listing = listing;
         this.newRating = newRating;
     }

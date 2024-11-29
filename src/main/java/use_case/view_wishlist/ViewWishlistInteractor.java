@@ -12,7 +12,8 @@ public class ViewWishlistInteractor implements ViewWishlistInputBoundary {
     private final ViewWishlistUserDataAccessInterface userDataAccessObject;
     private ViewWishlistOutputBoundary viewWishlistPresenter;
 
-    public ViewWishlistInteractor(ViewWishlistUserDataAccessInterface userDataAccessObject, ViewWishlistOutputBoundary viewWishlistPresenter) {
+    public ViewWishlistInteractor(ViewWishlistUserDataAccessInterface userDataAccessObject,
+                                  ViewWishlistOutputBoundary viewWishlistPresenter) {
         this.userDataAccessObject = userDataAccessObject;
         this.viewWishlistPresenter = viewWishlistPresenter;
     }

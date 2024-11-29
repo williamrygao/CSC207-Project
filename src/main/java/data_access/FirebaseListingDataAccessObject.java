@@ -6,17 +6,28 @@ import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import use_case.login.LoginListingDataAccessInterface;
-import use_case.sell.SellBookDataAccessInterface;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import entity.BookFactory;
+import entity.Listing;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import use_case.login.LoginListingDataAccessInterface;
+import use_case.sell.SellListingDataAccessInterface;
+
 /**
  * The DAO for book data.
  */
-public class FirebaseListingDataAccessObject implements SellBookDataAccessInterface, LoginListingDataAccessInterface {
+public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface, LoginListingDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -38,23 +49,52 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
     }
 
     @Override
-    public boolean existsByBookID(String bookID) {
-        String url = firebaseBaseUrl + "/books/" + bookID + ".json";
-        Request request = new Request.Builder()
+    public boolean exists(String bookID, String seller) {
+        // Construct the URL to query listings in the Firebase Realtime Database
+        final String url = firebaseBaseUrl + "/listings.json";
+
+        // Create a GET request to fetch all listings from Firebase
+        final Request request = new Request.Builder()
                 .url(url)
                 .get()
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            if (response.code() == SUCCESS_CODE) {
-                JSONObject jsonResponse = new JSONObject(response.body().string());
-                return jsonResponse.length() > 0;
+            // Check if the response is successful and contains a body
+            if (response.isSuccessful() && response.body() != null) {
+                final String responseBody = response.body().string();
+
+                // Handle the case where the response is empty
+                if ("null".equals(responseBody) || responseBody.isEmpty()) {
+                    return false;
+                }
+
+                // Convert the response body to a JSONObject
+                final JSONObject listingsJson = new JSONObject(responseBody);
+
+                // Iterate over the listings to check if any match the bookID and seller
+                for (String key : listingsJson.keySet()) {
+                    final JSONObject listingJson = listingsJson.getJSONObject(key);
+
+                    final String listingBookID = listingJson.optString("bookID");
+                    final String listingSeller = listingJson.optString("seller");
+
+                    // Check if this listing matches the provided bookID and seller
+                    if (bookID.equals(listingBookID) && seller.equals(listingSeller)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            else {
+                throw new RuntimeException("Failed to fetch listings: " + response.message());
             }
         }
-        catch (IOException | JSONException exception) {
-            exception.printStackTrace();
+        catch (IOException | JSONException e) {
+            throw new RuntimeException("Error checking for listing: " + e.getMessage(), e);
         }
-        return false;
     }
 
     @Override
@@ -64,7 +104,8 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
         try {
             jsonListing.put("bookID", listing.getBook().getBookId());
             jsonListing.put("price", listing.getPrice());
-            jsonListing.put("sellerUsername", listing.getSeller());
+            jsonListing.put("seller", listing.getSeller());
+            jsonListing.put("isAvailable", true);
 
             RequestBody body = RequestBody.create(
                     jsonListing.toString(), MediaType.parse(CONTENT_TYPE_JSON));
@@ -140,14 +181,14 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
                     // Extract attributes from JSON and create a Listing
                     String bookID = jsonListing.getString("bookID");
                     String price = jsonListing.getString("price");
-                    String sellerUsername = jsonListing.getString("seller");
+                    String seller = jsonListing.getString("seller");
 
                     // Create the Listing object using the BookFactory and extracted attributes
                     listings.add(new Listing(
                             bookID,
                             bookFactory.createBook(bookID),
                             price,
-                            sellerUsername,
+                            seller,
                             true
                     ));
                 }

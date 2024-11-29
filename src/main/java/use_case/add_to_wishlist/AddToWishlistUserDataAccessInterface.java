@@ -9,4 +9,6 @@ public interface AddToWishlistUserDataAccessInterface {
     void setCurrentUsername(String username);
 
     void addToWishlist(User user, Listing listing);
+
+    User get(String username);
 }

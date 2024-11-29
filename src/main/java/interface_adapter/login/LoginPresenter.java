@@ -31,8 +31,12 @@ public class LoginPresenter implements LoginOutputBoundary {
         // On success, switch to the logged in view.
         final HomeState homeState = homeViewModel.getState();
         homeState.setUsername(response.getUsername());
+
         final List<Listing> listings = response.getListings();
         homeState.setListings(listings);
+
+        final List<Listing> wishlist = response.getWishlist();
+        homeState.setWishlist(wishlist);
 
         this.homeViewModel.setState(homeState);
         this.homeViewModel.firePropertyChanged();

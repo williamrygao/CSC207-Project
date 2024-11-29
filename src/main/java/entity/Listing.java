@@ -1,9 +1,11 @@
 package entity;
 
+import java.io.Serializable;
+
 /**
  * A listing of a book.
  */
-public class Listing {
+public class Listing implements Serializable {
 
     private String listingID;
     private Book book;
@@ -59,5 +61,24 @@ public class Listing {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    /**
+     * Check if this listing is equal to another, i.e. same seller and same book.
+     * @param obj another object
+     * @return true if equal
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Listing other = (Listing) obj;
+
+        return getBook().getBookId().equals(other.getBook().getBookId())
+                && getSeller().equals(other.getSeller())
+                && isAvailable() == other.isAvailable();
     }
 }

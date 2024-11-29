@@ -25,7 +25,7 @@ public class Main {
                                             .addSellUseCase()
                                             .addSearchUseCase()
                                             .addBackToHomeUseCase().addViewWishlistUseCase()
-                                            .addRemoveFromWishlistUseCase()
+                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
                                             .addChangePasswordUseCase().build();
 
         application.pack();

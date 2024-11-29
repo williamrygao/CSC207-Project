@@ -9,11 +9,16 @@ import javax.swing.WindowConstants;
 import com.google.cloud.firestore.Firestore;
 import data_access.FirebaseInitializer;
 import data_access.FirebaseListingDataAccessObject;
+import data_access.FirebaseRatingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
 import entity.BookFactory;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.add_to_wishlist.AddToWishlistController;
+import interface_adapter.add_to_wishlist.AddToWishlistPresenter;
+import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.back_to_home.BackToHomePresenter;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.HomeViewModel;
@@ -38,10 +43,14 @@ import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
 import interface_adapter.to_search_view.ToSearchController;
 import interface_adapter.to_search_view.ToSearchPresenter;
-import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.back_to_home.BackToHomePresenter;
 import interface_adapter.view_wishlist.ViewWishlistController;
 import interface_adapter.view_wishlist.ViewWishlistPresenter;
+import use_case.add_to_wishlist.AddToWishlistInputBoundary;
+import use_case.add_to_wishlist.AddToWishlistInteractor;
+import use_case.add_to_wishlist.AddToWishlistOutputBoundary;
+import use_case.back_to_home.BackToHomeInputBoundary;
+import use_case.back_to_home.BackToHomeInteractor;
+import use_case.back_to_home.BackToHomeOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -69,9 +78,6 @@ import use_case.to_sell_view.ToSellOutputBoundary;
 import use_case.to_search_view.ToSearchInputBoundary;
 import use_case.to_search_view.ToSearchInteractor;
 import use_case.to_search_view.ToSearchOutputBoundary;
-import use_case.back_to_home.BackToHomeInputBoundary;
-import use_case.back_to_home.BackToHomeInteractor;
-import use_case.back_to_home.BackToHomeOutputBoundary;
 import use_case.view_wishlist.ViewWishlistInputBoundary;
 import use_case.view_wishlist.ViewWishlistInteractor;
 import use_case.view_wishlist.ViewWishlistOutputBoundary;
@@ -114,14 +120,17 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel,
             cardLayout, viewManagerModel);
 
-    private final Firestore firestore = FirebaseInitializer.getFirestore();
+    private final Firestore firestore = FirebaseInitializer.initializeFirebase();
     private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
-            FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
+            FirebaseUserDataAccessObject(userFactory, bookFactory, firebaseBaseURL);
 
     private final FirebaseListingDataAccessObject listingDataAccessObject = new
             FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
+
+    private final FirebaseRatingDataAccessObject ratingDataAccessObject = new
+            FirebaseRatingDataAccessObject(firebaseBaseURL);
     /**
      * SignupView.
      */
@@ -316,7 +325,7 @@ public class AppBuilder {
         final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel, homeViewModel);
 
         final SellInputBoundary sellInteractor =
-                new SellInteractor(userDataAccessObject, listingDataAccessObject, sellOutputBoundary);
+                new SellInteractor(userDataAccessObject, listingDataAccessObject, sellOutputBoundary, bookFactory);
 
         final SellController sellController = new SellController(
                 sellInteractor);
@@ -348,7 +357,7 @@ public class AppBuilder {
 
         final SearchInputBoundary searchInteractor =
                 new SearchInteractor(userDataAccessObject, listingDataAccessObject,
-                        searchOutputBoundary);
+                        searchOutputBoundary, bookFactory);
 
         final SearchController searchController = new SearchController(
                 searchInteractor);
@@ -393,9 +402,25 @@ public class AppBuilder {
      */
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
-        final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary, userFactory);
-        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor, wishlistView);
+        final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
+        final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor);
+        homeView.setRemoveFromWishlistController(removeFromWishlistController);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Add To Wishlist Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addAddToWishlistUseCase() {
+        final AddToWishlistOutputBoundary addToWishlistOutputBoundary = new AddToWishlistPresenter(wishlistViewModel);
+        final AddToWishlistInputBoundary addToWishlistInteractor = new AddToWishlistInteractor(
+                userDataAccessObject, addToWishlistOutputBoundary
+        );
+        final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor);
+        homeView.setAddToWishlistController(addToWishlistController);
+        wishlistView.setAddToWishlistController(addToWishlistController);
         return this;
     }
 

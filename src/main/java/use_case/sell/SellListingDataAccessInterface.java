@@ -5,13 +5,13 @@ import entity.Listing;
 /**
  * DAO for the Sell Use Case.
  */
-public interface SellBookDataAccessInterface {
+public interface SellListingDataAccessInterface {
     /**
      * Checks if the given book exists.
      * @param bookID the bookID to look for
      * @return true if a book with the given book ID exists; false otherwise
      */
-    boolean existsByBookID(String bookID);
+    boolean exists(String bookID, String seller);
 
     /**
      * Saves the listing.
