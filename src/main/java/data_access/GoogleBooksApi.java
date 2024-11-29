@@ -73,27 +73,9 @@ public class GoogleBooksApi {
             return response.toString();
         }
 
-        catch (Exception exception) {
+        catch (IOException exception) {
             exception.printStackTrace();
             return null;
         }
-    }
-
-    public static String getBookPrice(String volumeID) {
-        String message = "";
-        String response = getBookByVolumeId(volumeID);
-        final JSONObject jsonResponse = new JSONObject(response.toString());
-        final JSONObject saleInfo = jsonResponse.optJSONObject("saleInfo");
-        if (saleInfo != null && saleInfo.has("retailPrice")) {
-            final JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
-            final double price = retailPrice.getDouble("amount");
-            final String currency = retailPrice.getString("currencyCode");
-
-            message = String.format("Price: %.2f %s", price, currency);
-        }
-        else {
-            message = "Price information not available.";
-        }
-        return message;
     }
 }
