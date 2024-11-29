@@ -14,8 +14,15 @@ public class RemoveFromWishlistController {
         this.removeFromWishlistInteractor = removeFromWishlistInteractor;
     }
 
-    public void execute(String username, String password, Listing listing) {
-        final RemoveFromWishlistInputData removeFromWishlistInputData = new RemoveFromWishlistInputData(username, password, listing);
+    /**
+     * Execute the Remove From Wishlist Use Case.
+     * @param username username of wishlist user
+     * @param listing listing to be removed from user's wishlist
+     */
+    public void execute(String username, Listing listing) {
+        final RemoveFromWishlistInputData removeFromWishlistInputData = new RemoveFromWishlistInputData(
+                username, listing
+        );
         removeFromWishlistInteractor.execute(removeFromWishlistInputData);
     }
 }

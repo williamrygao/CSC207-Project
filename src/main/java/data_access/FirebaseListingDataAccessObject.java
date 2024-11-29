@@ -150,7 +150,7 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
                     // Create the Listing object using the BookFactory and extracted attributes
                     listings.add(new Listing(
                             bookID,
-                            bookFactory.createBook(bookID),
+                            bookFactory.create(bookID),
                             price,
                             sellerUsername,
                             true

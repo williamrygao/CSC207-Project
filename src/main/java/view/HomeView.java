@@ -200,14 +200,13 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     tableModel.fireTableDataChanged();
                     final Listing listing = currentState.getListings().get(row);
                     final String currentUsername = currentState.getUsername();
-                    final String password = currentState.getPassword();
                     if (!isChecked) {
                         // Call your controller's method to add to wishlist
-                        addToWishlistController.execute(currentUsername, password, listing);
+                        addToWishlistController.execute(currentUsername, listing);
                     }
                     else {
                         // Call your controller's method to remove from wishlist
-                        removeFromWishlistController.execute(currentUsername, password, listing);
+                        removeFromWishlistController.execute(currentUsername, listing);
                     }
                 }
             }

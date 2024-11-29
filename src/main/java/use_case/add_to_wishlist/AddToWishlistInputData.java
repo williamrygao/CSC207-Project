@@ -11,20 +11,16 @@ public class AddToWishlistInputData {
      */
     private final String username;
 
-    private final String password;
-
     private final Listing listing;
 
     /**
      * AddToWishlistInputData method.
      *
      * @param username the username
-     * @param password the password
-     * @param listing the listing
+     * @param listing  the listing
      */
-    public AddToWishlistInputData(final String username, final String password, final Listing listing) {
+    public AddToWishlistInputData(final String username, final Listing listing) {
         this.username = username;
-        this.password = password;
         this.listing = listing;
     }
 
@@ -39,9 +35,5 @@ public class AddToWishlistInputData {
 
     public Listing getListing() {
         return listing;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

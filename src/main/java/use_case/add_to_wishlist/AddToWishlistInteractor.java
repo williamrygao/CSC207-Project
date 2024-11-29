@@ -2,7 +2,6 @@ package use_case.add_to_wishlist;
 
 import entity.Listing;
 import entity.User;
-import entity.UserFactory;
 
 /**
  * The AddToWishlist Interactor.
@@ -16,20 +15,17 @@ public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
      * The AddToWishlistPresenter.
      */
     private AddToWishlistOutputBoundary addToWishlistPresenter;
-    private final UserFactory userFactory;
 
     /**
      * AddToWishlistInteractor method.
      * @param userDataAccessInterface the userDataAccessInterface
      * @param addToWishlistOutputBoundary the AddToWishlistOutputBoundary
-     * @param userFactory user factory
      */
     public AddToWishlistInteractor(final AddToWishlistUserDataAccessInterface
                                     userDataAccessInterface,
-                                        final AddToWishlistOutputBoundary addToWishlistOutputBoundary, UserFactory userFactory) {
+                                        final AddToWishlistOutputBoundary addToWishlistOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
         this.addToWishlistPresenter = addToWishlistOutputBoundary;
-        this.userFactory = userFactory;
     }
 
     /**

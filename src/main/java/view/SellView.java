@@ -3,7 +3,6 @@ package view;
 import entity.Book;
 import entity.BookFactory;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.change_password.HomeState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -14,7 +13,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 /**
  * The View for when the user is selling a book.
@@ -188,7 +186,6 @@ public class SellView extends JPanel implements PropertyChangeListener {
             final SellState state = (SellState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, createSellMessage(priceInputField.getText(),
                     bookIDInputField.getText(), state.getUsername()));
-
         }
     }
 
@@ -220,7 +217,8 @@ public class SellView extends JPanel implements PropertyChangeListener {
      * @return a message as a string for the user
      */
     public String createSellMessage(String SellingPrice, String bookID, String userID) {
-        final Book book = BookFactory.createBook(bookID);
+        final BookFactory bookFactory = new BookFactory();
+        final Book book = bookFactory.create(bookID);
         final String title = book.getTitle();
         final String authors = book.getAuthors();
         String formattedAuthors = "";
