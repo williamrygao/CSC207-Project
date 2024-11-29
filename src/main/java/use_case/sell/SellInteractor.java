@@ -10,17 +10,14 @@ import entity.Listing;
 public class SellInteractor implements SellInputBoundary {
     private final SellUserDataAccessInterface userDataAccessObject;
     private final SellBookDataAccessInterface bookDataAccessObject;
-    private final SellBookDataFetcher sellBookDataFetcher;
     private final SellOutputBoundary userPresenter;
 
     public SellInteractor(SellUserDataAccessInterface sellUserDataAccessInterface,
                           SellBookDataAccessInterface sellBookDataAccessInterface,
-                          SellOutputBoundary sellOutputBoundary,
-                          SellBookDataFetcher sellBookDataFetcher) {
+                          SellOutputBoundary sellOutputBoundary) {
         this.userDataAccessObject = sellUserDataAccessInterface;
         this.bookDataAccessObject = sellBookDataAccessInterface;
         this.userPresenter = sellOutputBoundary;
-        this.sellBookDataFetcher = sellBookDataFetcher;
     }
 
     @Override
@@ -38,7 +35,8 @@ public class SellInteractor implements SellInputBoundary {
     }
 
     @Override
-    public String getBookPrice(String BookID) {
-        return sellBookDataFetcher.getBookPrice(BookID);
+    public String getBookPrice(String bookID) {
+        final Book book = BookFactory.createBook(bookID);
+        return book.getPrice();
     }
 }
