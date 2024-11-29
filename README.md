@@ -19,37 +19,38 @@ purchasing books.
 * [Give Us Feedback](#give-us-feedback)
 * [Want To Contribute?](#want-to-contribute)
 
-User stories:
-
-Team: Almut sells her old textbooks in this marketplace.
-Use Cases: List book for sale
-User interactions: Seller View (summary of books listed by this seller, and their status)
-
-William: Florian is a broke university student who likes all kinds of books, but he can't afford to buy many books. He uses the wishlist feature to keep track of the books he plans to buy once he lands his Google internship.
-Use cases: maintain a wishlist for each user.
-User interactions: add to wishlist, view wishlist, back to home view.
-
-Roy: Eckhard is currently really interested in investing and Hymn recommended he read “The Intelligent Investor” by Benjamin Graham,          and he would like to search if the book is in the library catalog.
-Use cases: Search
-User interactions: Search by title or author
-
-Victor: Jamison is a curious high school student who wants to read more but does not know which books to read. He decides to filter              books by their ratings to find books he might enjoy.
-Use Cases: Rating
-User Interactions: Filter books by rating
-
-Tanush: Sherlock is a voracious reader who enjoys acquiring books that align with his diverse academic interests. He uses the category              filter to search books within specific genres/categories, especially those that captivate his intellectual curiosity.
-Use Case: Genre
-User Interactions: Filter books by genre
-
-Zef: Dror is a meticulous reader that loves sharing reviews on the books he reads, after buying a book about mathematics from Almut,          he is not very happy that the book accepts the axiom of choice. Therefore, he left a 2 out of 5 rating.
-Use Case: Rating
-User Interactions: Rate previous purchases
-
 ## Features
+
+ All major features of the software are described so that a programmer or
+user can determine whether the software is right for them
+ Descriptions are clear and only detailed when needed
+ Examples or tutorials (videos, screenshots, or code snippets) are used to
+clarify the software’s features
 
 ## Installation Instructions
 
+ Installation instructions
+ Clear, accurate descriptions of how to install the project from start to finish
+ Mentions all packages and software which must be downloaded for the
+project to work
+ Provides links to any other packages or software needed
+ Includes all technical requirements and information needed to download
+each part of the project
+ Includes required versions for all packages or software needed
+ Explains if the software is only meant to be installed on a certain OS,
+hardware system, or otherwise (for example, Windows only or Mac only)
+ Mentions common issues in the installation process and how they can be
+overcome
+ Examples or tutorials (videos, screenshots, or code snippets) are used to
+clarify the steps for software installation
+ Examples or tutorials (videos, screenshots, or code snippets) are used to
+clarify the steps for overcoming common issues
+
 ## Usage Guide
+
+ Usage guide (instructions on how to use the software)
+ Examples or tutorials (videos, screenshots, or code snippets) are used to
+clarify how to use the software once it is downloaded
 
 ## License
 
@@ -126,39 +127,3 @@ Our project maintainers will review your pull request to ensure it aligns with t
 - **Communication**: Always discuss larger changes with the team before starting. Use issues or the discussion board to propose new features or changes.
 - **Respect for Others**: Be respectful and constructive in all communications. We want to foster a positive and collaborative environment for everyone.
 - **Licensing**: Ensure that your contributions are your own work and that you have the right to submit them. By submitting a pull request, you agree to license your contributions under the project’s licensing terms.
-
-
-
-# End
-
- All major features of the software are described so that a programmer or
-user can determine whether the software is right for them
- Descriptions are clear and only detailed when needed
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the software’s features
-
- Installation instructions
- Clear, accurate descriptions of how to install the project from start to finish
- Mentions all packages and software which must be downloaded for the
-project to work
- Provides links to any other packages or software needed
- Includes all technical requirements and information needed to download
-each part of the project
- Includes required versions for all packages or software needed
- Explains if the software is only meant to be installed on a certain OS,
-hardware system, or otherwise (for example, Windows only or Mac only)
- Mentions common issues in the installation process and how they can be
-overcome
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the steps for software installation
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the steps for overcoming common issues
- Usage guide (instructions on how to use the software)
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify how to use the software once it is downloaded
- License (for how others can use the code)
- License is clearly displayed or visible in the GitHub project
- License is legally valid
- License is consistent with the details of the project (for example, it would not
-be consistent if the README claims the project is “in the public domain”
-while the project has an MIT License)
