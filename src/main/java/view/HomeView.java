@@ -49,6 +49,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOut;
     private final JButton toSell;
     private final JButton viewWishlist;
+    private final JButton toRate;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
@@ -115,6 +116,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
+
+        toRate = new JButton("My Rating");
+        topButtons.add(toRate);
 
         final JPanel bottomButtons = new JPanel();
         logOut = new JButton("Log Out");
