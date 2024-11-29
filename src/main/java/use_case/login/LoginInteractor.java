@@ -40,7 +40,7 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 final List<Listing> listings = listingDataAccessObject.getListings();
 
-                final List<Listing> wishlist = userDataAccessObject.getWishlist();
+                final List<Listing> wishlist = userDataAccessObject.getWishlist(user);
 
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false, listings, wishlist);
                 loginPresenter.prepareSuccessView(loginOutputData);
