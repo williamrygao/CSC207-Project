@@ -8,7 +8,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import data_access.FirebaseInitializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +28,8 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
      * @param userFactory user factory to create user instances
      */
     public LeaveRatingInteractor(final LeaveRatingOutputBoundary leaveRatingOutputBoundary, UserFactory userFactory) {
-        this.databaseReference = FirebaseDatabase.getInstance().getReference("books");
+        // Use FirebaseInitializer to get a reference to the database
+        this.databaseReference = FirebaseInitializer.getRealtimeDatabaseReference();
         this.leaveRatingPresenter = leaveRatingOutputBoundary;
         this.userFactory = userFactory;
     }
@@ -45,13 +48,13 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
         Integer newRating = leaveRatingInputData.getNewRating();
 
         if (user == null) {
-            // If user authentication fails
+            // If user authentication fails, notify failure without error message
             leaveRatingPresenter.prepareFailView("Authentication failed for user: " + username);
             return;
         }
 
         // Reference to the book in Firebase Realtime Database
-        DatabaseReference bookRef = databaseReference.child(bookId);
+        DatabaseReference bookRef = databaseReference.child("books").child(bookId);
 
         // Add the new rating to the "ratings" array of this book
         addRating(bookRef, newRating, username);
@@ -69,7 +72,10 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
                     updateAverageRating(bookRef);
                     notifySuccess(username);
                 })
-                .addOnFailureListener(e -> notifyFailure("Failed to leave rating: " + e.getMessage()));
+                .addOnFailureListener(e -> {
+                    // Ignore failure without any error message
+                    notifyFailure();
+                });
     }
 
     /**
@@ -81,19 +87,24 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    List<Integer> ratings = (List<Integer>) dataSnapshot.getValue();
-                    if (ratings != null && !ratings.isEmpty()) {
+                    List<Integer> ratings = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Integer rating = snapshot.getValue(Integer.class);
+                        if (rating != null) {
+                            ratings.add(rating);
+                        }
+                    }
+
+                    if (!ratings.isEmpty()) {
                         double average = calculateAverageRating(ratings);
-                        bookRef.child("averageRating").setValue(average)
-                                .addOnFailureListener(e -> e.printStackTrace());
+                        bookRef.child("averageRating").setValue(average);
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Log or handle error in fetching ratings
-                databaseError.toException().printStackTrace();
+                // No error handling or logging needed
             }
         });
     }
@@ -120,10 +131,9 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
     }
 
     /**
-     * Prepares the failure output for the presenter.
-     * @param errorMessage the error message to be shown
+     * Prepares the failure output for the presenter (no error message).
      */
-    private void notifyFailure(String errorMessage) {
-        leaveRatingPresenter.prepareFailView(errorMessage);
+    private void notifyFailure() {
+        leaveRatingPresenter.prepareFailView("Failed to leave rating.");
     }
 }
