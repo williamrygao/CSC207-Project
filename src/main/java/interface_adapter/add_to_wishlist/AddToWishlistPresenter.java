@@ -16,7 +16,6 @@ public class AddToWishlistPresenter implements AddToWishlistOutputBoundary {
 
     @Override
     public void prepareSuccessView(AddToWishlistOutputData addToWishlistOutputData) {
-        wishlistViewModel.firePropertyChanged();
     }
 
     @Override

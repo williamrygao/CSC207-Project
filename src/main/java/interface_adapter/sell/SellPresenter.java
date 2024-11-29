@@ -24,7 +24,6 @@ public class SellPresenter implements SellOutputBoundary {
         final HomeState homeState = homeViewModel.getState();
         homeState.addListing(outputData.getListing());
         this.homeViewModel.setState(homeState);
-        this.homeViewModel.firePropertyChanged("listing");
 
         // Pop-up in Sell View.
         sellViewModel.firePropertyChanged("listed for sale");

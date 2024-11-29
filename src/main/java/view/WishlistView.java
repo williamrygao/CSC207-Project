@@ -6,12 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -137,10 +132,11 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
             username.setText(state.getUsername());
+            updateTable(state.getWishlist());
         }
         else if (evt.getPropertyName().equals("wishlist")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
-            updateTable(state.getWishlist());
+            JOptionPane.showMessageDialog(null, "wishlist updated for " + state.getUsername());
         }
     }
 
