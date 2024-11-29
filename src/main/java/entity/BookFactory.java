@@ -56,12 +56,11 @@ public class BookFactory {
                 final String currency = retailPrice.getString("currencyCode");
 
                 // Format the message with the price and currency code
-                bookPrice = String.format("%.2f %s", price, currency);
+                bookPrice = String.format("Price: %.2f %s", price, currency);
             }
 
             // Create and return a new Book object using the retrieved data
-            final Book book = new Book(volumeID, title, authors, description, bookPrice, genre);
-            return book;
+            return new Book(volumeID, title, authors, description, bookPrice, genre);
         }
         return null;
     }
