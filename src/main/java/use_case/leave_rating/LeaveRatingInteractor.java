@@ -68,8 +68,8 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
      * @param username the username of the user leaving the rating
      */
     private void addRating(DatabaseReference bookRef, Integer newRating, String username) {
-        bookRef.child("ratings").push().setValue(newRating)
-                .addOnSuccessListener(aVoid -> {
+        bookRef.child("ratings").push().setValueAsync(newRating)
+                .addListener(aVoid -> {
                     updateAverageRating(bookRef);
                     notifySuccess(username);
                 })
