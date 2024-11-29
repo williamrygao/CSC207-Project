@@ -3,7 +3,6 @@ package view;
 import entity.Book;
 import entity.BookFactory;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.change_password.HomeState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -14,7 +13,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 /**
  * The View for when the user is selling a book.
@@ -45,8 +43,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
         final JLabel title = new JLabel("Sell Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final LabelTextPanel bookInfo = new LabelTextPanel(
-                new JLabel("Book ID"), bookIDInputField);
+        final LabelTextPanel bookInfo = new LabelTextPanel(new JLabel("Book ID"), bookIDInputField);
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
