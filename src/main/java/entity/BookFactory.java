@@ -10,14 +10,10 @@ import data_access.GoogleBooksApi;
  */
 
 public class BookFactory {
+    private final GoogleBooksApi googleBooksApi;
 
-    /**
-     * Entry point for demonstrating the creation of a Book object.
-     * @param args command-line arguments (not used)
-     */
-    public static void main(String[] args) {
-        final BookFactory bookFactory = new BookFactory();
-        bookFactory.create("9xHCAgAAQBAJ");
+    public BookFactory() {
+        this.googleBooksApi = new GoogleBooksApi();
     }
 
     /**
@@ -25,9 +21,8 @@ public class BookFactory {
      * @param volumeID Google Books API identifier
      * @return new Book object
      */
-
     public Book create(String volumeID) {
-        final String jsonResponse = GoogleBooksApi.getBookByVolumeId(volumeID);
+        final String jsonResponse = googleBooksApi.getBookByVolumeId(volumeID);
         if (jsonResponse != null) {
             // Parse the JSON response to extract the book details
             final JSONObject bookJson = new JSONObject(jsonResponse);
@@ -60,7 +55,7 @@ public class BookFactory {
      * @param volumeInfo the JSON object containing volume details
      * @return a comma-separated string of genres, or "Unknown Genre" if none are found
      */
-    private static String extractGenre(JSONObject volumeInfo) {
+    private String extractGenre(JSONObject volumeInfo) {
         // Check if the 'categories' field exists and is not empty
         final StringBuilder genre = new StringBuilder();
         if (volumeInfo.has("categories")) {
