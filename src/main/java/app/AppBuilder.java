@@ -38,6 +38,8 @@ import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
+import interface_adapter.update_listings.UpdateListingsController;
+import interface_adapter.update_listings.UpdateListingsPresenter;
 import interface_adapter.view_wishlist.ViewWishlistController;
 import interface_adapter.view_wishlist.ViewWishlistPresenter;
 import use_case.add_to_wishlist.AddToWishlistInputBoundary;
@@ -68,6 +70,10 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.to_sell_view.ToSellInputBoundary;
 import use_case.to_sell_view.ToSellInteractor;
 import use_case.to_sell_view.ToSellOutputBoundary;
+import use_case.update_listings.UpdateListingsInputBoundary;
+import use_case.update_listings.UpdateListingsInputData;
+import use_case.update_listings.UpdateListingsInteractor;
+import use_case.update_listings.UpdateListingsOutputBoundary;
 import use_case.view_wishlist.ViewWishlistInputBoundary;
 import use_case.view_wishlist.ViewWishlistInteractor;
 import use_case.view_wishlist.ViewWishlistOutputBoundary;
@@ -236,7 +242,7 @@ public class AppBuilder {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
                 viewManagerModel, homeViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, listingDataAccessObject, loginOutputBoundary);
+                userDataAccessObject, loginOutputBoundary);
 
         final LoginController loginController = new LoginController(
                 loginInteractor);
@@ -347,11 +353,23 @@ public class AppBuilder {
      * @return this build
      */
     public AppBuilder addRemoveFromWishlistUseCase() {
-        final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel);
+        final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary = new RemoveFromWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
         final RemoveFromWishlistInputBoundary removeFromWishlistInteractor = new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
         final RemoveFromWishlistController removeFromWishlistController = new RemoveFromWishlistController(removeFromWishlistInteractor);
         homeView.setRemoveFromWishlistController(removeFromWishlistController);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Update Listings Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addUpdateListingsUseCase() {
+        final UpdateListingsOutputBoundary updateListingsOutputBoundary = new UpdateListingsPresenter(homeViewModel);
+        final UpdateListingsInputBoundary updateListingsInteractor = new UpdateListingsInteractor(userDataAccessObject, listingDataAccessObject, updateListingsOutputBoundary);
+        final UpdateListingsController updateListingsController = new UpdateListingsController(updateListingsInteractor);
+        homeView.setUpdateListingsController(updateListingsController);
         return this;
     }
 

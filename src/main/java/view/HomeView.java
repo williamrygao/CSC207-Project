@@ -28,13 +28,14 @@ import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.update_listings.UpdateListingsController;
 import interface_adapter.view_wishlist.ViewWishlistController;
 
 /**
  * The View for when the user is logged into the program.
  */
 public class HomeView extends JPanel implements PropertyChangeListener {
-    private final String viewName = "logged in";
+    private final String viewName = "home";
     private final HomeViewModel homeViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
@@ -43,6 +44,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
+    private UpdateListingsController updateListingsController;
 
     private final JLabel username;
 
@@ -171,6 +173,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(logOut)) {
                         final HomeState currentState = homeViewModel.getState();
+                        currentState.getUsername();
                         logoutController.execute(
                                 currentState.getUsername()
                         );
@@ -236,14 +239,19 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final HomeState state = (HomeState) evt.getNewValue();
             username.setText(state.getUsername());
+            updateListingsController.execute(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("listing")) {
+        else if (evt.getPropertyName().equals("updateTable")) {
             final HomeState state = (HomeState) evt.getNewValue();
             updateTable(state.getListings(), state.getWishlist());
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("wishlist")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, "wishlist updated for " + state.getUsername());
         }
     }
 
@@ -287,5 +295,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
         this.removeFromWishlistController = removeFromWishlistController;
+    }
+
+    public void setUpdateListingsController(UpdateListingsController updateListingsController) {
+        this.updateListingsController = updateListingsController;
     }
 }

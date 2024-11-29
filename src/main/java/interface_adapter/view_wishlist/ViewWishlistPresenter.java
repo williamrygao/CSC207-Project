@@ -39,7 +39,7 @@ public class ViewWishlistPresenter implements ViewWishlistOutputBoundary {
         wishlistState.setWishlist(wishlist);
 
         wishlistViewModel.setState(wishlistState);
-        wishlistViewModel.firePropertyChanged("wishlist");
+        wishlistViewModel.firePropertyChanged();
 
         this.viewManagerModel.setState(wishlistViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
