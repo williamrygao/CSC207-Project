@@ -1,5 +1,6 @@
 package use_case.leave_rating;
 
+import com.google.api.core.ApiFuture;
 import entity.Listing;
 import entity.User;
 import entity.UserFactory;
@@ -68,15 +69,18 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
      * @param username the username of the user leaving the rating
      */
     private void addRating(DatabaseReference bookRef, Integer newRating, String username) {
-        bookRef.child("ratings").push().setValueAsync(newRating)
-                .addListener(aVoid -> {
-                    updateAverageRating(bookRef);
-                    notifySuccess(username);
-                })
-                .addOnFailureListener(e -> {
-                    // Ignore failure without any error message
-                    notifyFailure();
-                });
+        ApiFuture<Void> future = bookRef.child("ratings").push().setValueAsync(newRating);
+
+        try {
+            future.get();
+
+            updateAverageRating(bookRef);
+            notifySuccess(username);
+        }
+        catch (Exception e) {
+            // Handle failure and notify
+            notifyFailure();
+        }
     }
 
     /**
@@ -97,7 +101,7 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
                     }
 
                     if (!ratings.isEmpty()) {
-                        long average = (long) calculateAverageRating(ratings);
+                        double average = (double) calculateAverageRating(ratings);
                         bookRef.child("averageRating").setValueAsync(average);
                     }
                 }
