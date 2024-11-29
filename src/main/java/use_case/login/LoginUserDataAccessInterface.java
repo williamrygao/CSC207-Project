@@ -1,7 +1,7 @@
 package use_case.login;
 
 import entity.Listing;
-import entity.User;
+import entity.user.User;
 
 import java.util.List;
 

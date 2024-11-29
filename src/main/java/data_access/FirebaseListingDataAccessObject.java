@@ -8,7 +8,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.BookFactory;
+import entity.book.BookFactory;
 import entity.Listing;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

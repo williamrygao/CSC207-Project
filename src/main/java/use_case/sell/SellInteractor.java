@@ -1,7 +1,7 @@
 package use_case.sell;
 
-import entity.Book;
-import entity.BookFactory;
+import entity.book.Book;
+import entity.book.BookFactory;
 import entity.Listing;
 
 /**

@@ -11,11 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Listing;
-import interface_adapter.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.remove_from_wishlist.WishlistState;
-import interface_adapter.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.WishlistState;
+import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
 
 /**
  * The View for when the user is viewing their personal wishlist.

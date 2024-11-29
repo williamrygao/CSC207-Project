@@ -9,25 +9,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.Book;
-import entity.BookFactory;
+import entity.book.Book;
+import entity.book.BookFactory;
 import entity.Listing;
-import entity.User;
-import entity.UserFactory;
+import entity.user.User;
+import entity.user.UserFactory;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import use_case.add_to_wishlist.AddToWishlistUserDataAccessInterface;
+import use_case.wishlist.add_to_wishlist.AddToWishlistUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
-import use_case.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
 import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.update_listings.UpdateListingsUserDataAccessInterface;
-import use_case.view_wishlist.ViewWishlistUserDataAccessInterface;
+import use_case.wishlist.view_wishlist.ViewWishlistUserDataAccessInterface;
 
 /**
  * DAO for user data using Firebase.

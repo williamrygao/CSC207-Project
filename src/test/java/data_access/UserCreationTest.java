@@ -1,7 +1,7 @@
 package data_access;
 
-import entity.User;
-import entity.UserFactory;
+import entity.user.User;
+import entity.user.UserFactory;
 import service.FirebaseUserDataAccessObject;
 
 /**

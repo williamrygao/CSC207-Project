@@ -2,7 +2,7 @@ package data_access;
 
 import entity.Listing;
 import entity.Rating;
-import entity.User;
+import entity.user.User;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
