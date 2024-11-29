@@ -434,7 +434,8 @@ public class AppBuilder {
      * @return this build
      */
     public AppBuilder addAddToWishlistUseCase() {
-        final AddToWishlistOutputBoundary addToWishlistOutputBoundary = new AddToWishlistPresenter(wishlistViewModel);
+        final AddToWishlistOutputBoundary addToWishlistOutputBoundary = new AddToWishlistPresenter(
+                wishlistViewModel, homeViewModel, viewManagerModel);
         final AddToWishlistInputBoundary addToWishlistInteractor = new AddToWishlistInteractor(
                 userDataAccessObject, addToWishlistOutputBoundary
         );
