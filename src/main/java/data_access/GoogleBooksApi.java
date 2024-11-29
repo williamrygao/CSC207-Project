@@ -13,22 +13,18 @@ import java.net.URL;
  * Google Books API.
  */
 public class GoogleBooksApi {
-    public static final String API_KEY = loadApiKey();
     private static final int HTTP_OK = 200;
+    private final String apiKey;
 
-    /**
-     * Test.
-     * @param args the arguments
-     */
-    public static void main(String[] args) {
-        System.out.println(getBookByVolumeId("9xHCAgAAQBAJ"));
+    public GoogleBooksApi() {
+        this.apiKey = loadApiKey();
     }
 
-    /*
+    /**
      * Load API Key from api_key.env file.
      * @return ApiKey
      */
-    public static String loadApiKey() {
+    public static String loadApiKey() throws RuntimeException {
         try (BufferedReader reader = new BufferedReader(new FileReader("api_key.env"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -49,9 +45,10 @@ public class GoogleBooksApi {
      * @param volumeId the volumeId
      * @return a json file containing all information returned from Google API
      */
-    public static String getBookByVolumeId(String volumeId) {
+    public String getBookByVolumeId(String volumeId) {
+        String result = "";
         try {
-            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeId + "?key=" + API_KEY;
+            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeId + "?key=" + apiKey;
             final URL url = new URL(urlString);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -70,18 +67,23 @@ public class GoogleBooksApi {
             br.close();
             conn.disconnect();
 
-            return response.toString();
+            result = response.toString();
         }
-
-        catch (Exception exception) {
+        catch (IOException exception) {
             exception.printStackTrace();
-            return null;
+            result = null;
         }
+        return result;
     }
 
-    public static String getBookPrice(String volumeID) {
+    /**
+     * Get book price.
+     * @param volumeID volumeID
+     * @return price
+     */
+    public String getBookPrice(String volumeID) {
         String message = "";
-        String response = getBookByVolumeId(volumeID);
+        final String response = getBookByVolumeId(volumeID);
         final JSONObject jsonResponse = new JSONObject(response.toString());
         final JSONObject saleInfo = jsonResponse.optJSONObject("saleInfo");
         if (saleInfo != null && saleInfo.has("retailPrice")) {
