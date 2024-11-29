@@ -8,7 +8,6 @@ import javax.swing.WindowConstants;
 
 import com.google.cloud.firestore.Firestore;
 import data_access.FirebaseInitializer;
-
 import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
 import entity.BookFactory;
@@ -29,11 +28,16 @@ import interface_adapter.remove_from_wishlist.WishlistViewModel;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellPresenter;
 import interface_adapter.sell.SellViewModel;
+import interface_adapter.search.SearchController;
+import interface_adapter.search.SearchPresenter;
+import interface_adapter.search.SearchViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
+import interface_adapter.to_search_view.ToSearchController;
+import interface_adapter.to_search_view.ToSearchPresenter;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.back_to_home.BackToHomePresenter;
 import interface_adapter.view_wishlist.ViewWishlistController;
@@ -50,20 +54,34 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.remove_from_wishlist.RemoveFromWishlistInputBoundary;
 import use_case.remove_from_wishlist.RemoveFromWishlistInteractor;
 import use_case.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
-import use_case.sell.*;
+import use_case.sell.SellInputBoundary;
+import use_case.sell.SellInteractor;
+import use_case.sell.SellOutputBoundary;
+import use_case.search.SearchInputBoundary;
+import use_case.search.SearchInteractor;
+import use_case.search.SearchOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import use_case.to_sell_view.ToSellInputBoundary;
 import use_case.to_sell_view.ToSellInteractor;
 import use_case.to_sell_view.ToSellOutputBoundary;
+import use_case.to_search_view.ToSearchInputBoundary;
+import use_case.to_search_view.ToSearchInteractor;
+import use_case.to_search_view.ToSearchOutputBoundary;
 import use_case.back_to_home.BackToHomeInputBoundary;
 import use_case.back_to_home.BackToHomeInteractor;
 import use_case.back_to_home.BackToHomeOutputBoundary;
 import use_case.view_wishlist.ViewWishlistInputBoundary;
 import use_case.view_wishlist.ViewWishlistInteractor;
 import use_case.view_wishlist.ViewWishlistOutputBoundary;
-import view.*;
+import view.HomeView;
+import view.LoginView;
+import view.SellView;
+import view.SearchView;
+import view.SignupView;
+import view.ViewManager;
+import view.WishlistView;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -130,12 +148,12 @@ public class AppBuilder {
     private LoginView loginView;
 
     private SellViewModel sellViewModel;
+    private SearchViewModel searchViewModel;
     private SellView sellView;
+    private SearchView searchView;
 
     private WishlistViewModel wishlistViewModel;
     private WishlistView wishlistView;
-
-    private final SellBookDataFetcher sellBookDataFetcher = new SellBookDataFetcher();
 
     /**
      * AppBuilder method.
@@ -185,6 +203,17 @@ public class AppBuilder {
         sellViewModel = new SellViewModel();
         sellView = new SellView(sellViewModel);
         cardPanel.add(sellView, sellView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Search View to the application.
+     * @return this builder
+     */
+    public AppBuilder addSearchView() {
+        searchViewModel = new SearchViewModel();
+        searchView = new SearchView(searchViewModel);
+        cardPanel.add(searchView, searchView.getViewName());
         return this;
     }
 
@@ -287,12 +316,43 @@ public class AppBuilder {
         final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel, homeViewModel);
 
         final SellInputBoundary sellInteractor =
-                new SellInteractor(userDataAccessObject, listingDataAccessObject,
-                        sellOutputBoundary, sellBookDataFetcher);
+                new SellInteractor(userDataAccessObject, listingDataAccessObject, sellOutputBoundary);
 
         final SellController sellController = new SellController(
                 sellInteractor);
         sellView.setSellController(sellController);
+        return this;
+    }
+
+    /**
+     * Adds the To Search View Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addToSearchViewUseCase() {
+        final ToSearchOutputBoundary toSearchOutputBoundary = new ToSearchPresenter(
+                viewManagerModel, homeViewModel, searchViewModel);
+
+        final ToSearchInputBoundary toSearchInteractor = new ToSearchInteractor(toSearchOutputBoundary);
+
+        final ToSearchController toSearchController = new ToSearchController(toSearchInteractor);
+        homeView.setToSearchController(toSearchController);
+        return this;
+    }
+
+    /**
+     * Adds the Search Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSearchUseCase() {
+        final SearchOutputBoundary searchOutputBoundary = new SearchPresenter(searchViewModel, homeViewModel);
+
+        final SearchInputBoundary searchInteractor =
+                new SearchInteractor(userDataAccessObject, listingDataAccessObject,
+                        searchOutputBoundary);
+
+        final SearchController searchController = new SearchController(
+                searchInteractor);
+        searchView.setSearchController(searchController);
         return this;
     }
 
@@ -308,6 +368,7 @@ public class AppBuilder {
 
         final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
         sellView.setBackToHomeController(backToHomeController);
+        searchView.setBackToHomeController(backToHomeController);
         wishlistView.setBackToHomeController(backToHomeController);
         return this;
     }
