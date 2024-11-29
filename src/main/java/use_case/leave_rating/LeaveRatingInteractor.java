@@ -12,6 +12,7 @@ import data_access.FirebaseInitializer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The LeaveRating Interactor for Firebase Realtime Database.
@@ -96,8 +97,8 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
                     }
 
                     if (!ratings.isEmpty()) {
-                        double average = calculateAverageRating(ratings);
-                        bookRef.child("averageRating").setValue(average);
+                        long average = (long) calculateAverageRating(ratings);
+                        bookRef.child("averageRating").setValueAsync(average);
                     }
                 }
             }
