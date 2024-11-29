@@ -305,11 +305,12 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                     // Extract the details for each listing
                     final String bookId = listingJson.getString("bookID");
                     final String price = listingJson.getString("price");
+                    final String seller = listingJson.getString("seller");
                     final Book book = bookFactory.create(bookId);
                     final boolean isAvailable = listingJson.getBoolean("isAvailable");
 
                     // Create a Listing object (you need to have a proper constructor for Listing)
-                    final Listing listing = new Listing(bookId, book, price, username, isAvailable);
+                    final Listing listing = new Listing(bookId, book, price, seller, isAvailable);
                     wishlist.add(listing);
                 }
 
