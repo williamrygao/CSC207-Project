@@ -140,7 +140,7 @@ public class FirebaseListingDataAccessObject implements SellBookDataAccessInterf
                     // Extract attributes from JSON and create a Listing
                     String bookID = jsonListing.getString("bookID");
                     String price = jsonListing.getString("price");
-                    String sellerUsername = jsonListing.getString("sellerUsername");
+                    String sellerUsername = jsonListing.getString("seller");
 
                     // Create the Listing object using the BookFactory and extracted attributes
                     listings.add(new Listing(
