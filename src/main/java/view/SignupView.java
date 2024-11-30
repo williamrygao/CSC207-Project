@@ -6,13 +6,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -61,15 +55,27 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         signUp.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
+                    private final String error = "Please input a valid ";
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(signUp)) {
                             final SignupState currentState = signupViewModel.getState();
 
-                            signupController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword(),
-                                    currentState.getRepeatPassword()
-                            );
+                            if (currentState.getUsername().isEmpty()) {
+                                signupController.error(SignupView.this, error + "username.");
+                            }
+                            else if (currentState.getPassword().isEmpty()) {
+                                signupController.error(SignupView.this, error + "password.");
+                            }
+                            else if (currentState.getRepeatPassword().isEmpty()) {
+                                signupController.error(SignupView.this, "Please input your password again.");
+                            }
+                            else {
+                                signupController.execute(
+                                        currentState.getUsername(),
+                                        currentState.getPassword(),
+                                        currentState.getRepeatPassword()
+                                );
+                            }
                         }
                     }
                 }
@@ -83,7 +89,29 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 }
         );
 
-        cancel.addActionListener(this);
+        cancel.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(cancel)) {
+                            // Show a confirmation dialog before exiting
+                            final int option = JOptionPane.showConfirmDialog(
+                                    SignupView.this,
+                                    "Are you sure you want to cancel and exit?",
+                                    "Exit Confirmation",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.WARNING_MESSAGE
+                            );
+
+                            if (option == JOptionPane.YES_OPTION) {
+                                // Exit the application if the user confirms
+                                System.exit(0);
+                            }
+                            // If NO_OPTION is selected, do nothing and stay on the current screen
+                        }
+                    }
+                }
+        );
 
         addUsernameListener();
         addPasswordListener();
@@ -91,7 +119,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
+        this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
@@ -178,14 +208,13 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final SignupState state = (SignupState) evt.getNewValue();
-        if (state.getUsernameError() != null) {
-            JOptionPane.showMessageDialog(this, state.getUsernameError());
+        if (state.getSignupError() != null) {
+            JOptionPane.showMessageDialog(this, state.getSignupError());
         }
     }
 

@@ -2,6 +2,10 @@ package interface_adapter.signup;
 
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInputData;
+import view.SignupView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Controller for the Signup Use Case.
@@ -40,5 +44,14 @@ public class SignupController {
      */
     public void switchToLoginView() {
         userSignupUseCaseInteractor.switchToLoginView();
+    }
+
+    /**
+     * Executes the Signup Use Case for errors.
+     * @param errorMessage the error message to display to user
+     * @param center where the panel will be centered
+     */
+    public void error(Component center, String errorMessage) {
+        JOptionPane.showMessageDialog(center, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
