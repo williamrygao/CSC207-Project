@@ -37,7 +37,7 @@ import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
  * The View for when the user is logged into the program.
  */
 public class HomeView extends JPanel implements PropertyChangeListener {
-    private final String viewName = "logged in";
+    private final String viewName = "home";
     private final HomeViewModel homeViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
