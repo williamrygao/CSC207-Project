@@ -72,9 +72,73 @@ Currently, our project does not support Android implementation, but it’s a fea
 
 ## Usage Guide
 
- Usage guide (instructions on how to use the software)
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify how to use the software once it is downloaded
+### Usage Guide for Joe's Bookstore
+
+Once you've successfully installed Joe's Bookstore and set up your environment, follow the steps below to start using the software and begin browsing, buying, and selling books.
+
+---
+
+#### **Setting Up the Project Locally**
+
+**1. Clone the repository to your local machine:**
+
+   git clone https://github.com/yourusername/joes-bookstore.git
+
+Navigate to the project folder:
+
+Copy code
+cd projectname
+
+**Open the project in IntelliJ (or your preferred IDE):**
+
+In IntelliJ, click the Run button or use the terminal to run the main class (usually Main.java or equivalent entry point). 
+You can also use Maven to build the project:
+
+mvn clean install
+mvn exec:java
+
+Verify the project builds correctly without errors.
+
+**2. Interacting with the Application**
+
+**Main Features:**
+
+**Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
+
+**Filters and Sorting:** You can sort by price, ratings, or publication date to refine your search results.
+
+**Browse Categories:** Explore books sorted by genre/category or rating.
+
+**Purchase Books:** Add books to your cart and proceed to checkout to purchase.
+
+**Sell Books:** List books for sale by uploading book details, including title, author, genre, and price.
+
+**3. Google Books API Integration**
+
+The application integrates with the Google Books API to fetch book details based on your search queries.
+Search through the API by using the [endpoint.](https://www.googleapis.com/books/v1/volumes?q=search%20terms) 
+The API will return relevant book information like title, authors, descriptions, and availability.
+
+**4. Firebase Integration (For Contributors)**
+
+Firebase is used to store and retrieve data for the application, such as user accounts, purchase history, and book listings.
+
+**Adding Data:** Contributors can access Firebase to add new books, update book details, or remove listings.
+Firebase data operations can be done through Firebase Admin SDK, with relevant permissions granted via API keys.
+
+**5. Running Tests**
+
+Unit tests and integration tests are provided for core functionalities.
+To run tests, use the built-in testing tools in IntelliJ (JUnit) or execute the tests via Maven:
+
+mvn test
+
+**6. Feedback & Contributions**
+
+If you encounter any issues or would like to suggest features, please feel free to submit [feedback form](https://docs.google.com/forms/d/e/1FAIpQLSdMBz0mUjYl57bAOSNlAt0em3yHeEJynOQUuhzR0vUzXEaiwA/viewform?usp=sf_link). or contribute via GitHub:
+Fork the repository and submit a Pull Request with your changes.
+
+Report bugs or submit feature requests by opening Issues in the GitHub repository.
 
 ## License
 
