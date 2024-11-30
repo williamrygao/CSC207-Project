@@ -32,33 +32,35 @@ clarify the software’s features
 Prerequisites:
 Before installing Joe's Bookstore, ensure you have/can access the following:
 
-1. Install IntelliJ (Preferred IDE)
+**1. Install IntelliJ (Preferred IDE)**
    Purpose: IntelliJ is an integrated development environment (IDE) tailored for Java development and is highly recommended for this project.
-   While it’s not strictly required, it offers advanced features that will enhance your productivity. (https://www.jetbrains.com/help/idea/installation-guide.html)
+   While it’s not strictly required, it offers advanced features that will enhance your productivity. 
+   [Software installation guide](https://www.jetbrains.com/help/idea/installation-guide.html)
    
-   Notes:
-   Ultimate vs Community: The Ultimate version includes features like generating UML diagrams and more advanced integrations.
+   **Notes:**
+   **Ultimate vs Community:** The Ultimate version includes features like generating UML diagrams and more advanced integrations.
    While the Community Edition is sufficient to get started, the Ultimate version is preferred for full functionality.
-   Plugins: Install plugins for enhanced functionality (e.g., UML diagram generation, code analysis).
-   Instructions for installing plugins: https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_repo
+   **Plugins:** Install plugins for enhanced functionality (e.g., UML diagram generation, code analysis).
+   Instructions for [installing plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_repo)
    
-   Recommended Plugins:
+   **Recommended Plugins:**
+   
    Code Style & Best Practices: CheckStyle-IDEA, SonarLint
    Visualization & UML: Java Visualizer, PlantUML Integration, Diagrams.net Integration
    
-3. Install Java
-   Install JDK 11+ (JDK 17+ recommended) via IntelliJ (https://www.jetbrains.com/help/idea/sdk.html#manage_sdks).
+**3. Install Java**
+   Install JDK 11+ (JDK 17+ recommended) via [IntelliJ]( https://www.jetbrains.com/help/idea/sdk.html#manage_sdks).
    Follow these instructions to download and set up JDK.
 
-4. GoogleBooksAPI (Data Access)
-   The Google Books API can be accessed using the endpoint: https://www.googleapis.com/books/v1/volumes?q=search%20terms to retrieve book data based on search queries.
+**4. GoogleBooksAPI (Data Access)**
+   The Google Books API can be accessed using the [endpoint](https://www.googleapis.com/books/v1/volumes?q=search%20terms) to retrieve book data based on search queries.
 
-5. Firebase Account & Firebase SDK (For contributors):
-   Set up a Firebase account (https://firebase.google.com/) . Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
+**5. Firebase Account & Firebase SDK (For contributors):**
+   Set up a [Firebase](https://firebase.google.com/) account. Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
    API Key for the database used for the project would be made available to admins for modifications and updates.
 
-6. Git:
-   Git is required for cloning the repository. Install Git here: https://git-scm.com/downloads.
+**6. Git:**
+   Git is required for cloning the repository. [Install Git](https://git-scm.com/downloads.)
 
 Special Notes:
 
