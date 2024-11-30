@@ -30,9 +30,13 @@ clarify the software’s features
 ## Installation Instructions
 
 Prerequisites:
-Before installing Joe's Bookstore, ensure you have the following:
+Before installing Joe's Bookstore, ensure you have/can access the following:
 
-1. GoogleBooksAPI
+1. Install Java
+   Install JDK 11+ (JDK 17+ recommended) via IntelliJ (https://www.jetbrains.com/help/idea/sdk.html#manage_sdks).
+   Follow these instructions to download and set up JDK.
+
+2. GoogleBooksAPI (Data Access)
    The Google Books API can be accessed using the endpoint: https://www.googleapis.com/books/v1/volumes?q=search%20terms to retrieve book data based on search queries.
 
 3. Firebase Account & Firebase SDK (For contributors):
