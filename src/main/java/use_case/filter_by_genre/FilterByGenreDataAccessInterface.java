@@ -1,4 +1,4 @@
-package use_case.filter_by_category;
+package use_case.filter_by_genre;
 
 import java.util.List;
 

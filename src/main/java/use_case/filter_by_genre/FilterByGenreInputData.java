@@ -1,4 +1,4 @@
-package use_case.filter_by_category;
+package use_case.filter_by_genre;
 
 /**
  * Deals with data structure representing the input data for the "Filter Books by Genre" use case.
