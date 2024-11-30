@@ -25,39 +25,38 @@ Joe's Bookstore is designed to make the process of browsing, buying, and selling
 
 **1. User Authentication**
 
-Secure sign-up and login functionality.<br>
-User data is securely stored for easy access to purchase history, wishlists, and more.
+- Secure sign-up and login functionality.<br>
+- User data is securely stored for easy access to purchase history, wishlists, and more.
 
 **2. Book Search and Rating system**
 
-Search for books using specific queries such as book title, author, and more.<br>
-Users can rate books they’ve read, helping others discover highly-rated titles.
+- Search for books using specific queries such as book title, author, and more.<br>
+- Users can rate books they’ve read, helping others discover highly-rated titles.
 
 **3. Browse Categories**
 
-Apply filters to sort results by categories/genres or rating.<br>
-Explore books sorted by different categories/genres or ratings to find books of interest.
+- Apply filters to sort results by categories/genres or rating.<br>
+- Explore books sorted by different categories/genres or ratings to find books of interest.
 
 **4. Purchase and Sell Books**
 
-User can build a wishlist.<br>
-Users can buy books listed by others or list their own books for sale.
+- User can build a wishlist.<br>
+- Users can buy books listed by others or list their own books for sale.
 
 **5. Google Books API Integration**
 
-Fetches detailed book information from the Google Books API including:<br>
-<br>
-Title, authors, category/genre, description, availability, and ratings.<br>
-Allows real-time access to a vast catalog of books, providing the most up-to-date information available.
+Fetches detailed book information from the Google Books API including:
+- Title, authors, category/genre, description, availability, and ratings.<br>
+- Allows real-time access to a vast catalog of books, providing the most up-to-date information available.
 
 **6. Firebase Integration**
 
-Handles user authentication, book listings, and user data storage.<br>
-Contributors can add new books, update existing listings, or remove outdated books via the Firebase Admin SDK.
+- Handles user authentication, book listings, and user data storage.<br>
+- Contributors can add new books or update existing listings via the Firebase Admin SDK.
 
 **7. Unit and Integration Tests**
 
-Built-in unit tests and integration tests to ensure key functionality works seamlessly.
+- Built-in unit tests and integration tests to ensure key functionality works seamlessly.
 
 ## Installation Instructions
 
