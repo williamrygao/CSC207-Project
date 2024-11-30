@@ -9,9 +9,9 @@ public class SignupState {
      */
     private String username = "";
     /**
-     * String usernameError.
+     * String error.
      */
-    private String usernameError;
+    private String signupError;
     /**
      * String password = "".
      */
@@ -38,11 +38,11 @@ public class SignupState {
     }
 
     /**
-     * Getter for Username Error.
-     * @return usernameError
+     * Getter for signup error.
+     * @return signup error
      */
-    public String getUsernameError() {
-        return usernameError;
+    public String getSignupError() {
+        return signupError;
     }
 
     /**
@@ -86,11 +86,11 @@ public class SignupState {
     }
 
     /**
-     * Setter for usernameError.
-     * @param usernameError the usernameError
+     * Setter for signup error.
+     * @param signupError the signup error
      */
-    public void setUsernameError(final String usernameError) {
-        this.usernameError = usernameError;
+    public void setSignupError(final String signupError) {
+        this.signupError = signupError;
     }
 
     /**
