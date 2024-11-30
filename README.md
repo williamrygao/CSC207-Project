@@ -64,40 +64,50 @@ Prerequisites:
 Before installing Joe's Bookstore, ensure you have/can access the following:
 
 **1. Install IntelliJ (Preferred IDE)**
+
    Purpose: IntelliJ is an integrated development environment (IDE) tailored for Java development and is highly recommended for this project.
    While it’s not strictly required, it offers advanced features that will enhance your productivity. 
    [Software installation guide](https://www.jetbrains.com/help/idea/installation-guide.html)
    
    **Notes:**
-   **Ultimate vs Community:** The Ultimate version includes features like generating UML diagrams and more advanced integrations.
+   
+   **Ultimate vs Community:** 
+   The Ultimate version includes features like generating UML diagrams and more advanced integrations.
    While the Community Edition is sufficient to get started, the Ultimate version is preferred for full functionality.
+   
    **Plugins:** Install plugins for enhanced functionality (e.g., UML diagram generation, code analysis).
    Instructions for [installing plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_repo)
    
    **Recommended Plugins:**
    
-   Code Style & Best Practices: CheckStyle-IDEA, SonarLint
-   Visualization & UML: Java Visualizer, PlantUML Integration, Diagrams.net Integration
+   - Code Style & Best Practices: CheckStyle-IDEA, SonarLint
+   - Visualization & UML: Java Visualizer, PlantUML Integration, Diagrams.net Integration
    
 **3. Install Java**
+
    Install JDK 11+ (JDK 17+ recommended) via [IntelliJ]( https://www.jetbrains.com/help/idea/sdk.html#manage_sdks).
    Follow these instructions to download and set up JDK.
 
 **4. GoogleBooksAPI (Data Access)**
+
    The Google Books API can be accessed using the [endpoint](https://www.googleapis.com/books/v1/volumes?q=search%20terms) to retrieve book data based on search queries.
 
 **5. Firebase Account & Firebase SDK (For contributors):**
+
    Set up a [Firebase](https://firebase.google.com/) account. Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
    API Key for the database used for the project would be made available to admins for modifications and updates.
 
 **6. Git:**
+
    Git is required for cloning the repository. [Install Git](https://git-scm.com/downloads.)
 
 **Special Notes:**
 
 IntelliJ is highly recommended for managing dependencies, building the project, and working with version control. 
 While it's not required, using it will make tasks like debugging and testing more efficient.
+
 **For MacOS:** Ensure to download the .dmg version and follow the Mac-specific installation steps.
+
 **For Windows:** Use the .exe installer and follow Windows-specific instructions for installation.
 Currently, our project does not support Android implementation, but it’s a feature planned for future updates.
 
@@ -109,9 +119,9 @@ Once you've successfully installed Joe's Bookstore and set up your environment, 
 
 ---
 
-#### **Setting Up the Project Locally**
+#### **1. Setting Up the Project Locally**
 
-**1. Clone the repository to your local machine:**
+**Clone the repository to your local machine:**
 
 ```bash
 git clone https://github.com/williamrygao/CSC207-Project.git
@@ -138,15 +148,15 @@ Verify that the project runs without errors.
 
 Main Features:
 
-**User Authentication:** Sign up and log in securely.
+- **User Authentication:** Sign up and log in securely.
 
-**Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
+- **Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
 
-**Filters and Sorting:** You can sort by price, ratings, or publication date to refine your search results.
+- **Filters and Sorting:** You can sort by price, ratings, or publication date to refine your search results.
 
-**Browse Categories:** Explore books sorted by genre/category or rating.
+- **Browse Categories:** Explore books sorted by genre/category or rating.
 
-**Purchase/Sell Books:** Buy or List books for sale .
+- **Purchase/Sell Books:** Buy or List books for sale .
 
 **3. Google Books API Integration**
 
@@ -157,25 +167,25 @@ The API will return relevant book information like title, authors, descriptions,
 **4. Key Integrations (For Contributors)**
 
 **Google Books API**
+
 The app fetches book data from the Google Books API. 
 This integration enhances search functionality, allowing users to explore detailed information about books, including:
 
-Title<br>
-Author<br>
-Category/Genre<br>
-Description<br>
-Availability<br>
-Ratings
+- Title<br>
+- Author<br>
+- Category/Genre<br>
+- Description<br>
+- Availability<br>
+- Ratings
 
 **Firebase Integration**
 
 Firebase handles all database operations:
 
-**User Authentication:** Stores user credentials securely.
-**Book Listings:** Adds, updates, and removes book data.
-**User Data:** Manages purchase history, wishlists, and more.
-
-**Adding Data:** Contributors can access Firebase to add new books, update book details, or remove listings.
+- **User Authentication:** Stores user credentials securely.
+- **Book Listings:** Adds, updates, and removes book data.
+- **User Data:** Manages purchase history, wishlists, and more.
+- **Adding Data:** Contributors can access Firebase to add new books, update book details, or remove listings.
 Firebase data operations can be done through Firebase Admin SDK, with relevant permissions granted via API keys.
 
 **5. Running Tests**
