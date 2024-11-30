@@ -2,8 +2,8 @@ package use_case.search;
 
 import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
-import entity.Book;
-import entity.BookFactory;
+import entity.book.Book;
+import entity.book.BookFactory;
 import entity.Listing;
 
 /**

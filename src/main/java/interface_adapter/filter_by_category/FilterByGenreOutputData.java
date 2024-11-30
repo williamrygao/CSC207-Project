@@ -2,7 +2,7 @@ package interface_adapter.filter_by_category;
 
 import java.util.List;
 
-import entity.Book;
+import entity.book.Book;
 
 /**
  * Data structure representing the output data for the "Filter Books by Genre" use case.

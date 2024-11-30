@@ -1,12 +1,10 @@
 package use_case.signup;
 
 import data_access.FirebaseUserDataAccessObject;
-import entity.CommonUserFactory;
-import entity.User;
-import entity.UserFactory;
+import entity.user.CommonUserFactory;
+import entity.user.User;
+import entity.user.UserFactory;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 

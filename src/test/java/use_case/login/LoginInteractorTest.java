@@ -2,13 +2,11 @@ package use_case.login;
 
 import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
-import entity.BookFactory;
-import entity.CommonUserFactory;
-import entity.User;
-import entity.UserFactory;
+import entity.book.BookFactory;
+import entity.user.CommonUserFactory;
+import entity.user.User;
+import entity.user.UserFactory;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
