@@ -50,12 +50,14 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     private final OkHttpClient httpClient;
     private final String firebaseBaseUrl;
     private BookFactory bookFactory;
+    private String currentUsername;
 
     /**
      * Constructor for FirebaseUserDataAccessObject.
      *
-     * @param userFactory    Factory for creating User objects.
+     * @param userFactory Factory for creating User objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
+     * @param bookFactory Factory for creating Book objects.
      */
     public FirebaseUserDataAccessObject(final UserFactory userFactory, final BookFactory bookFactory, final String firebaseBaseUrl) {
         this.userFactory = userFactory;
@@ -66,8 +68,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public User get(final String username) {
-        String url = firebaseBaseUrl + "/users/" + username + ".json";
-        Request request = new Request.Builder()
+        final String url = firebaseBaseUrl + "/users/" + username + ".json";
+        final Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
@@ -75,9 +77,9 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                JSONObject userJson = new JSONObject(response.body().string());
-                String name = userJson.getString("username");
-                String password = userJson.getString("password");
+                final JSONObject userJson = new JSONObject(response.body().string());
+                final String name = userJson.getString("username");
+                final String password = userJson.getString("password");
                 return userFactory.create(name, password);
             }
         }
@@ -90,20 +92,27 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void setCurrentUsername(final String name) {
-        // This might involve storing the username in a local variable or shared preference if needed.
+        // Store the current username
+        this.currentUsername = name;
     }
 
     @Override
     public boolean existsByName(final String username) {
-        String url = firebaseBaseUrl + "/users/" + username + ".json";
-        Request request = new Request.Builder()
+        final String url = firebaseBaseUrl + "/users/" + username + ".json";
+        final Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            return response.isSuccessful() && response.body() != null && !response.body().string().equals("null");
+            if (!response.isSuccessful() || response.body() == null) {
+                return false;
+            }
+
+            // Read the body once, check if it's "null"
+            final String responseBody = response.body().string();
+            return !responseBody.equals("null");
         }
         catch (IOException e) {
             throw new RuntimeException("Error checking user existence: " + e.getMessage(), e);
@@ -292,7 +301,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public String getCurrentUsername() {
-        return null;
+        return this.currentUsername;
     }
 
     @Override
