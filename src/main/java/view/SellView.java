@@ -3,7 +3,6 @@ package view;
 import entity.Book;
 import entity.BookFactory;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.login.LoginState;
 import interface_adapter.sell.SellController;
 import interface_adapter.sell.SellState;
 import interface_adapter.sell.SellViewModel;
@@ -20,7 +19,7 @@ import java.beans.PropertyChangeListener;
  */
 public class SellView extends JPanel implements PropertyChangeListener {
 
-    private final String viewName = "sell";
+    private final String viewName = "Sell";
     private final SellViewModel sellViewModel;
     private BackToHomeController backToHomeController;
     private SellController sellController;
@@ -132,7 +131,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(price)) {
                         final String bookID = bookIDInputField.getText();
-                        if (bookID == null || "".equals(bookID)) {
+                        if (bookID == null || bookID.isEmpty()) {
                             updatePriceLabel("Error, please input a valid book ID");
                         }
                         else {
@@ -150,7 +149,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(sell)) {
                         final SellState currentState = sellViewModel.getState();
                         final String sellingPrice = priceInputField.getText();
-                        if (sellingPrice == null || "".equals(sellingPrice)) {
+                        if (sellingPrice == null || sellingPrice.isEmpty()) {
                             updatePriceLabel("Error, please input a valid selling price");
                         }
                         else {

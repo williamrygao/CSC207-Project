@@ -25,9 +25,9 @@ public class SignupViewModel extends ViewModel<SignupState> {
     public static final String REPEAT_PASSWORD_LABEL = "Enter password again";
 
     /**
-     * String SIGNUP_BUTTON_LABEL = "Sign up".
+     * String SIGNUP_BUTTON_LABEL = "Sign Up".
      */
-    public static final String SIGNUP_BUTTON_LABEL = "Sign up";
+    public static final String SIGNUP_BUTTON_LABEL = "Sign Up";
     /**
      * String CANCEL_BUTTON_LABEL = "Cancel".
      */
@@ -42,7 +42,7 @@ public class SignupViewModel extends ViewModel<SignupState> {
      * SignupViewModel method.
      */
     public SignupViewModel() {
-        super("sign up");
+        super("Sign Up");
         setState(new SignupState());
     }
 

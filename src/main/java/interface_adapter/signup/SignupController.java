@@ -29,10 +29,8 @@ public class SignupController {
      * @param password1 the password
      * @param password2 the password repeated
      */
-    public void execute(final String username, final String password1,
-                        final String password2) {
-        final SignupInputData signupInputData = new SignupInputData(
-                username, password1, password2);
+    public void execute(final String username, final String password1, final String password2) {
+        final SignupInputData signupInputData = new SignupInputData(username, password1, password2);
 
         userSignupUseCaseInteractor.execute(signupInputData);
     }
