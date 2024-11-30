@@ -83,12 +83,12 @@ Once you've successfully installed Joe's Bookstore and set up your environment, 
 **1. Clone the repository to your local machine:**
 
 ```bash
-git clone https://github.com/yourusername/joes-bookstore.git
+git clone https://github.com/williamrygao/CSC207-Project.git
 ```
 Navigate to the project folder:
 
 ```bash
-cd projectname
+cd CSC207-Project
 ```
 
 **Open the project in IntelliJ (or your preferred IDE):**
@@ -101,11 +101,13 @@ mvn clean install
 mvn exec:java
 ```
 
-Verify the project builds correctly without errors.
+Verify that the project runs without errors.
 
 **2. Interacting with the Application**
 
 Main Features:
+
+**User Authentication:** Sign up and log in securely.
 
 **Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
 
@@ -113,9 +115,7 @@ Main Features:
 
 **Browse Categories:** Explore books sorted by genre/category or rating.
 
-**Purchase Books:** Add books to your cart and proceed to checkout to purchase.
-
-**Sell Books:** List books for sale by uploading book details, including title, author, genre, and price.
+**Purchase/Sell Books:** Buy or List books for sale .
 
 **3. Google Books API Integration**
 
@@ -123,9 +123,26 @@ The application integrates with the Google Books API to fetch book details based
 Search through the API by using the [endpoint.](https://www.googleapis.com/books/v1/volumes?q=search%20terms) 
 The API will return relevant book information like title, authors, descriptions, and availability.
 
-**4. Firebase Integration (For Contributors)**
+**4. Key Integrations (For Contributors)**
 
-Firebase is used to store and retrieve data for the application, such as user accounts, purchase history, and book listings.
+**Google Books API**
+The app fetches book data from the Google Books API. 
+This integration enhances search functionality, allowing users to explore detailed information about books, including:
+
+Title
+Author
+Category/Genre
+Description
+Availability
+Ratings
+
+**Firebase Integration**
+
+Firebase handles all database operations:
+
+**User Authentication:** Stores user credentials securely.
+**Book Listings:** Adds, updates, and removes book data.
+**User Data:** Manages purchase history, wishlists, and more.
 
 **Adding Data:** Contributors can access Firebase to add new books, update book details, or remove listings.
 Firebase data operations can be done through Firebase Admin SDK, with relevant permissions granted via API keys.
