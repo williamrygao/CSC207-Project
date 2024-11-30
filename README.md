@@ -62,12 +62,12 @@ Before installing Joe's Bookstore, ensure you have/can access the following:
 **6. Git:**
    Git is required for cloning the repository. [Install Git](https://git-scm.com/downloads.)
 
-Special Notes:
+**Special Notes:**
 
 IntelliJ is highly recommended for managing dependencies, building the project, and working with version control. 
 While it's not required, using it will make tasks like debugging and testing more efficient.
-For MacOS: Ensure to download the .dmg version and follow the Mac-specific installation steps.
-For Windows: Use the .exe installer and follow Windows-specific instructions for installation.
+**For MacOS:** Ensure to download the .dmg version and follow the Mac-specific installation steps.
+**For Windows:** Use the .exe installer and follow Windows-specific instructions for installation.
 Currently, our project does not support Android implementation, but it’s a feature planned for future updates.
 
 ## Usage Guide
