@@ -129,11 +129,11 @@ The API will return relevant book information like title, authors, descriptions,
 The app fetches book data from the Google Books API. 
 This integration enhances search functionality, allowing users to explore detailed information about books, including:
 
-Title
-Author
-Category/Genre
-Description
-Availability
+Title<br>
+Author<br>
+Category/Genre<br>
+Description<br>
+Availability<br>
 Ratings
 
 **Firebase Integration**
