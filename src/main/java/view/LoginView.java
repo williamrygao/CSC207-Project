@@ -25,11 +25,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private BackToSignupController backToSignupController;
 
     private final JTextField usernameInputField = new JTextField(15);
-    private final JLabel usernameErrorField = new JLabel();
-    private JLabel errorLabel;
-
     private final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JLabel passwordErrorField = new JLabel();
 
     private final JButton logIn;
     private final JButton backToSignup;
@@ -40,33 +36,24 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.loginViewModel = loginViewModel;
         loginViewModel.addPropertyChangeListener(this);
 
-        // Initialize the 'priceLabel' before adding it to the UI
-        this.errorLabel = new JLabel("");
-
-        final JLabel title = new JLabel("Login Screen");
+        final JLabel title = new JLabel(LoginViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create priceLabel to display price
-        errorLabel = new JLabel("");
-        errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         final LabelTextPanel usernameInfo = new LabelTextPanel(
-                new JLabel("Username"), usernameInputField);
+                new JLabel(LoginViewModel.USERNAME_LABEL), usernameInputField);
         final LabelTextPanel passwordInfo = new LabelTextPanel(
-                new JLabel("Password"), passwordInputField);
+                new JLabel(LoginViewModel.PASSWORD_LABEL), passwordInputField);
 
         final JPanel buttons = new JPanel();
-        backToSignup = new JButton("Back");
+        backToSignup = new JButton(LoginViewModel.BACK_BUTTON_LABEL);
         buttons.add(backToSignup);
-        logIn = new JButton("Login");
+        logIn = new JButton(LoginViewModel.LOGIN_BUTTON_LABEL);
         buttons.add(logIn);
 
         backToSignup.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(backToSignup)) {
-                        // reset error label
-                        updateErrorLabel("");
                         backToSignupController.execute();
                     }
                 }
@@ -74,16 +61,19 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         logIn.addActionListener(
                 new ActionListener() {
+                    private final String error = "Error, please input a valid ";
                     public void actionPerformed(ActionEvent evt) {
                         final String username = usernameInputField.getText();
                         final String password = passwordInputField.getText();
-                        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
-                            updateErrorLabel("Error, please input a valid username and password.");
+                        if (username == null || username.isEmpty()) {
+                            loginController.error(LoginView.this, error + "username.");
+                        }
+                        else if (password == null || password.isEmpty()) {
+                            loginController.error(LoginView.this, error + "password.");
                         }
                         else {
                             if (evt.getSource().equals(logIn)) {
                                 final LoginState currentState = loginViewModel.getState();
-
                                 loginController.execute(currentState.getUsername(), currentState.getPassword());
                             }
                         }
@@ -145,10 +135,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.add(title);
         this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
-        this.add(usernameErrorField);
         this.add(passwordInfo);
-        this.add(Box.createVerticalStrut(10));
-        this.add(errorLabel);
         this.add(Box.createVerticalStrut(10));
         this.add(buttons);
         this.add(Box.createVerticalGlue());
@@ -159,14 +146,13 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
      * @param evt the ActionEvent to react to
      */
     public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
-        usernameErrorField.setText(state.getLoginError());
+        loginController.error(LoginView.this, state.getLoginError());
     }
 
     public void setBackToSignupController(BackToSignupController backToSignupController) {
@@ -184,13 +170,5 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
-    }
-
-    /**
-     * Updates the errorLabel with the error message.
-     * @param errorMessage the error message
-     */
-    public void updateErrorLabel(String errorMessage) {
-        errorLabel.setText(errorMessage);
     }
 }
