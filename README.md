@@ -83,20 +83,23 @@ Once you've successfully installed Joe's Bookstore and set up your environment, 
 **1. Clone the repository to your local machine:**
 
 ```bash
-   git clone https://github.com/yourusername/joes-bookstore.git
+git clone https://github.com/yourusername/joes-bookstore.git
 ```
 Navigate to the project folder:
 
-Copy code
+```bash
 cd projectname
+```
 
 **Open the project in IntelliJ (or your preferred IDE):**
 
 In IntelliJ, click the Run button or use the terminal to run the main class (usually Main.java or equivalent entry point). 
 You can also use Maven to build the project:
 
+```bash
 mvn clean install
 mvn exec:java
+```
 
 Verify the project builds correctly without errors.
 
@@ -132,7 +135,9 @@ Firebase data operations can be done through Firebase Admin SDK, with relevant p
 Unit tests and integration tests are provided for core functionalities.
 To run tests, use the built-in testing tools in IntelliJ (JUnit) or execute the tests via Maven:
 
+```bash
 mvn test
+```
 
 **6. Feedback & Contributions**
 
