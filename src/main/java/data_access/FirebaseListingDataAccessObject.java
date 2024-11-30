@@ -1,10 +1,5 @@
 package data_access;
 
-import entity.Listing;
-import okhttp3.*;
-import org.json.JSONException;
-import org.json.JSONObject;
-import use_case.login.LoginListingDataAccessInterface;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,8 +8,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.book.BookFactory;
 import entity.Listing;
+import entity.book.Book;
+import entity.book.BookFactory;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -98,18 +94,23 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
 
     @Override
     public void save(final Listing listing) {
-        String url = firebaseBaseUrl + "/listings.json";
-        JSONObject jsonListing = new JSONObject();
+        final String url = firebaseBaseUrl + "/listings.json";
+        final JSONObject jsonListing = new JSONObject();
         try {
             jsonListing.put("bookID", listing.getBook().getBookId());
-            jsonListing.put("price", listing.getPrice());
+            jsonListing.put("title", listing.getBook().getTitle());
+            jsonListing.put("authors", listing.getBook().getAuthors());
+            jsonListing.put("genre", listing.getBook().getGenre());
+            jsonListing.put("bookPrice", listing.getBook().getPrice());
+            jsonListing.put("listingPrice", listing.getPrice());
             jsonListing.put("seller", listing.getSeller());
+            jsonListing.put("rating", listing.getBook().getRating());
             jsonListing.put("isAvailable", true);
 
-            RequestBody body = RequestBody.create(
+            final RequestBody body = RequestBody.create(
                     jsonListing.toString(), MediaType.parse(CONTENT_TYPE_JSON));
 
-            Request request = new Request.Builder()
+            final Request request = new Request.Builder()
                     .url(url)
                     .post(body)
                     .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
@@ -126,69 +127,51 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
         }
     }
 
-    @Override
-    public String getBookPrice(String bookID) {
-        String url = firebaseBaseUrl + "/listings.json?orderBy=\"bookID\"&equalTo=\"" + bookID + "\"";
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
-
-        try (Response response = httpClient.newCall(request).execute()) {
-            if (response.code() == SUCCESS_CODE) {
-                JSONObject jsonResponse = new JSONObject(response.body().string());
-                if (jsonResponse.keys().hasNext()) {
-                    String firstKey = jsonResponse.keys().next();
-                    JSONObject listing = jsonResponse.getJSONObject(firstKey);
-                    return listing.getString("price");
-                }
-            }
-        }
-        catch (IOException | JSONException exception) {
-            exception.printStackTrace();
-        }
-        return "";
-    }
-
     /**
      * Retrieves all listings from the Firebase database.
      *
      * @return a list of listings or an empty list if none exist or an error occurs.
      */
     public List<Listing> getListings() {
-        String url = firebaseBaseUrl + "/listings.json";
-        Request request = new Request.Builder()
+        final String url = firebaseBaseUrl + "/listings.json";
+        final Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
-        List<Listing> listings = new ArrayList<>();
+        final List<Listing> listings = new ArrayList<>();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.code() == SUCCESS_CODE) {
-                String responseBody = response.body().string();
-                JSONObject jsonResponse = new JSONObject(responseBody);
+                final String responseBody = response.body().string();
+                final JSONObject jsonResponse = new JSONObject(responseBody);
 
                 // Iterate over JSON keys to extract listings
-                Iterator<String> keys = jsonResponse.keys();
+                final Iterator<String> keys = jsonResponse.keys();
                 while (keys.hasNext()) {
-                    String key = keys.next();
-                    JSONObject jsonListing = jsonResponse.getJSONObject(key);
+                    final String key = keys.next();
+                    final JSONObject jsonListing = jsonResponse.getJSONObject(key);
 
                     // Extract attributes from JSON and create a Listing
-                    String bookID = jsonListing.getString("bookID");
-                    String price = jsonListing.getString("price");
-                    String seller = jsonListing.getString("seller");
+                    final String bookID = jsonListing.getString("bookID");
+                    final String title = jsonListing.getString("title");
+                    final String authors = jsonListing.getString("authors");
+                    final String genre = jsonListing.getString("genre");
+                    final String bookPrice = jsonListing.getString("bookPrice");
+                    final String listingPrice = jsonListing.getString("listingPrice");
+                    final String seller = jsonListing.getString("seller");
+                    final float rating = jsonListing.getFloat("rating");
+                    final boolean isAvailable = jsonListing.getBoolean("isAvailable");
 
+                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
                     // Create the Listing object using the BookFactory and extracted attributes
                     listings.add(new Listing(
                             bookID,
-                            bookFactory.createBook(bookID),
-                            price,
+                            book,
+                            listingPrice,
                             seller,
-                            true
+                            isAvailable
                     ));
                 }
             }

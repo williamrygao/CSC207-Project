@@ -9,6 +9,7 @@ public interface SellListingDataAccessInterface {
     /**
      * Checks if the given book exists.
      * @param bookID the bookID to look for
+     * @param seller user selling the book
      * @return true if a book with the given book ID exists; false otherwise
      */
     boolean exists(String bookID, String seller);
@@ -18,11 +19,4 @@ public interface SellListingDataAccessInterface {
      * @param listing the book to save
      */
     void save(Listing listing);
-
-    /**
-     * Gets the price of the book from Google API.
-     * @param bookID the ID of the book
-     * @return price of the book with currency
-     */
-    String getBookPrice(String bookID);
 }

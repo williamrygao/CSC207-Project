@@ -1,7 +1,5 @@
 package entity.book;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,24 +12,27 @@ public class Book {
     private String bookId;
     private String title;
     private String authors;
-    private String description;
-    private String price;
     private String genre;
+    private String price;
     private float rating;
-    private List<String> sellers;
 
-    public Book(String bookId, String title, String authors, String description, String price, String genre) {
+    public Book(String bookId, String title, String authors, String genre, String price, float rating) {
         this.bookId = bookId;
         this.title = title;
         this.authors = authors;
-        this.description = description;
-        this.price = price;
         this.genre = genre;
-        this.rating = 0;
-        this.sellers = new ArrayList<>();
+        this.price = price;
+        this.rating = rating;
     }
 
-    // Getters and Setters for title, authors, description
+    public Book(String bookId, String title, String authors, String genre, String price) {
+        this.bookId = bookId;
+        this.title = title;
+        this.authors = authors;
+        this.genre = genre;
+        this.price = price;
+        this.rating = 0;
+    }
 
     public String getBookId() {
         return bookId;
@@ -57,22 +58,6 @@ public class Book {
         this.authors = authors;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String bookDescription) {
-        this.description = bookDescription;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String bookPrice) {
-        this.price = bookPrice;
-    }
-
     public String getGenre() {
         return genre;
     }
@@ -81,24 +66,16 @@ public class Book {
         this.genre = genre;
     }
 
+    public String getPrice() {
+        return price;
+    }
+
     public void setRating(float rating) {
         this.rating = rating;
     }
 
     public float getRating() {
         return rating;
-    }
-
-    public List<String> getSellers() {
-        return sellers;
-    }
-
-    /**
-    * Method to add a seller who is offering this book.
-     * @param sellerId represents the sellerID
-     */
-    public void addSeller(String sellerId) {
-        sellers.add(sellerId);
     }
 
     /**
@@ -140,13 +117,7 @@ public class Book {
                 +
                 ", authors='" + authors + '\''
                 +
-                ", description='" + description + '\''
-                +
-                ", price='" + price + '\''
-                +
                 ", genre='" + genre + '\''
-                +
-                ", sellers=" + sellers
                 +
                 '}';
     }

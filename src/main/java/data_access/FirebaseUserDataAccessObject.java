@@ -104,7 +104,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
         try (Response response = httpClient.newCall(request).execute()) {
             return response.isSuccessful() && response.body() != null && !response.body().string().equals("null");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException("Error checking user existence: " + e.getMessage(), e);
         }
     }
@@ -124,7 +125,14 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                 final JSONObject listingJson = new JSONObject();
                 try {
                     listingJson.put("bookID", listing.getBook().getBookId());
-                    listingJson.put("price", listing.getPrice());
+                    listingJson.put("title", listing.getBook().getTitle());
+                    listingJson.put("authors", listing.getBook().getAuthors());
+                    listingJson.put("genre", listing.getBook().getGenre());
+                    listingJson.put("bookPrice", listing.getBook().getPrice());
+                    listingJson.put("listingPrice", listing.getPrice());
+                    listingJson.put("seller", listing.getSeller());
+                    listingJson.put("rating", listing.getBook().getRating());
+                    listingJson.put("isAvailable", listing.isAvailable());
                     jsonArray.put(listingJson);
                 }
                 catch (JSONException e) {
@@ -186,13 +194,19 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                 while (keys.hasNext()) {
                     final String key = keys.next();
                     final JSONObject jsonListing = wishlistJson.getJSONObject(key);
+
                     final String bookID = jsonListing.getString("bookID");
-                    final String price = jsonListing.getString("price");
+                    final String title = jsonListing.getString("title");
+                    final String authors = jsonListing.getString("authors");
+                    final String genre = jsonListing.getString("genre");
+                    final String bookPrice = jsonListing.getString("bookPrice");
+                    final String listingPrice = jsonListing.getString("listingPrice");
                     final String seller = jsonListing.getString("seller");
+                    final float rating = jsonListing.getFloat("rating");
                     final boolean isAvailable = jsonListing.getBoolean("isAvailable");
 
-                    final Listing currentListing = new Listing(
-                            bookID, bookFactory.createBook(bookID), price, seller, isAvailable);
+                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
+                    final Listing currentListing = new Listing(bookID, book, listingPrice, seller, isAvailable);
 
                     // Use the equals method to verify identity
                     if (listing.equals(currentListing)) {
@@ -244,9 +258,14 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         try {
             // Populate listing JSON
             listingJson.put("bookID", listing.getBook().getBookId());
-            listingJson.put("price", listing.getPrice());
+            listingJson.put("title", listing.getBook().getTitle());
+            listingJson.put("authors", listing.getBook().getAuthors());
+            listingJson.put("genre", listing.getBook().getGenre());
+            listingJson.put("bookPrice", listing.getBook().getPrice());
+            listingJson.put("listingPrice", listing.getPrice());
             listingJson.put("seller", listing.getSeller());
-            listingJson.put("isAvailable", true);
+            listingJson.put("rating", listing.getBook().getRating());
+            listingJson.put("isAvailable", listing.isAvailable());
 
             // Create request
             final RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
@@ -306,14 +325,20 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                     final JSONObject listingJson = wishlistJson.getJSONObject(key);
 
                     // Extract the details for each listing
-                    final String bookId = listingJson.getString("bookID");
-                    final String price = listingJson.getString("price");
+                    final String bookID = listingJson.getString("bookID");
+                    final String title = listingJson.getString("title");
+                    final String authors = listingJson.getString("authors");
+                    final String genre = listingJson.getString("genre");
+                    final String bookPrice = listingJson.getString("bookPrice");
+                    final String listingPrice = listingJson.getString("listingPrice");
                     final String seller = listingJson.getString("seller");
-                    final Book book = bookFactory.createBook(bookId);
+                    final float rating = listingJson.getFloat("rating");
                     final boolean isAvailable = listingJson.getBoolean("isAvailable");
 
+                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
+
                     // Create a Listing object (you need to have a proper constructor for Listing)
-                    final Listing listing = new Listing(bookId, book, price, seller, isAvailable);
+                    final Listing listing = new Listing(bookID, book, listingPrice, seller, isAvailable);
                     wishlist.add(listing);
                 }
 
