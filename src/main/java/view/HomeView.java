@@ -267,13 +267,21 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             username.setText(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("listing")) {
+        else if (evt.getPropertyName().equals("listings")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            updateListingsController.execute(state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("updateTable")) {
             final HomeState state = (HomeState) evt.getNewValue();
             updateTable(state.getListings(), state.getWishlist());
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("wishlist")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, "wishlist updated for " + state.getUsername());
         }
     }
 

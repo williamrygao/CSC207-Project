@@ -57,7 +57,7 @@ public class BookFactory {
             }
 
             // Create and return a new Book object using the retrieved data
-            return new Book(volumeID, title, authors, description, bookPrice, genre);
+            return new Book(volumeID, title, authors, genre, bookPrice);
         }
         return null;
     }
