@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import interface_adapter.back_to_signup.BackToSignupController;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
@@ -19,26 +20,35 @@ import interface_adapter.login.LoginViewModel;
  */
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private final String viewName = "log in";
+    private final String viewName = "Login";
     private final LoginViewModel loginViewModel;
+    private BackToSignupController backToSignupController;
 
     private final JTextField usernameInputField = new JTextField(15);
     private final JLabel usernameErrorField = new JLabel();
+    private JLabel errorLabel;
 
     private final JPasswordField passwordInputField = new JPasswordField(15);
     private final JLabel passwordErrorField = new JLabel();
 
     private final JButton logIn;
-    private final JButton cancel;
+    private final JButton backToSignup;
     private LoginController loginController;
 
     public LoginView(LoginViewModel loginViewModel) {
 
         this.loginViewModel = loginViewModel;
-        this.loginViewModel.addPropertyChangeListener(this);
+        loginViewModel.addPropertyChangeListener(this);
+
+        // Initialize the 'priceLabel' before adding it to the UI
+        this.errorLabel = new JLabel("");
 
         final JLabel title = new JLabel("Login Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Create priceLabel to display price
+        errorLabel = new JLabel("");
+        errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel("Username"), usernameInputField);
@@ -46,27 +56,40 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 new JLabel("Password"), passwordInputField);
 
         final JPanel buttons = new JPanel();
-        logIn = new JButton("log in");
+        backToSignup = new JButton("Back");
+        buttons.add(backToSignup);
+        logIn = new JButton("Login");
         buttons.add(logIn);
-        cancel = new JButton("cancel");
-        buttons.add(cancel);
 
-        logIn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(logIn)) {
-                            final LoginState currentState = loginViewModel.getState();
-
-                            loginController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword()
-                            );
-                        }
+        backToSignup.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(backToSignup)) {
+                        // reset error label
+                        updateErrorLabel("");
+                        backToSignupController.execute();
                     }
                 }
         );
 
-        cancel.addActionListener(this);
+        logIn.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        final String username = usernameInputField.getText();
+                        final String password = passwordInputField.getText();
+                        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+                            updateErrorLabel("Error, please input a valid username and password.");
+                        }
+                        else {
+                            if (evt.getSource().equals(logIn)) {
+                                final LoginState currentState = loginViewModel.getState();
+
+                                loginController.execute(currentState.getUsername(), currentState.getPassword());
+                            }
+                        }
+                    }
+                }
+        );
 
         usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -120,9 +143,13 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         this.add(Box.createVerticalGlue());
         this.add(title);
+        this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
         this.add(usernameErrorField);
         this.add(passwordInfo);
+        this.add(Box.createVerticalStrut(10));
+        this.add(errorLabel);
+        this.add(Box.createVerticalStrut(10));
         this.add(buttons);
         this.add(Box.createVerticalGlue());
     }
@@ -142,6 +169,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         usernameErrorField.setText(state.getLoginError());
     }
 
+    public void setBackToSignupController(BackToSignupController backToSignupController) {
+        this.backToSignupController = backToSignupController;
+    }
+
     private void setFields(LoginState state) {
         usernameInputField.setText(state.getUsername());
         passwordInputField.setText(state.getPassword());
@@ -153,5 +184,13 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
+    }
+
+    /**
+     * Updates the errorLabel with the error message.
+     * @param errorMessage the error message
+     */
+    public void updateErrorLabel(String errorMessage) {
+        errorLabel.setText(errorMessage);
     }
 }
