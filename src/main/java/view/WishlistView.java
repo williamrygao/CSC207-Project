@@ -136,7 +136,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("wishlist")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "wishlist updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(null, "Wishlist updated for " + state.getUsername());
         }
     }
 
