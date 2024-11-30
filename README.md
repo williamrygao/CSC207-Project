@@ -82,8 +82,9 @@ Once you've successfully installed Joe's Bookstore and set up your environment, 
 
 **1. Clone the repository to your local machine:**
 
+```bash
    git clone https://github.com/yourusername/joes-bookstore.git
-
+```
 Navigate to the project folder:
 
 Copy code
