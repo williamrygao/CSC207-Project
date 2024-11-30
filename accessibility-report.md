@@ -1,4 +1,4 @@
-## 1.
+## 1. Universal Principles of Design
 ### 1.1 Equitable Use
 * All features are identically available to all users; in fact, users are indistinguishable aside from their self-determined username.
 * The only barrier to the design are the sign up and login steps, which are familiar to most software users.
@@ -37,7 +37,7 @@ or change their mind.
 * Our program only relies on typing and clicking / dragging of the cursor.
 * To accommodate users who have difficulty typing, a speech-to-text feature would be helpful. 
 
-## 2. 
+## 2. Target Audience
 The main features of Joe's Online Bookstore are discovering, purchasing, or selling books. Hence this software would be
 primarily marketed to avid readers, book collectors, or sellers. The discovery and purchasing features would be helpful
 to readers and collectors who wish to find specific books or types of books, because the online format of the bookstore
@@ -48,7 +48,7 @@ looking to buy textbooks or gift-buyers. The search feature would be particularl
 who would likely have an exact title they intend to purchase. The bookstore would provide a strong selection of books and
 a variety of sellers and prices to choose from.
 
-## 3.
+## 3. Demographic Limitations
 The main demographic concern with Joe's Online Bookstore is age, because elderly users may be less likely to use online
 bookstores in general. For example, they may be accustomed to visiting physical bookstores so that they may physically view and
 interact with the book before deciding to purchase.
