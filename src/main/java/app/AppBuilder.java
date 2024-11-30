@@ -476,7 +476,7 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Joe Repka Bookstore");
+        final JFrame application = new JFrame("Joe Repka's Bookstore");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
