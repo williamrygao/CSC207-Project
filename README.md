@@ -29,22 +29,21 @@ clarify the software’s features
 
 ## Installation Instructions
 
- Installation instructions
- Clear, accurate descriptions of how to install the project from start to finish
- Mentions all packages and software which must be downloaded for the
-project to work
- Provides links to any other packages or software needed
- Includes all technical requirements and information needed to download
-each part of the project
- Includes required versions for all packages or software needed
- Explains if the software is only meant to be installed on a certain OS,
-hardware system, or otherwise (for example, Windows only or Mac only)
- Mentions common issues in the installation process and how they can be
-overcome
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the steps for software installation
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the steps for overcoming common issues
+Prerequisites:
+Before installing Joe's Bookstore, ensure you have the following:
+
+1. Node.js (v14.0.0 or higher):
+   Install Node.js here.
+
+2. Firebase Account & Firebase SDK:
+   Set up a Firebase account here. Once you’ve created a Firebase project, generate an API key and the Firebase configuration object.
+
+3. Git:
+   Git is required for cloning the repository. Install Git here.
+
+Additional Software Requirements:
+   npm (Node Package Manager):
+   npm comes bundled with Node.js, so no additional installation is needed if you have Node.js installed.
 
 ## Usage Guide
 
