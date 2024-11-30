@@ -32,18 +32,13 @@ clarify the software’s features
 Prerequisites:
 Before installing Joe's Bookstore, ensure you have the following:
 
-1. Node.js (v14.0.0 or higher):
-   Install Node.js here.
+1. GoogleBooksAPI
 
-2. Firebase Account & Firebase SDK:
+2. Firebase Account & Firebase SDK (For contributors):
    Set up a Firebase account here. Once you’ve created a Firebase project, generate an API key and the Firebase configuration object.
 
 3. Git:
-   Git is required for cloning the repository. Install Git here.
-
-Additional Software Requirements:
-   npm (Node Package Manager):
-   npm comes bundled with Node.js, so no additional installation is needed if you have Node.js installed.
+   Git is required for cloning the repository. Install Git here: https://git-scm.com/downloads.
 
 ## Usage Guide
 
