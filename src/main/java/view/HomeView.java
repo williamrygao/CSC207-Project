@@ -34,7 +34,7 @@ import interface_adapter.update_listings.UpdateListingsController;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 
 /**
- * The View for when the user is logged into the program.
+ * The home view for Joe Repka's Bookstore.
  */
 public class HomeView extends JPanel implements PropertyChangeListener {
     private final String viewName = "home";
@@ -48,14 +48,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
     private UpdateListingsController updateListingsController;
-    private LeaveRatingController leaveRatingController;  // New controller for rating functionality
+    private LeaveRatingController leaveRatingController;
 
     private final JLabel username;
     private final JButton logOut;
     private final JButton toSell;
     private final JButton toSearch;
     private final JButton viewWishlist;
-    private final JButton toRate;  // Rating button
+    private final JButton toRate;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
@@ -123,7 +123,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
 
-        toRate = new JButton("Rate a Book");  // New button for rating
+        toRate = new JButton("Rate a Book");
         topButtons.add(toRate);
 
         final JPanel bottomButtons = new JPanel();
@@ -281,7 +281,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("wishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "wishlist updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(null, "Wishlist updated for " + state.getUsername());
         }
     }
 
