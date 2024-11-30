@@ -42,7 +42,7 @@ public class SignupViewModel extends ViewModel<SignupState> {
      * SignupViewModel method.
      */
     public SignupViewModel() {
-        super("Sign Up");
+        super(SIGNUP_BUTTON_LABEL);
         setState(new SignupState());
     }
 
