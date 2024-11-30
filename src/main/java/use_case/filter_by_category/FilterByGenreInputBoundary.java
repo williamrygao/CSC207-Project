@@ -1,4 +1,4 @@
-package interface_adapter.filter_by_category;
+package use_case.filter_by_category;
 
 /**
  * Input boundary interface for the "Filter Books by Genre" use case.

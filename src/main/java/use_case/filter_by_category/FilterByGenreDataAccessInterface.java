@@ -1,4 +1,4 @@
-package interface_adapter.filter_by_category;
+package use_case.filter_by_category;
 
 import java.util.List;
 
