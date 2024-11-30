@@ -8,7 +8,7 @@ import interface_adapter.ViewModel;
 public class HomeViewModel extends ViewModel<HomeState> {
 
     public HomeViewModel() {
-        super("logged in");
+        super("home");
         setState(new HomeState());
     }
 

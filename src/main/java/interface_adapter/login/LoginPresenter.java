@@ -1,8 +1,5 @@
 package interface_adapter.login;
 
-import java.util.List;
-
-import entity.Listing;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
@@ -31,16 +28,9 @@ public class LoginPresenter implements LoginOutputBoundary {
         // On success, switch to the logged in view.
         final HomeState homeState = homeViewModel.getState();
         homeState.setUsername(response.getUsername());
-
-        final List<Listing> listings = response.getListings();
-        homeState.setListings(listings);
-
-        final List<Listing> wishlist = response.getWishlist();
-        homeState.setWishlist(wishlist);
-
         this.homeViewModel.setState(homeState);
+
         this.homeViewModel.firePropertyChanged();
-        this.homeViewModel.firePropertyChanged("listing");
 
         this.viewManagerModel.setState(homeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();

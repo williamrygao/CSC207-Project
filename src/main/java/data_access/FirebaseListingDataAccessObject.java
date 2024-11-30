@@ -1,6 +1,5 @@
 package data_access;
 
-import entity.BookFactory;
 import entity.Listing;
 import okhttp3.*;
 import org.json.JSONException;
@@ -14,20 +13,20 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.BookFactory;
+import entity.book.BookFactory;
 import entity.Listing;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import use_case.login.LoginListingDataAccessInterface;
 import use_case.sell.SellListingDataAccessInterface;
+import use_case.update_listings.UpdateListingsListingDataAccessInterface;
 
 /**
  * The DAO for book data.
  */
-public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface, LoginListingDataAccessInterface {
+public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface, UpdateListingsListingDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";

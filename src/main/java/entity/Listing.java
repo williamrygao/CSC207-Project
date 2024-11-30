@@ -2,6 +2,8 @@ package entity;
 
 import java.io.Serializable;
 
+import entity.book.Book;
+
 /**
  * A listing of a book.
  */

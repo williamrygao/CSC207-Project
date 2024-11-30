@@ -1,9 +1,9 @@
 package use_case.logout;
 
 import data_access.FirebaseUserDataAccessObject;
-import entity.CommonUserFactory;
-import entity.User;
-import entity.UserFactory;
+import entity.user.CommonUserFactory;
+import entity.user.User;
+import entity.user.UserFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

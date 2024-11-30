@@ -18,7 +18,8 @@ public class Main {
                                             .addToSellViewUseCase().addToSearchViewUseCase().addSellUseCase()
                                             .addSearchUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
                                             .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
-                                            .addBackToSignupUseCase().addChangePasswordUseCase().build();
+                                            .addBackToSignupUseCase().addChangePasswordUseCase()
+                                            .addUpdateListingsUseCase().build();
 
         application.pack();
         application.setVisible(true);

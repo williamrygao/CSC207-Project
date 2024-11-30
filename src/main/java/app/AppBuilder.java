@@ -11,12 +11,12 @@ import data_access.FirebaseInitializer;
 import data_access.FirebaseListingDataAccessObject;
 import data_access.FirebaseRatingDataAccessObject;
 import data_access.FirebaseUserDataAccessObject;
-import entity.BookFactory;
-import entity.CommonUserFactory;
-import entity.UserFactory;
+import entity.book.BookFactory;
+import entity.user.CommonUserFactory;
+import entity.user.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.add_to_wishlist.AddToWishlistController;
-import interface_adapter.add_to_wishlist.AddToWishlistPresenter;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistPresenter;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.back_to_home.BackToHomePresenter;
 import interface_adapter.back_to_signup.BackToSignupController;
@@ -29,9 +29,9 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.remove_from_wishlist.RemoveFromWishlistPresenter;
-import interface_adapter.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistPresenter;
+import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.search.SearchViewModel;
@@ -45,11 +45,13 @@ import interface_adapter.to_search_view.ToSearchController;
 import interface_adapter.to_search_view.ToSearchPresenter;
 import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_sell_view.ToSellPresenter;
-import interface_adapter.view_wishlist.ViewWishlistController;
-import interface_adapter.view_wishlist.ViewWishlistPresenter;
-import use_case.add_to_wishlist.AddToWishlistInputBoundary;
-import use_case.add_to_wishlist.AddToWishlistInteractor;
-import use_case.add_to_wishlist.AddToWishlistOutputBoundary;
+import interface_adapter.update_listings.UpdateListingsController;
+import interface_adapter.update_listings.UpdateListingsPresenter;
+import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
+import interface_adapter.wishlist.view_wishlist.ViewWishlistPresenter;
+import use_case.wishlist.add_to_wishlist.AddToWishlistInputBoundary;
+import use_case.wishlist.add_to_wishlist.AddToWishlistInteractor;
+import use_case.wishlist.add_to_wishlist.AddToWishlistOutputBoundary;
 import use_case.back_to_home.BackToHomeInputBoundary;
 import use_case.back_to_home.BackToHomeInteractor;
 import use_case.back_to_home.BackToHomeOutputBoundary;
@@ -65,9 +67,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
-import use_case.remove_from_wishlist.RemoveFromWishlistInputBoundary;
-import use_case.remove_from_wishlist.RemoveFromWishlistInteractor;
-import use_case.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInputBoundary;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInteractor;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.search.SearchInputBoundary;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
@@ -83,9 +85,12 @@ import use_case.to_search_view.ToSearchOutputBoundary;
 import use_case.to_sell_view.ToSellInputBoundary;
 import use_case.to_sell_view.ToSellInteractor;
 import use_case.to_sell_view.ToSellOutputBoundary;
-import use_case.view_wishlist.ViewWishlistInputBoundary;
-import use_case.view_wishlist.ViewWishlistInteractor;
-import use_case.view_wishlist.ViewWishlistOutputBoundary;
+import use_case.update_listings.UpdateListingsInputBoundary;
+import use_case.update_listings.UpdateListingsInteractor;
+import use_case.update_listings.UpdateListingsOutputBoundary;
+import use_case.wishlist.view_wishlist.ViewWishlistInputBoundary;
+import use_case.wishlist.view_wishlist.ViewWishlistInteractor;
+import use_case.wishlist.view_wishlist.ViewWishlistOutputBoundary;
 import view.HomeView;
 import view.LoginView;
 import view.SearchView;
@@ -267,7 +272,7 @@ public class AppBuilder {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(
                 viewManagerModel, homeViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, listingDataAccessObject, loginOutputBoundary);
+                userDataAccessObject, loginOutputBoundary);
 
         final LoginController loginController = new LoginController(
                 loginInteractor);
@@ -428,7 +433,7 @@ public class AppBuilder {
      */
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary =
-                new RemoveFromWishlistPresenter(wishlistViewModel);
+                new RemoveFromWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
         final RemoveFromWishlistInputBoundary removeFromWishlistInteractor =
                 new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
         final RemoveFromWishlistController removeFromWishlistController =
@@ -439,11 +444,24 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Update Listings Use Case to the application.
+     * @return this build
+     */
+    public AppBuilder addUpdateListingsUseCase() {
+        final UpdateListingsOutputBoundary updateListingsOutputBoundary = new UpdateListingsPresenter(homeViewModel);
+        final UpdateListingsInputBoundary updateListingsInteractor = new UpdateListingsInteractor(userDataAccessObject, listingDataAccessObject, updateListingsOutputBoundary);
+        final UpdateListingsController updateListingsController = new UpdateListingsController(updateListingsInteractor);
+        homeView.setUpdateListingsController(updateListingsController);
+        return this;
+    }
+
+    /**
      * Adds the Add To Wishlist Use Case to the application.
      * @return this build
      */
     public AppBuilder addAddToWishlistUseCase() {
-        final AddToWishlistOutputBoundary addToWishlistOutputBoundary = new AddToWishlistPresenter(wishlistViewModel);
+        final AddToWishlistOutputBoundary addToWishlistOutputBoundary =
+                new AddToWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
         final AddToWishlistInputBoundary addToWishlistInteractor =
                 new AddToWishlistInteractor(userDataAccessObject, addToWishlistOutputBoundary);
         final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor);

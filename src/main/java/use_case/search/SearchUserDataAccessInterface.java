@@ -1,6 +1,6 @@
 package use_case.search;
 
-import entity.User;
+import entity.user.User;
 
 /**
  * DAO for the Search Use Case.
