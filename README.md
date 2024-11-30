@@ -25,26 +25,48 @@ purchasing books.
 user can determine whether the software is right for them
  Descriptions are clear and only detailed when needed
  Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the software’s features
+clarify the software’s features 
 
 ## Installation Instructions
 
 Prerequisites:
 Before installing Joe's Bookstore, ensure you have/can access the following:
 
-1. Install Java
+1. Install IntelliJ (Preferred IDE)
+   Purpose: IntelliJ is an integrated development environment (IDE) tailored for Java development and is highly recommended for this project.
+   While it’s not strictly required, it offers advanced features that will enhance your productivity. (https://www.jetbrains.com/help/idea/installation-guide.html)
+   
+   Notes:
+   Ultimate vs Community: The Ultimate version includes features like generating UML diagrams and more advanced integrations.
+   While the Community Edition is sufficient to get started, the Ultimate version is preferred for full functionality.
+   Plugins: Install plugins for enhanced functionality (e.g., UML diagram generation, code analysis).
+   Instructions for installing plugins: https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_repo
+   
+   Recommended Plugins:
+   Code Style & Best Practices: CheckStyle-IDEA, SonarLint
+   Visualization & UML: Java Visualizer, PlantUML Integration, Diagrams.net Integration
+   
+3. Install Java
    Install JDK 11+ (JDK 17+ recommended) via IntelliJ (https://www.jetbrains.com/help/idea/sdk.html#manage_sdks).
    Follow these instructions to download and set up JDK.
 
-2. GoogleBooksAPI (Data Access)
+4. GoogleBooksAPI (Data Access)
    The Google Books API can be accessed using the endpoint: https://www.googleapis.com/books/v1/volumes?q=search%20terms to retrieve book data based on search queries.
 
-3. Firebase Account & Firebase SDK (For contributors):
+5. Firebase Account & Firebase SDK (For contributors):
    Set up a Firebase account (https://firebase.google.com/) . Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
    API Key for the database used for the project would be made available to admins for modifications and updates.
 
-4. Git:
+6. Git:
    Git is required for cloning the repository. Install Git here: https://git-scm.com/downloads.
+
+Special Notes:
+
+IntelliJ is highly recommended for managing dependencies, building the project, and working with version control. 
+While it's not required, using it will make tasks like debugging and testing more efficient.
+For MacOS: Ensure to download the .dmg version and follow the Mac-specific installation steps.
+For Windows: Use the .exe installer and follow Windows-specific instructions for installation.
+Currently, our project does not support Android implementation, but it’s a feature planned for future updates.
 
 ## Usage Guide
 
