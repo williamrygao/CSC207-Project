@@ -105,7 +105,7 @@ Verify the project builds correctly without errors.
 
 **2. Interacting with the Application**
 
-**Main Features:**
+Main Features:
 
 **Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
 
