@@ -24,7 +24,8 @@ public class LeaveRatingController {
 
         if (success) {
             presenter.showSuccessMessage("Successfully rated the book with ID: " + bookID + ".");
-        } else {
+        }
+        else {
             presenter.showErrorMessage("Failed to update the rating for the book.");
         }
     }

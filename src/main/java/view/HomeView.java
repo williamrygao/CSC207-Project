@@ -37,7 +37,7 @@ import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
  * The View for when the user is logged into the program.
  */
 public class HomeView extends JPanel implements PropertyChangeListener {
-    private final String viewName = "home";
+    private final String viewName = "logged in";
     private final HomeViewModel homeViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
@@ -47,8 +47,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
-    private LeaveRatingController leaveRatingController;  // New controller for rating functionality
     private UpdateListingsController updateListingsController;
+    private LeaveRatingController leaveRatingController;  // New controller for rating functionality
 
     private final JLabel username;
     private final JButton logOut;
@@ -174,7 +174,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(logOut)) {
                         final HomeState currentState = homeViewModel.getState();
-                        currentState.getUsername();
                         logoutController.execute(
                                 currentState.getUsername()
                         );
@@ -308,20 +307,12 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.changePasswordController = changePasswordController;
     }
 
-    public void setToSellController(ToSellController toSellController) {
-        this.toSellController = toSellController;
-    }
-
-    public void setLogoutController(LogoutController logoutController) {
-        this.logoutController = logoutController;
+    public void setToSearchController(ToSearchController toSearchController) {
+        this.toSearchController = toSearchController;
     }
 
     public void setViewWishlistController(ViewWishlistController viewWishlistController) {
         this.viewWishlistController = viewWishlistController;
-    }
-
-    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
-        this.addToWishlistController = addToWishlistController;
     }
 
     public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
@@ -332,8 +323,16 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.updateListingsController = updateListingsController;
     }
 
-    public void setToSearchController(ToSearchController toSearchController) {
-        this.toSearchController = toSearchController;
+    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
+        this.addToWishlistController = addToWishlistController;
+    }
+
+    public void setLogoutController(LogoutController logoutController) {
+        this.logoutController = logoutController;
+    }
+
+    public void setToSellController(ToSellController toSellController) {
+        this.toSellController = toSellController;
     }
 }
 

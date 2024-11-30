@@ -25,32 +25,143 @@ purchasing books.
 user can determine whether the software is right for them
  Descriptions are clear and only detailed when needed
  Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the software’s features
+clarify the software’s features 
 
 ## Installation Instructions
 
- Installation instructions
- Clear, accurate descriptions of how to install the project from start to finish
- Mentions all packages and software which must be downloaded for the
-project to work
- Provides links to any other packages or software needed
- Includes all technical requirements and information needed to download
-each part of the project
- Includes required versions for all packages or software needed
- Explains if the software is only meant to be installed on a certain OS,
-hardware system, or otherwise (for example, Windows only or Mac only)
- Mentions common issues in the installation process and how they can be
-overcome
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the steps for software installation
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify the steps for overcoming common issues
+Prerequisites:
+Before installing Joe's Bookstore, ensure you have/can access the following:
+
+**1. Install IntelliJ (Preferred IDE)**
+   Purpose: IntelliJ is an integrated development environment (IDE) tailored for Java development and is highly recommended for this project.
+   While it’s not strictly required, it offers advanced features that will enhance your productivity. 
+   [Software installation guide](https://www.jetbrains.com/help/idea/installation-guide.html)
+   
+   **Notes:**
+   **Ultimate vs Community:** The Ultimate version includes features like generating UML diagrams and more advanced integrations.
+   While the Community Edition is sufficient to get started, the Ultimate version is preferred for full functionality.
+   **Plugins:** Install plugins for enhanced functionality (e.g., UML diagram generation, code analysis).
+   Instructions for [installing plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_repo)
+   
+   **Recommended Plugins:**
+   
+   Code Style & Best Practices: CheckStyle-IDEA, SonarLint
+   Visualization & UML: Java Visualizer, PlantUML Integration, Diagrams.net Integration
+   
+**3. Install Java**
+   Install JDK 11+ (JDK 17+ recommended) via [IntelliJ]( https://www.jetbrains.com/help/idea/sdk.html#manage_sdks).
+   Follow these instructions to download and set up JDK.
+
+**4. GoogleBooksAPI (Data Access)**
+   The Google Books API can be accessed using the [endpoint](https://www.googleapis.com/books/v1/volumes?q=search%20terms) to retrieve book data based on search queries.
+
+**5. Firebase Account & Firebase SDK (For contributors):**
+   Set up a [Firebase](https://firebase.google.com/) account. Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
+   API Key for the database used for the project would be made available to admins for modifications and updates.
+
+**6. Git:**
+   Git is required for cloning the repository. [Install Git](https://git-scm.com/downloads.)
+
+**Special Notes:**
+
+IntelliJ is highly recommended for managing dependencies, building the project, and working with version control. 
+While it's not required, using it will make tasks like debugging and testing more efficient.
+**For MacOS:** Ensure to download the .dmg version and follow the Mac-specific installation steps.
+**For Windows:** Use the .exe installer and follow Windows-specific instructions for installation.
+Currently, our project does not support Android implementation, but it’s a feature planned for future updates.
 
 ## Usage Guide
 
- Usage guide (instructions on how to use the software)
- Examples or tutorials (videos, screenshots, or code snippets) are used to
-clarify how to use the software once it is downloaded
+### Usage Guide for Joe's Bookstore
+
+Once you've successfully installed Joe's Bookstore and set up your environment, follow the steps below to start using the software and begin browsing, buying, and selling books.
+
+---
+
+#### **Setting Up the Project Locally**
+
+**1. Clone the repository to your local machine:**
+
+```bash
+git clone https://github.com/williamrygao/CSC207-Project.git
+```
+Navigate to the project folder:
+
+```bash
+cd CSC207-Project
+```
+
+**Open the project in IntelliJ (or your preferred IDE):**
+
+In IntelliJ, click the Run button or use the terminal to run the main class (usually Main.java or equivalent entry point). 
+You can also use Maven to build the project:
+
+```bash
+mvn clean install
+mvn exec:java
+```
+
+Verify that the project runs without errors.
+
+**2. Interacting with the Application**
+
+Main Features:
+
+**User Authentication:** Sign up and log in securely.
+
+**Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
+
+**Filters and Sorting:** You can sort by price, ratings, or publication date to refine your search results.
+
+**Browse Categories:** Explore books sorted by genre/category or rating.
+
+**Purchase/Sell Books:** Buy or List books for sale .
+
+**3. Google Books API Integration**
+
+The application integrates with the Google Books API to fetch book details based on your search queries.
+Search through the API by using the [endpoint.](https://www.googleapis.com/books/v1/volumes?q=search%20terms) 
+The API will return relevant book information like title, authors, descriptions, and availability.
+
+**4. Key Integrations (For Contributors)**
+
+**Google Books API**
+The app fetches book data from the Google Books API. 
+This integration enhances search functionality, allowing users to explore detailed information about books, including:
+
+Title<br>
+Author<br>
+Category/Genre<br>
+Description<br>
+Availability<br>
+Ratings
+
+**Firebase Integration**
+
+Firebase handles all database operations:
+
+**User Authentication:** Stores user credentials securely.
+**Book Listings:** Adds, updates, and removes book data.
+**User Data:** Manages purchase history, wishlists, and more.
+
+**Adding Data:** Contributors can access Firebase to add new books, update book details, or remove listings.
+Firebase data operations can be done through Firebase Admin SDK, with relevant permissions granted via API keys.
+
+**5. Running Tests**
+
+Unit tests and integration tests are provided for core functionalities.
+To run tests, use the built-in testing tools in IntelliJ (JUnit) or execute the tests via Maven:
+
+```bash
+mvn test
+```
+
+**6. Feedback & Contributions**
+
+If you encounter any issues or would like to suggest features, please feel free to submit [feedback form](https://docs.google.com/forms/d/e/1FAIpQLSdMBz0mUjYl57bAOSNlAt0em3yHeEJynOQUuhzR0vUzXEaiwA/viewform?usp=sf_link). or contribute via GitHub:
+Fork the repository and submit a Pull Request with your changes.
+
+Report bugs or submit feature requests by opening Issues in the GitHub repository.
 
 ## License
 
