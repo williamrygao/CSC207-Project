@@ -40,7 +40,8 @@ Before installing Joe's Bookstore, ensure you have/can access the following:
    The Google Books API can be accessed using the endpoint: https://www.googleapis.com/books/v1/volumes?q=search%20terms to retrieve book data based on search queries.
 
 3. Firebase Account & Firebase SDK (For contributors):
-   Set up a Firebase account here. Once you’ve created a Firebase project, generate an API key and the Firebase configuration object.
+   Set up a Firebase account (https://firebase.google.com/) . Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
+   API Key for the database used for the project would be made available to admins for modifications and updates.
 
 4. Git:
    Git is required for cloning the repository. Install Git here: https://git-scm.com/downloads.
