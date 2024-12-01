@@ -1,8 +1,14 @@
 package data_access;
 
+import entity.Listing;
 import entity.user.User;
-import entity.user.UserFactory;
-import service.FirebaseUserDataAccessObject;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for creating and saving a user in Firebase using the FirebaseUserDataAccessObject.
@@ -10,61 +16,58 @@ import service.FirebaseUserDataAccessObject;
  */
 public class UserCreationTest {
 
-    private service.FirebaseUserDataAccessObject dao;
-    private UserFactory userFactory;
+    private FirebaseUserDataAccessObject mockUserRepository;
 
     /**
      * The DAO (Data Access Object) used to interact with Firebase for saving user data.
      */
+    @BeforeEach
     public void setUp() {
-        // Initialize the UserFactory (use a simple implementation for testing)
-        userFactory = new UserFactory() {
-            @Override
-            public User create(String name, String password) {
-                return new User() {
-                    @Override
-                    public String getName() {
-                        return name;
-                    }
-
-                    @Override
-                    public String getPassword() {
-                        return password;
-                    }
-                };
-            }
-        };
-
-        // Initialize the DAO with the real userFactory
-        dao = new FirebaseUserDataAccessObject(userFactory);
+        // Initialize mock of firebase
+        mockUserRepository = mock(FirebaseUserDataAccessObject.class);
     }
 
     /**
      * Test method for saving a user into Firebase.
      * This method will create a user, save it using the DAO, and verify the operation.
      */
+    @Test
     public void testSaveUser() {
         // Arrange
         final String userName = "testUser";
         final String password = "password123";
 
-        final User user = userFactory.create(userName, password);
+        final User user = new User() {
+            @Override
+            public String getName() {
+                return userName;
+            }
+
+            @Override
+            public String getPassword() {
+                return password;
+            }
+
+            @Override
+            public List<Listing> getWishlist() {
+                // Return an empty list for the wishlist
+                return Collections.emptyList();
+            }
+        };
+
+        doNothing().when(mockUserRepository).save(user); // simulate saving user
+        when(mockUserRepository.get(userName)).thenReturn(user); // simulate retrieving the saved user
 
         // Act: Call save on the DAO
-        dao.save(user);
-        System.out.println("User saved successfully.");
-    }
+        mockUserRepository.save(user);
 
-    /**
-     * Main method to run the test from the console.
-     * @param args stuff
-     */
-    public static void main(String[] args) {
-        // Instantiate the test class
-        final UserCreationTest test = new UserCreationTest();
+        // Assert: Verify if the user is saved in the mock Firebase database
+        User savedUser = mockUserRepository.get(userName);
+        assertEquals(userName, savedUser.getName(), "User name should match");
+        assertEquals(password, savedUser.getPassword(), "User password should match");
 
-        // Set up and run the test
-        test.setUp();
-        test.testSaveUser();
+        // Verify that the save method was called once
+        verify(mockUserRepository, times(1)).save(user);
+        verify(mockUserRepository, times(1)).get(userName);
     }
 }
