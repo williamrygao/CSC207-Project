@@ -223,7 +223,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
                         if ((bookID == null || bookID.isEmpty()) && (authors == null || authors.isEmpty())
                                 && (bookTitle == null || bookTitle.isEmpty()) && (price == null || price.isEmpty())) {
-                            updateSearchLabel("Error, please input a valid book ID, "
+                            searchController.error(SearchView.this, "Error, please input a valid book ID, "
                                     + "authors, and/or title of book to search");
                         }
                         else {
