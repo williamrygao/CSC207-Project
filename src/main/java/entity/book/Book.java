@@ -1,5 +1,7 @@
 package entity.book;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,6 +17,7 @@ public class Book {
     private String genre;
     private String price;
     private float rating;
+    private List<Integer> ratings;
 
     public Book(String bookId, String title, String authors, String genre, String price, float rating) {
         this.bookId = bookId;
@@ -23,6 +26,7 @@ public class Book {
         this.genre = genre;
         this.price = price;
         this.rating = rating;
+        this.ratings = new ArrayList<>();
     }
 
     public Book(String bookId, String title, String authors, String genre, String price) {
@@ -36,6 +40,29 @@ public class Book {
 
     public String getBookId() {
         return bookId;
+    }
+
+    public double getAverageRating() {
+        if (ratings.isEmpty()) {
+            return 0.0; // Return 0 if there are no ratings
+        }
+        int sum = 0;
+        for (int rating : ratings) {
+            sum += rating;
+        }
+        return sum / (double) ratings.size(); // Calculate and return the average rating
+    }
+
+    public List<Integer> getRatings() {
+        return ratings;
+    }
+
+    public void addRating(int rating) {
+        ratings.add(rating); // Add new rating to the list
+    }
+
+    public void setRatings(List<Integer> ratings) {
+        this.ratings = ratings;
     }
 
     public void setBookId(String bookId) {

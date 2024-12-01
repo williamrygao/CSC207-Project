@@ -101,6 +101,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         bookTable = new JTable(tableModel);
 
+
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
 
@@ -215,14 +216,25 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                         if (ratingValue < 1 || ratingValue > 10) {
                             throw new NumberFormatException("Rating must be between 1 and 10.");
                         }
-                        // Execute the controller to handle the rating
+
+                        // Find the book by bookId and add the new rating
                         final HomeState currentState = homeViewModel.getState();
-                        leaveRatingController.execute(bookId, ratingValue);
+                        for (Listing listing : currentState.getListings()) {
+                            if (listing.getBook().getBookId().equals(bookId)) {
+                                // Add the new rating to the book's list of ratings
+                                listing.getBook().addRating(ratingValue);
+                            }
+                        }
+
+                        // After updating, refresh the table to reflect changes
+                        updateTable(currentState.getListings(), currentState.getWishlist());
                     } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number between 1 and 10.");
                     }
                 }
         );
+
+
 
         checkboxEditor.addActionListener(
                 evt -> {
@@ -287,11 +299,12 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
         for (Listing listing : listings) {
+            double averageRating = listing.getBook().getAverageRating();
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
-                    listing.getBook().getRating(),
+                    listing.getBook().getAverageRating(),
                     wishlist.contains(listing),
             };
             tableModel.addRow(rowData);
