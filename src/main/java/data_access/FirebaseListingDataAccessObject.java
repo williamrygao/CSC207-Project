@@ -16,13 +16,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import use_case.filter_by_genre.FilterByGenreDataAccessInterface;
 import use_case.sell.SellListingDataAccessInterface;
 import use_case.update_listings.UpdateListingsListingDataAccessInterface;
 
 /**
  * The DAO for book data.
  */
-public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface, UpdateListingsListingDataAccessInterface {
+public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface,
+        UpdateListingsListingDataAccessInterface, FilterByGenreDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -184,5 +186,38 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
         }
 
         return listings;
+    }
+
+    /**
+     * Retrieves listings that match the given genre search term (case-insensitive, partial matches allowed).
+     *
+     * @param genre the genre search term
+     * @return a list of listings that match the genre
+     */
+
+    @Override
+    public List<Listing> getListingsByGenre(String genre) {
+        if (genre == null || genre.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        final String searchGenre = genre.toLowerCase().trim();
+        final List<Listing> allListings = getListings();
+        if (allListings == null) {
+            return new ArrayList<>();
+        }
+
+        final List<Listing> filteredListings = new ArrayList<>();
+        for (Listing listing : allListings) {
+            if (listing == null || listing.getBook() == null || listing.getBook().getGenre() == null) {
+                continue;
+            }
+
+            final String bookGenre = listing.getBook().getGenre().toLowerCase();
+            if (bookGenre.contains(searchGenre)) {
+                filteredListings.add(listing);
+            }
+        }
+        return filteredListings;
     }
 }
