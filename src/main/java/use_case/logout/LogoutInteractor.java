@@ -18,8 +18,7 @@ public class LogoutInteractor implements LogoutInputBoundary {
      * @param userDataAccessInterface the userDataAccessInterface
      * @param logoutOutputBoundary the logoutOutputBoundary
      */
-    public LogoutInteractor(final LogoutUserDataAccessInterface
-                                    userDataAccessInterface,
+    public LogoutInteractor(final LogoutUserDataAccessInterface userDataAccessInterface,
                             final LogoutOutputBoundary logoutOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
         this.logoutPresenter = logoutOutputBoundary;
@@ -47,8 +46,7 @@ public class LogoutInteractor implements LogoutInputBoundary {
             // I'm pretty sure the useCaseFailed argument is supposed to be
             // false unless I interpreted it wrong
             // Documenting here just in case (delete if all tests pass)
-            final LogoutOutputData logoutOutputData = new LogoutOutputData(
-                    username, false);
+            final LogoutOutputData logoutOutputData = new LogoutOutputData(username, false);
             logoutPresenter.prepareSuccessView(logoutOutputData);
         }
     }
