@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Listing;
+import interface_adapter.wishlist.WishlistState;
 import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
@@ -100,7 +101,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         };
 
         bookTable = new JTable(tableModel);
-
 
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
@@ -234,8 +234,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-
-
         checkboxEditor.addActionListener(
                 evt -> {
                     final int row = bookTable.getEditingRow();
@@ -290,16 +288,34 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
         }
-        else if (evt.getPropertyName().equals("wishlist")) {
-            final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "Wishlist updated for " + state.getUsername());
+        else if (evt.getPropertyName().equals("addedToWishlist")) {
+            final WishlistState state = (WishlistState) evt.getNewValue();
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Added to " + state.getUsername() + "'s wishlist!"
+            );
+        }
+        else if (evt.getPropertyName().equals("wishlistAddFail")) {
+            JOptionPane.showMessageDialog(null, "Failed to add to wishlist.");
+        }
+        else if (evt.getPropertyName().equals("removedFromWishlist")) {
+            final WishlistState state = (WishlistState) evt.getNewValue();
+            JOptionPane.showMessageDialog(
+                    null, "Removed from " + state.getUsername() + "'s wishlist."
+            );
+        }
+        else if (evt.getPropertyName().equals("wishlistRemoveFail")) {
+            JOptionPane.showMessageDialog(null, "Failed to remove from wishlist.");
+        }
+        else if (evt.getPropertyName().equals("viewWishlistError")) {
+            JOptionPane.showMessageDialog(null, "Failed to view wishlist.");
         }
     }
 
     private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
         for (Listing listing : listings) {
-            double averageRating = listing.getBook().getAverageRating();
+            final double averageRating = listing.getBook().getAverageRating();
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),

@@ -31,7 +31,7 @@ import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistPresenter;
-import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.WishlistViewModel;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.search.SearchViewModel;
