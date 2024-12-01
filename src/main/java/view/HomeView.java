@@ -246,6 +246,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
         this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
