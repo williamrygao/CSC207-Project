@@ -24,7 +24,11 @@ public class ViewWishlistInteractor implements ViewWishlistInputBoundary {
         final User user = userDataAccessObject.get(username);
         final List<Listing> wishlist = userDataAccessObject.getWishlist(user);
 
-        final ViewWishlistOutputData viewWishlistOutputData = new ViewWishlistOutputData(username, wishlist, false);
+        final ViewWishlistOutputData viewWishlistOutputData = new ViewWishlistOutputData(
+                username,
+                wishlist,
+                false
+        );
         viewWishlistPresenter.prepareSuccessView(viewWishlistOutputData);
     }
 }
