@@ -18,13 +18,13 @@ public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
 
     /**
      * AddToWishlistInteractor method.
-     * @param userDataAccessInterface the userDataAccessInterface
+     * @param userDataAccessObject the userDataAccessObject
      * @param addToWishlistOutputBoundary the AddToWishlistOutputBoundary
      */
     public AddToWishlistInteractor(final AddToWishlistUserDataAccessInterface
-                                    userDataAccessInterface,
+                                    userDataAccessObject,
                                         final AddToWishlistOutputBoundary addToWishlistOutputBoundary) {
-        this.userDataAccessObject = userDataAccessInterface;
+        this.userDataAccessObject = userDataAccessObject;
         this.addToWishlistPresenter = addToWishlistOutputBoundary;
     }
 
