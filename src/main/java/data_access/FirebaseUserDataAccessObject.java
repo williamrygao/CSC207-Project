@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import use_case.wishlist.add_to_wishlist.AddToWishlistUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -69,14 +70,16 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public User get(final String username) {
         final String url = firebaseBaseUrl + "/users/" + username + ".json";
-        final Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
+        final Request request = new Request.Builder().url(url).get()
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON).build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.isSuccessful()) {
+                final ResponseBody responseBody = response.body();
+                if (responseBody == null) {
+                    throw new IOException("Failed to get user: Response body is null");
+                }
+
                 final JSONObject userJson = new JSONObject(response.body().string());
                 final String name = userJson.getString("username");
                 final String password = userJson.getString("password");
@@ -278,11 +281,8 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
 
             // Create request
             final RequestBody body = RequestBody.create(listingJson.toString(), MediaType.parse(CONTENT_TYPE_JSON));
-            final Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                    .build();
+            final Request request = new Request.Builder().url(url).post(body)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON).build();
 
             // Execute request
             try (Response response = httpClient.newCall(request).execute()) {
