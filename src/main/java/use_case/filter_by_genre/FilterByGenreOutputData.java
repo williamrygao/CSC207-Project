@@ -1,6 +1,8 @@
 package use_case.filter_by_genre;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import entity.Listing;
 
@@ -20,7 +22,7 @@ public class FilterByGenreOutputData {
      */
 
     public FilterByGenreOutputData(List<Listing> filteredListings) {
-        this.filteredListings = filteredListings;
+        this.filteredListings = Objects.requireNonNullElseGet(filteredListings, ArrayList::new);
     }
 
     /**
