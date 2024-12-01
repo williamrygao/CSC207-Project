@@ -18,6 +18,8 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.HomeViewModel;
+import interface_adapter.filter_by_rating.FilterByRatingController;
+import interface_adapter.filter_by_rating.FilterByRatingPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -41,6 +43,9 @@ import interface_adapter.view_wishlist.ViewWishlistPresenter;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.filter_by_rating.FilterByRatingInputBoundary;
+import use_case.filter_by_rating.FilterByRatingInteractor;
+import use_case.filter_by_rating.FilterByRatingOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -72,14 +77,17 @@ import view.*;
  * This is done by adding each View and then adding related Use Cases.
  */
 public class AppBuilder {
+
     /**
      * New JPanel.
      */
     private final JPanel cardPanel = new JPanel();
+
     /**
      * New CardLayout.
      */
     private final CardLayout cardLayout = new CardLayout();
+
     /**
      * New CommonUserFactory.
      */
@@ -90,12 +98,16 @@ public class AppBuilder {
      * New ViewManagerModel.
      */
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+
     /**
      * New ViewManager.
      */
     private final ViewManager viewManager = new ViewManager(cardPanel,
             cardLayout, viewManagerModel);
 
+    /**
+     * Initialize Firebase and DataAccessObject.
+     */
     private final Firestore firestore = FirebaseInitializer.getFirestore();
     private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
@@ -104,26 +116,32 @@ public class AppBuilder {
 
     private final FirebaseListingDataAccessObject listingDataAccessObject = new
             FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
+
     /**
      * SignupView.
      */
     private SignupView signupView;
+
     /**
      * SignupViewModel.
      */
     private SignupViewModel signupViewModel;
+
     /**
      * LoginViewModel.
      */
     private LoginViewModel loginViewModel;
+
     /**
      * HomeViewModel.
      */
     private HomeViewModel homeViewModel;
+
     /**
      * HomeView.
      */
     private HomeView homeView;
+
     /**
      * LoginView.
      */
@@ -186,6 +204,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Add Wishlist View to the application.
+     * @return this builder
+     */
     public AppBuilder addWishlistView() {
         wishlistViewModel = new WishlistViewModel();
         wishlistView = new WishlistView(wishlistViewModel);

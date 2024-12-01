@@ -13,6 +13,7 @@ import com.google.firebase.cloud.FirestoreClient;
  * Initializes the Firebase Database.
  */
 public class FirebaseInitializer {
+
     /**
      * This method initializes Firebase and returns a Firestore instance.
      */
