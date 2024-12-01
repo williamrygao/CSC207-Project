@@ -1,28 +1,20 @@
+
 package use_case.filter_by_genre;
 
 import java.util.List;
 
-import entity.book.Book;
+import entity.Listing;
 
 /**
- * Interface for data access operations related to filtering books by genre.
- * Defines the methods required to interact with the database or data source.
+ * Interface for data access related to filtering listings by genre.
  */
-
-public class FilterByGenreDataAccessInterface {
+public interface FilterByGenreDataAccessInterface {
 
     /**
-     * Retrieves a list of books filtered by the specified genre.
+     * Retrieves listings that match the given genre search term (case-insensitive, partial matches allowed).
      *
-     * @param genre the genre to filter books by
-     * @return a list of books matching the given genre
-     * @throws UnsupportedOperationException if the method is not implemented
+     * @param genre the genre search term
+     * @return a list of listings that match the genre
      */
-
-    List<Book> getBooksByGenre(String genre) {
-
-        throw new UnsupportedOperationException("Method not implemented");
-
-    }
-
+    List<Listing> getListingsByGenre(String genre);
 }
