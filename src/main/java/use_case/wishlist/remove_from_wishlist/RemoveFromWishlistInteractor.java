@@ -35,12 +35,17 @@ public class RemoveFromWishlistInteractor implements RemoveFromWishlistInputBoun
     @Override
     public void execute(final RemoveFromWishlistInputData removeFromWishlistInputData) {
         final String username = removeFromWishlistInputData.getUsername();
-        final User user = userDataAccessObject.get(username);
-        final Listing listing = removeFromWishlistInputData.getListing();
+        if (!userDataAccessObject.existsByName(username)) {
+            removeFromWishlistPresenter.prepareFailView("User does not exist.");
+        }
+        else {
+            final User user = userDataAccessObject.get(username);
+            final Listing listing = removeFromWishlistInputData.getListing();
 
-        userDataAccessObject.removeFromWishlist(user, listing);
-        final RemoveFromWishlistOutputData removeFromWishlistOutputData = new RemoveFromWishlistOutputData(
-                username, false);
-        removeFromWishlistPresenter.prepareSuccessView(removeFromWishlistOutputData);
+            userDataAccessObject.removeFromWishlist(user, listing);
+            final RemoveFromWishlistOutputData removeFromWishlistOutputData = new RemoveFromWishlistOutputData(
+                    username, false);
+            removeFromWishlistPresenter.prepareSuccessView(removeFromWishlistOutputData);
+        }
     }
 }
