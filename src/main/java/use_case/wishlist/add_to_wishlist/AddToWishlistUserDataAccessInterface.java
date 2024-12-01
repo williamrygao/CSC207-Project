@@ -20,4 +20,11 @@ public interface AddToWishlistUserDataAccessInterface {
      * @return User associated with this username
      */
     User get(String username);
+
+    /**
+     * Exists by username.
+     * @param username the username to search for
+     * @return true if a user with this username exists
+     */
+    boolean existsByName(String username);
 }
