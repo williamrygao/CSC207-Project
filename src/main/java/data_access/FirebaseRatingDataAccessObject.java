@@ -2,11 +2,13 @@ package data_access;
 
 import entity.Listing;
 import entity.Rating;
+import entity.book.Book;
 import entity.user.User;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import use_case.filter_by_rating.FilterByRatingDataAccessInterface;
 import use_case.leave_rating.LeaveRatingDataAccessInterface;
 
 import java.io.IOException;
@@ -17,7 +19,8 @@ import java.util.List;
 /**
  * The DAO for rating data.
  */
-public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInterface {
+public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInterface,
+        FilterByRatingDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -260,6 +263,81 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
         }
     }
 
+    @Override
+    public List<Listing> filterByRating(int minRating) {
+
+        // Collect all ratings
+        final List<Rating> allRatings = this.getAllRatings();
+
+        // filter through ratings to collect the bookIDs of those with an average rating at or above minimum
+        final List<String> filteredBookIDs = new ArrayList<>();
+        for (Rating rating : allRatings) {
+            if (rating.getAverageRating() >= minRating) {
+                filteredBookIDs.add(rating.getBookId());
+            }
+        }
+
+        // retrieve all listings
+        final List<Listing> allListings = new ArrayList<>();
+        final String url = firebaseBaseUrl + "/listings.json";
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (response.code() == SUCCESS_CODE) {
+                final String responseBody = response.body().string();
+                final JSONObject jsonResponse = new JSONObject(responseBody);
+
+                // Iterate over JSON keys to extract listings
+                final Iterator<String> keys = jsonResponse.keys();
+                while (keys.hasNext()) {
+                    final String key = keys.next();
+                    final JSONObject jsonListing = jsonResponse.getJSONObject(key);
+
+                    // Extract attributes from JSON and create a Listing
+                    final String bookID = jsonListing.getString("bookID");
+                    final String title = jsonListing.getString("title");
+                    final String authors = jsonListing.getString("authors");
+                    final String genre = jsonListing.getString("genre");
+                    final String bookPrice = jsonListing.getString("bookPrice");
+                    final String listingPrice = jsonListing.getString("listingPrice");
+                    final String seller = jsonListing.getString("seller");
+                    final float rating = jsonListing.getFloat("rating");
+                    final boolean isAvailable = jsonListing.getBoolean("isAvailable");
+
+                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
+                    // Create the Listing object using the BookFactory and extracted attributes
+                    allListings.add(new Listing(
+                            bookID,
+                            book,
+                            listingPrice,
+                            seller,
+                            isAvailable
+                    ));
+                }
+            }
+            else {
+                System.err.println("Failed to fetch listings: " + response.message());
+            }
+        }
+        catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        // filter through all listings by whether their IDs match the list of filteredBookIDs
+        final List<Listing> filteredListings = new ArrayList<>();
+        for (Listing listing : allListings) {
+            if (filteredBookIDs.contains(listing.getListingID())) {
+                filteredListings.add(listing);
+            }
+        }
+
+        // return the filtered listings
+        return filteredListings;
+    }
 
     private Rating parseRatingFromJson(JSONObject jsonResponse) throws JSONException {
         // Retrieve the first key (book ID) from the JSON response

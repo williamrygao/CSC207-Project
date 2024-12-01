@@ -11,7 +11,8 @@ misc.xml
 vcs.xml
 compiler.xml
 encodings.xml
-sell_use_case.puml
+sell-use-case.puml
+add-to-wishlist-use-case.puml
 
 target/
 

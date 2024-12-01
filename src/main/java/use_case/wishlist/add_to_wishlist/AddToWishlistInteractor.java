@@ -18,13 +18,13 @@ public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
 
     /**
      * AddToWishlistInteractor method.
-     * @param userDataAccessInterface the userDataAccessInterface
+     * @param userDataAccessObject the userDataAccessObject
      * @param addToWishlistOutputBoundary the AddToWishlistOutputBoundary
      */
     public AddToWishlistInteractor(final AddToWishlistUserDataAccessInterface
-                                    userDataAccessInterface,
+                                    userDataAccessObject,
                                         final AddToWishlistOutputBoundary addToWishlistOutputBoundary) {
-        this.userDataAccessObject = userDataAccessInterface;
+        this.userDataAccessObject = userDataAccessObject;
         this.addToWishlistPresenter = addToWishlistOutputBoundary;
     }
 
@@ -35,12 +35,18 @@ public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
     @Override
     public void execute(final AddToWishlistInputData addToWishlistInputData) {
         final String username = addToWishlistInputData.getUsername();
-        final User user = userDataAccessObject.get(username);
-        final Listing listing = addToWishlistInputData.getListing();
 
-        userDataAccessObject.addToWishlist(user, listing);
-        final AddToWishlistOutputData addToWishlistOutputData = new AddToWishlistOutputData(
-                username, false);
-        addToWishlistPresenter.prepareSuccessView(addToWishlistOutputData);
+        if (!userDataAccessObject.existsByName(username)) {
+            addToWishlistPresenter.prepareFailView("User does not exist.");
+        }
+        else {
+            final User user = userDataAccessObject.get(username);
+            final Listing listing = addToWishlistInputData.getListing();
+
+            userDataAccessObject.addToWishlist(user, listing);
+            final AddToWishlistOutputData addToWishlistOutputData = new AddToWishlistOutputData(
+                    username, false);
+            addToWishlistPresenter.prepareSuccessView(addToWishlistOutputData);
+        }
     }
 }

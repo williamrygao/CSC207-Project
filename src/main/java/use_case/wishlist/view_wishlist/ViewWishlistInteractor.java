@@ -21,10 +21,19 @@ public class ViewWishlistInteractor implements ViewWishlistInputBoundary {
     @Override
     public void execute(ViewWishlistInputData viewWishlistInputData) {
         final String username = viewWishlistInputData.getUsername();
-        final User user = userDataAccessObject.get(username);
-        final List<Listing> wishlist = userDataAccessObject.getWishlist(user);
+        if (!userDataAccessObject.existsByName(username)) {
+            viewWishlistPresenter.prepareFailView("User does not exist.");
+        }
+        else {
+            final User user = userDataAccessObject.get(username);
+            final List<Listing> wishlist = userDataAccessObject.getWishlist(user);
 
-        final ViewWishlistOutputData viewWishlistOutputData = new ViewWishlistOutputData(username, wishlist, false);
-        viewWishlistPresenter.prepareSuccessView(viewWishlistOutputData);
+            final ViewWishlistOutputData viewWishlistOutputData = new ViewWishlistOutputData(
+                    username,
+                    wishlist,
+                    false
+            );
+            viewWishlistPresenter.prepareSuccessView(viewWishlistOutputData);
+        }
     }
 }
