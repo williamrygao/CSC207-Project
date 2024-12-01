@@ -8,6 +8,7 @@ public interface FilterByGenreOutputBoundary {
 
     /**
      * Prepares and presents the filtered book listings.
+     * This method is called to display the filtered data to the user or the next layer in the system.
      *
      * @param outputData the data containing the filtered listings
      */
