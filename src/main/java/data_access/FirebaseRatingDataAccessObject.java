@@ -56,6 +56,36 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
         return false;
     }
 
+    public double getAverageRatingByBookID(String bookID) {
+        String url = firebaseBaseUrl + "/ratings/" + bookID + ".json";
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (response.code() == SUCCESS_CODE) {
+                String responseBody = response.body().string();
+                if (responseBody != null && !responseBody.equals("null")) {
+                    JSONObject jsonResponse = new JSONObject(responseBody);
+                    JSONArray ratingsArray = jsonResponse.getJSONArray("ratings");
+
+                    // Calculate the average rating
+                    double total = 0;
+                    for (int i = 0; i < ratingsArray.length(); i++) {
+                        total += ratingsArray.getInt(i);
+                    }
+                    return total / ratingsArray.length();
+                }
+            }
+        }
+        catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return 0.0; // Return 0.0 if no ratings or an error occurs
+    }
+
     @Override
     public void save(final Rating rating) {
         String url = firebaseBaseUrl + "/ratings/" + rating.getBookId() + ".json";
