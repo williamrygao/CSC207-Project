@@ -8,29 +8,29 @@ import entity.user.User;
  */
 public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
     /**
-     * The userDataAccessObject.
+     * The Add to Wishlist User data access object.
      */
-    private AddToWishlistUserDataAccessInterface userDataAccessObject;
+    private final AddToWishlistUserDataAccessInterface userDataAccessObject;
     /**
-     * The AddToWishlistPresenter.
+     * The Add to Wishlist output boundary.
      */
-    private AddToWishlistOutputBoundary addToWishlistPresenter;
+    private final AddToWishlistOutputBoundary addToWishlistPresenter;
 
     /**
      * AddToWishlistInteractor method.
-     * @param userDataAccessObject the userDataAccessObject
-     * @param addToWishlistOutputBoundary the AddToWishlistOutputBoundary
+     * @param userDataAccessObject the Add to Wishlist User data access object
+     * @param addToWishlistOutputBoundary the Add to Wishlist output boundary
      */
-    public AddToWishlistInteractor(final AddToWishlistUserDataAccessInterface
-                                    userDataAccessObject,
-                                        final AddToWishlistOutputBoundary addToWishlistOutputBoundary) {
+    public AddToWishlistInteractor(
+            final AddToWishlistUserDataAccessInterface userDataAccessObject,
+            final AddToWishlistOutputBoundary addToWishlistOutputBoundary) {
         this.userDataAccessObject = userDataAccessObject;
         this.addToWishlistPresenter = addToWishlistOutputBoundary;
     }
 
     /**
      * Override execute method.
-     * @param addToWishlistInputData the input data
+     * @param addToWishlistInputData the Add to Wishlist input data
      */
     @Override
     public void execute(final AddToWishlistInputData addToWishlistInputData) {
@@ -45,7 +45,8 @@ public class AddToWishlistInteractor implements AddToWishlistInputBoundary {
 
             userDataAccessObject.addToWishlist(user, listing);
             final AddToWishlistOutputData addToWishlistOutputData = new AddToWishlistOutputData(
-                    username, false);
+                    username, false
+            );
             addToWishlistPresenter.prepareSuccessView(addToWishlistOutputData);
         }
     }
