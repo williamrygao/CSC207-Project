@@ -4,20 +4,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.cloud.firestore.Firestore;
 
 /**
- * Initializes the Firebase Database.
+ * Initializes Firebase services (Firestore and Realtime Database).
  */
 public class FirebaseInitializer {
 
     /**
-     * This method initializes Firebase and returns a Firestore instance.
+     * Initializes Firebase for both Firestore and Realtime Database.
+     * @return The Firestore instance.
      */
-    public static Firestore getFirestore() {
+    public static Firestore initializeFirebase() {
         try {
             final FileInputStream serviceAccount =
                     new FileInputStream("src/main/resources/serviceAccount.json");
@@ -33,12 +36,40 @@ public class FirebaseInitializer {
                 FirebaseApp.initializeApp(options);
             }
 
-            // Return the Firestore instance
-            return FirestoreClient.getFirestore();
+            // Return the Firestore instance (you can also return the Realtime Database instance)
+            return FirestoreClient.getFirestore(); // Use this for Firestore
+            // Alternatively, for Realtime Database you can return DatabaseReference if needed.
         }
         catch (IOException exception) {
             // Print error and return null if Firebase initialization fails
             exception.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Initializes Firebase for Realtime Database and returns a DatabaseReference instance.
+     * @return The DatabaseReference instance for Realtime Database.
+     */
+    public static DatabaseReference getRealtimeDatabaseReference() {
+        try {
+            final FileInputStream serviceAccount =
+                    new FileInputStream("src/main/resources/serviceAccount.json");
+
+            final FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://csc207project-ed2f9-default-rtdb.firebaseio.com/")
+                    .build();
+
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+            }
+
+            // Return the Realtime Database instance
+            return FirebaseDatabase.getInstance().getReference();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }

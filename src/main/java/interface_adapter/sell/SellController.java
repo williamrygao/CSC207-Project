@@ -8,6 +8,7 @@ import use_case.sell.SellInputData;
  */
 public class SellController {
     private final SellInputBoundary userSellUseCaseInteractor;
+    private String currentUsername;
 
     public SellController(SellInputBoundary userSellUseCaseInteractor) {
         this.userSellUseCaseInteractor = userSellUseCaseInteractor;
@@ -17,12 +18,29 @@ public class SellController {
      * Executes the Sell Use Case.
      * @param username the user who is selling
      * @param password the password of the user
-     * @param bookID the book
+     * @param bookID the book ID
      * @param price the price
      */
-    public void execute(String username, String password, String bookID, Integer price) {
-        final SellInputData sellInputData = new SellInputData(username, password, password, bookID, price);
-
+    public void execute(String username, String password, String bookID, String price) {
+        this.currentUsername = username;
+        final SellInputData sellInputData = new SellInputData(username, password, bookID, price);
         userSellUseCaseInteractor.execute(sellInputData);
+    }
+
+    /**
+     * Gets the retail price of book if available.
+     * @param bookID the book ID
+     * @return a string for the retail price if available
+     */
+    public String getBookPrice(String bookID) {
+        return userSellUseCaseInteractor.getBookPrice(bookID);
+    }
+
+    /**
+     * Gets the current logged in username.
+     * @return the username of the current logged-in user
+     */
+    public String getUsername() {
+        return this.currentUsername;
     }
 }

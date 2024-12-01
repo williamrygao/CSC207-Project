@@ -1,18 +1,22 @@
 package entity;
 
+import java.io.Serializable;
+
+import entity.book.Book;
+
 /**
  * A listing of a book.
  */
-public class Listing {
+public class Listing implements Serializable {
 
     private String listingID;
     private Book book;
-    private double price;
+    private String price;
     private String seller;
     private boolean isAvailable;
 
     // Constructor, getters, and setters
-    public Listing(String listingID, Book book, double price, String seller, boolean isAvailable) {
+    public Listing(String listingID, Book book, String price, String seller, boolean isAvailable) {
         this.listingID = listingID;
         this.book = book;
         this.price = price;
@@ -37,11 +41,11 @@ public class Listing {
         this.book = book;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -59,5 +63,24 @@ public class Listing {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    /**
+     * Check if this listing is equal to another, i.e. same seller and same book.
+     * @param obj another object
+     * @return true if equal
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Listing other = (Listing) obj;
+
+        return getBook().getBookId().equals(other.getBook().getBookId())
+                && getSeller().equals(other.getSeller())
+                && isAvailable() == other.isAvailable();
     }
 }

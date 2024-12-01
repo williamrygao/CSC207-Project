@@ -10,4 +10,11 @@ public interface SellInputBoundary {
      * @param sellInputData the input data
      */
     void execute(SellInputData sellInputData);
+
+    /**
+     * Gets the book retail price.
+     * @param BookID the book ID
+     * @return retail price of the book ID if available
+     */
+    String getBookPrice(String BookID);
 }

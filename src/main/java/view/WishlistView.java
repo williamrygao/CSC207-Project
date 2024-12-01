@@ -4,20 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import entity.Listing;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.remove_from_wishlist.WishlistState;
-import interface_adapter.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.WishlistState;
+import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
 
 /**
  * The View for when the user is viewing their personal wishlist.
@@ -28,6 +26,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
     private final WishlistViewModel wishlistViewModel;
     private BackToHomeController backToHomeController;
     private RemoveFromWishlistController removeFromWishlistController;
+    private AddToWishlistController addToWishlistController;
 
     private final JLabel username;
 
@@ -58,20 +57,17 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                // Return false to make all cells non-editable
-                return false;
+                return column == 4;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                // Specify column data types to allow proper sorting
-                if (columnIndex == 2) {
-                    return Double.class;
+                // Set the column type to Boolean for the "Wishlist" column
+                if (columnIndex == 4) {
+                    return Boolean.class;
                 }
+                // Other columns are String or Double, as before
                 if (columnIndex == 3) {
                     return Double.class;
-                }
-                if (columnIndex == 4) {
-                    return JButton.class;
                 }
                 return String.class;
             }
@@ -81,6 +77,9 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
+
+        final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
+        bookTable.getColumnModel().getColumn(4).setCellEditor(checkboxEditor);
 
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(bookTable);
@@ -94,6 +93,27 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(back)) {
                         backToHomeController.execute();
+                    }
+                }
+        );
+
+        checkboxEditor.addActionListener(
+                evt -> {
+                    final int row = bookTable.getEditingRow();
+                    if (row != -1) {
+                        final WishlistState currentState = wishlistViewModel.getState();
+                        final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
+                        tableModel.fireTableDataChanged();
+                        final Listing listing = currentState.getWishlist().get(row);
+                        final String currentUsername = currentState.getUsername();
+                        if (!isChecked) {
+                            // Call your controller's method to add to wishlist
+                            addToWishlistController.execute(currentUsername, listing);
+                        }
+                        else {
+                            // Call your controller's method to remove from wishlist
+                            removeFromWishlistController.execute(currentUsername, listing);
+                        }
                     }
                 }
         );
@@ -112,14 +132,25 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
             username.setText(state.getUsername());
+            updateTable(state.getWishlist());
         }
         else if (evt.getPropertyName().equals("wishlist")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, "Wishlist updated for " + state.getUsername());
         }
     }
 
-    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
-        this.removeFromWishlistController = removeFromWishlistController;
+    private void updateTable(List<Listing> wishlist) {
+        tableModel.setRowCount(0);
+        for (Listing listing : wishlist) {
+            final Object[] rowData = {
+                    listing.getBook().getTitle(),
+                    listing.getBook().getAuthors(),
+                    listing.getPrice(),
+                    listing.getBook().getRating(), true,
+            };
+            tableModel.addRow(rowData);
+        }
     }
 
     public String getViewName() {
@@ -128,5 +159,13 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
     public void setBackToHomeController(BackToHomeController backToHomeController) {
         this.backToHomeController = backToHomeController;
+    }
+
+    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
+        this.removeFromWishlistController = removeFromWishlistController;
+    }
+
+    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
+        this.addToWishlistController = addToWishlistController;
     }
 }

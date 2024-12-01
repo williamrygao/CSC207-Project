@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,30 +21,41 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Listing;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
+import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.to_sell_view.ToSellController;
-import interface_adapter.view_wishlist.ViewWishlistController;
+import interface_adapter.to_search_view.ToSearchController;
+import interface_adapter.update_listings.UpdateListingsController;
+import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 
 /**
- * The View for when the user is logged into the program.
+ * The home view for Joe Repka's Bookstore.
  */
 public class HomeView extends JPanel implements PropertyChangeListener {
-    private final String viewName = "logged in";
+    private final String viewName = "home";
     private final HomeViewModel homeViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
     private ToSellController toSellController;
+    private ToSearchController toSearchController;
     private ViewWishlistController viewWishlistController;
+    private AddToWishlistController addToWishlistController;
+    private RemoveFromWishlistController removeFromWishlistController;
+    private UpdateListingsController updateListingsController;
+    private LeaveRatingController leaveRatingController;
 
     private final JLabel username;
-
     private final JButton logOut;
     private final JButton toSell;
+    private final JButton toSearch;
     private final JButton viewWishlist;
+    private final JButton toRate;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
@@ -63,10 +75,12 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 new JLabel("Password"), passwordInputField);
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
         username = new JLabel();
+        username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Table column names
-        final String[] columnNames = {"Title", "Author", "Price", "Rating", "Wishlist"};
+        final String[] columnNames = {"Title", "Author(s)", "Price", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -75,14 +89,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 2) {
-                    return Double.class;
+                if (columnIndex == 4) {
+                    return Boolean.class;
                 }
                 if (columnIndex == 3) {
                     return Double.class;
-                }
-                if (columnIndex == 4) {
-                    return JButton.class;
                 }
                 return String.class;
             }
@@ -90,10 +101,13 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         bookTable = new JTable(tableModel);
 
+
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
 
-        // Add scroll pane for the table
+        final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
+        bookTable.getColumnModel().getColumn(4).setCellEditor(checkboxEditor);
+
         final JScrollPane tableScrollPane = new JScrollPane(bookTable);
 
         final JPanel listings = new JPanel();
@@ -104,8 +118,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         toSell = new JButton("Sell A Book");
         topButtons.add(toSell);
 
+        toSearch = new JButton("Search for a Book");
+        topButtons.add(toSearch);
+
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
+
+        toRate = new JButton("Rate a Book");
+        topButtons.add(toRate);
 
         final JPanel bottomButtons = new JPanel();
         logOut = new JButton("Log Out");
@@ -117,7 +137,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
-
             private void documentListenerHelper() {
                 final HomeState currentState = homeViewModel.getState();
                 currentState.setPassword(passwordInputField.getText());
@@ -141,11 +160,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         });
 
         changePassword.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
                         final HomeState currentState = homeViewModel.getState();
-
                         this.changePasswordController.execute(
                                 currentState.getUsername(),
                                 currentState.getPassword()
@@ -158,9 +175,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(logOut)) {
                         final HomeState currentState = homeViewModel.getState();
-                        logoutController.execute(
-                                currentState.getUsername()
-                        );
+                        logoutController.execute(currentState.getUsername());
                     }
                 }
         );
@@ -173,17 +188,80 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-        viewWishlist.addActionListener(
+        toSearch.addActionListener(
                 evt -> {
-                    if (evt.getSource().equals(viewWishlist)) {
-                        viewWishlistController.execute();
+                    if (evt.getSource().equals(toSearch)) {
+                        toSearchController.execute();
                     }
                 }
         );
 
+        viewWishlist.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(viewWishlist)) {
+                        final HomeState currentState = homeViewModel.getState();
+                        viewWishlistController.execute(currentState.getUsername());
+                    }
+                }
+        );
+
+        toRate.addActionListener(
+                evt -> {
+                    // Action for rating a book
+                    String bookId = JOptionPane.showInputDialog("Enter Book ID:");
+                    String rating = JOptionPane.showInputDialog("Enter a rating (1 to 10):");
+
+                    try {
+                        int ratingValue = Integer.parseInt(rating);
+                        if (ratingValue < 1 || ratingValue > 10) {
+                            throw new NumberFormatException("Rating must be between 1 and 10.");
+                        }
+
+                        // Find the book by bookId and add the new rating
+                        final HomeState currentState = homeViewModel.getState();
+                        for (Listing listing : currentState.getListings()) {
+                            if (listing.getBook().getBookId().equals(bookId)) {
+                                // Add the new rating to the book's list of ratings
+                                listing.getBook().addRating(ratingValue);
+                            }
+                        }
+
+                        // After updating, refresh the table to reflect changes
+                        updateTable(currentState.getListings(), currentState.getWishlist());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number between 1 and 10.");
+                    }
+                }
+        );
+
+
+
+        checkboxEditor.addActionListener(
+                evt -> {
+                    final int row = bookTable.getEditingRow();
+                    if (row != -1) {
+                        final HomeState currentState = homeViewModel.getState();
+                        final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
+                        tableModel.fireTableDataChanged();
+                        final Listing listing = currentState.getListings().get(row);
+                        final String currentUsername = currentState.getUsername();
+                        if (!isChecked) {
+                            // Call your controller's method to add to wishlist
+                            addToWishlistController.execute(currentUsername, listing);
+                        } else {
+                            // Call your controller's method to remove from wishlist
+                            removeFromWishlistController.execute(currentUsername, listing);
+                        }
+                    }
+                }
+        );
+
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
+        this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
         this.add(username);
+        this.add(Box.createVerticalStrut(20));
 
         this.add(topButtons);
 
@@ -200,24 +278,34 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             username.setText(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("listing")) {
+        else if (evt.getPropertyName().equals("listings")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            updateTable(state.getListings());
+            updateListingsController.execute(state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("updateTable")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            updateTable(state.getListings(), state.getWishlist());
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("wishlist")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            JOptionPane.showMessageDialog(null, "Wishlist updated for " + state.getUsername());
         }
     }
 
-    private void updateTable(List<Listing> newListings) {
+    private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
-        for (Listing newListing : newListings) {
+        for (Listing listing : listings) {
+            double averageRating = listing.getBook().getAverageRating();
             final Object[] rowData = {
-                    newListing.getBook().getTitle(),
-                    newListing.getBook().getAuthors(),
-                    newListing.getPrice(),
-                    newListing.getBook().getRating(),
+                    listing.getBook().getTitle(),
+                    listing.getBook().getAuthors(),
+                    listing.getPrice(),
+                    listing.getBook().getAverageRating(),
+                    wishlist.contains(listing),
             };
             tableModel.addRow(rowData);
         }
@@ -231,15 +319,32 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.changePasswordController = changePasswordController;
     }
 
-    public void setToSellController(ToSellController toSellController) {
-        this.toSellController = toSellController;
+    public void setToSearchController(ToSearchController toSearchController) {
+        this.toSearchController = toSearchController;
+    }
+
+    public void setViewWishlistController(ViewWishlistController viewWishlistController) {
+        this.viewWishlistController = viewWishlistController;
+    }
+
+    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
+        this.removeFromWishlistController = removeFromWishlistController;
+    }
+
+    public void setUpdateListingsController(UpdateListingsController updateListingsController) {
+        this.updateListingsController = updateListingsController;
+    }
+
+    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
+        this.addToWishlistController = addToWishlistController;
     }
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
 
-    public void setViewWishlistController(ViewWishlistController viewWishlistController) {
-        this.viewWishlistController = viewWishlistController;
+    public void setToSellController(ToSellController toSellController) {
+        this.toSellController = toSellController;
     }
 }
+
