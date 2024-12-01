@@ -1,8 +1,8 @@
 package entity.user;
 
-import entity.Listing;
-
 import java.util.List;
+
+import entity.Listing;
 
 /**
  * The representation of a user in our program.

@@ -1,27 +1,31 @@
 package use_case.logout;
 
-import data_access.FirebaseUserDataAccessObject;
-import entity.user.CommonUserFactory;
-import entity.user.User;
-import entity.user.UserFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class LogoutInteractorTest {
-    public final UserFactory userFactory = new CommonUserFactory();
-    public final String firebaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
+
+    LogoutUserDataAccessInterface mockUserRepository;
+    LogoutOutputBoundary mockPresenter;
+
+    @BeforeEach
+    void setUp() {
+        // Create the mock user repository
+        mockUserRepository = mock(LogoutUserDataAccessInterface.class);
+        mockPresenter = mock(LogoutOutputBoundary.class);
+    }
 
     @Test
     void successTest() {
         LogoutInputData inputData = new LogoutInputData("Paul");
-        FirebaseUserDataAccessObject userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
-        // For the success test, we need to add Paul to the data access repository before we log in.
-        UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "password");
-        userRepository.save(user);
-        userRepository.setCurrentUsername("Paul");
+        when(mockUserRepository.getCurrentUsername()).thenReturn("Paul");
+
+        doNothing().when(mockPresenter).prepareSuccessView(any(LogoutOutputData.class));
+        doNothing().when(mockPresenter).prepareFailView(anyString());
 
         // This creates a successPresenter that tests whether the test case is as we expect.
         LogoutOutputBoundary successPresenter = new LogoutOutputBoundary() {
@@ -37,10 +41,21 @@ class LogoutInteractorTest {
             }
         };
 
-        LogoutInputBoundary interactor = new LogoutInteractor(userRepository, successPresenter);
+        LogoutInputBoundary interactor = new LogoutInteractor(mockUserRepository, successPresenter);
         interactor.execute(inputData);
-        // check that the user was logged out
-        assertNull(userRepository.getCurrentUsername());
+    }
+
+    @Test
+    void failureTest_UsernameNotFound() {
+        // Test case where username is null (failure case)
+        LogoutInputData inputData = new LogoutInputData(null);
+
+        // Execute the logout process
+        LogoutInputBoundary interactor = new LogoutInteractor(mockUserRepository, mockPresenter);
+        interactor.execute(inputData);
+
+        verify(mockPresenter).prepareFailView("Username not found.");
+        verify(mockUserRepository, never()).setCurrentUsername(any());
     }
 
 }

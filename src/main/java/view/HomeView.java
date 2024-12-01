@@ -174,9 +174,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(logOut)) {
                         final HomeState currentState = homeViewModel.getState();
-                        logoutController.execute(
-                                currentState.getUsername()
-                        );
+                        logoutController.execute(currentState.getUsername());
                     }
                 }
         );
@@ -246,6 +244,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
         this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
@@ -277,7 +276,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
         }
         else if (evt.getPropertyName().equals("wishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();
