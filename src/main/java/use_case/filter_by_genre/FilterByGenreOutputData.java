@@ -2,19 +2,34 @@ package use_case.filter_by_genre;
 
 import java.util.List;
 
-import entity.book.Book;
+import entity.Listing;
 
 /**
- * Data structure representing the output data for the "Filter Books by Genre" use case.
- * Contains the filtered books and any other metadata needed for presentation.
+ * The output data for the "Filter Books by Genre" use case.
+ * Contains the filtered book listings.
  */
 
 public class FilterByGenreOutputData {
+
+    private final List<Listing> filteredListings;
+
     /**
-     * A list of books matching the filter criteria.
+     * Constructor to initialize the filtered book listings.
+     *
+     * @param filteredListings the list of filtered book listings
      */
-    private List<Book> filteredBooks;
 
-    // Constructor, getters, and setters omitted for brevity.
+    public FilterByGenreOutputData(List<Listing> filteredListings) {
+        this.filteredListings = filteredListings;
+    }
 
+    /**
+     * Returns the filtered book listings.
+     *
+     * @return a list of filtered book listings
+     */
+
+    public List<Listing> getFilteredListings() {
+        return filteredListings;
+    }
 }
