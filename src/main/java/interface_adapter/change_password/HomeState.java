@@ -10,7 +10,6 @@ import entity.Listing;
  */
 public class HomeState {
     private String username = "";
-
     private String password = "";
     private String passwordError;
 
