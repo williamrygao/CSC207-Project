@@ -17,6 +17,8 @@ public class SearchState {
     private String price;
     private List<Listing> listings;
 
+    private List<Listing> wishlist = new ArrayList<>();
+
     public SearchState() {
         listings = new ArrayList<>();
     }
@@ -75,5 +77,13 @@ public class SearchState {
 
     public List<Listing> getListings() {
         return listings;
+    }
+
+    public void setWishlist(List<Listing> wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public List<Listing> getWishlist() {
+        return wishlist;
     }
 }
