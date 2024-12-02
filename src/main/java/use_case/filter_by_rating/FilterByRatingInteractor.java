@@ -23,11 +23,15 @@ public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
         final int minRating = filterByRatingInputData.getRating();
 
         // retrieve books in database with that rating or higher
-        final List<Listing> listings = filterByRatingDataAccessObject.filterByRating(minRating);
-
-        // pass output data to the presenter
-        final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(listings);
-        this.filterByRatingPresenter.prepareSuccessView(filterByRatingOutputData);
+        if (filterByRatingDataAccessObject.getAllRatings().isEmpty()) {
+            // if there are no ratings yet prepare a fail view
+            this.filterByRatingPresenter.prepareFailView("No ratings yet.");
+        }
+        else {
+            // pass output data to the presenter and prepare success view
+            final List<Listing> listings = filterByRatingDataAccessObject.filterByRating(minRating);
+            final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(listings);
+            this.filterByRatingPresenter.prepareSuccessView(filterByRatingOutputData);
+        }
     }
-
 }
