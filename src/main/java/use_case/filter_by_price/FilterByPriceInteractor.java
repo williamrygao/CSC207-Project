@@ -1,37 +1,44 @@
-package use_case.filter_by_rating;
-
-import java.util.List;
+package use_case.filter_by_price;
 
 import entity.listing.Listing;
 
-/**
- * The Filter By Rating Interactor.
- */
-public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
-    private final FilterByRatingDataAccessInterface filterByRatingDataAccessObject;
-    private final FilterByRatingOutputBoundary filterByRatingPresenter;
+import java.util.ArrayList;
+import java.util.List;
 
-    public FilterByRatingInteractor(FilterByRatingDataAccessInterface filterByRatingDataAccessInterface,
-                                    FilterByRatingOutputBoundary filterByRatingOutputBoundary) {
-        this.filterByRatingDataAccessObject = filterByRatingDataAccessInterface;
-        this.filterByRatingPresenter = filterByRatingOutputBoundary;
+/**
+ * The Filter By Price Interactor.
+ */
+public class FilterByPriceInteractor implements FilterByPriceInputBoundary {
+    private final FilterByPriceDataAccessInterface filterByPriceDataAccessObject;
+    private final FilterByPriceOutputBoundary filterByRatingPresenter;
+
+    public FilterByPriceInteractor(FilterByPriceDataAccessInterface filterByPriceDataAccessInterface,
+                                   FilterByPriceOutputBoundary filterByPriceOutputBoundary) {
+        this.filterByPriceDataAccessObject = filterByPriceDataAccessInterface;
+        this.filterByRatingPresenter = filterByPriceOutputBoundary;
     }
 
     @Override
-    public void execute(FilterByRatingInputData filterByRatingInputData) {
-        // retrieve minimum rating to filter by
-        final int minRating = filterByRatingInputData.getRating();
+    public void execute(FilterByPriceInputData filterByPriceInputData) {
+        // retrieve max price to filter by
+        final int maxPrice = filterByPriceInputData.getPrice();
 
-        // retrieve books in database with that rating or higher
-        if (filterByRatingDataAccessObject.getAllRatings().isEmpty()) {
-            // if there are no ratings yet prepare a fail view
-            this.filterByRatingPresenter.prepareFailView("No ratings yet.");
+        // retrieve books in database with that price or lower
+        if (filterByPriceDataAccessObject.getListings().isEmpty()) {
+            // if there are no listings yet prepare a fail view
+            this.filterByRatingPresenter.prepareFailView("No listings yet.");
         }
         else {
             // pass output data to the presenter and prepare success view
-            final List<Listing> listings = filterByRatingDataAccessObject.filterByRating(minRating);
-            final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(listings);
-            this.filterByRatingPresenter.prepareSuccessView(filterByRatingOutputData);
+            final List<Listing> allListings = filterByPriceDataAccessObject.getListings();
+            final List<Listing> filteredListings = new ArrayList<>();
+            for (Listing listing : allListings) {
+                if (Integer.parseInt(listing.getPrice()) <= maxPrice) {
+                    filteredListings.add(listing);
+                }
+            }
+            final FilterByPriceOutputData filterByPriceOutputData = new FilterByPriceOutputData(filteredListings);
+            this.filterByRatingPresenter.prepareSuccessView(filterByPriceOutputData);
         }
     }
 }
