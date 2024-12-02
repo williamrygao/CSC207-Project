@@ -1,28 +1,19 @@
-package interface_adapter.to_filter_by_rating_view;
+package interface_adapter.to_filter_by_rating;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.filter_by_rating.FilterByRatingState;
 import interface_adapter.filter_by_rating.FilterByRatingViewModel;
-import use_case.to_filter_by_rating_view.ToFilterByRatingOutputBoundary;
+import use_case.to_filter_by_rating.ToFilterByRatingOutputBoundary;
 
 /**
  * The Presenter for the To Filter By Rating Use Case.
  */
 public class ToFilterByRatingPresenter implements ToFilterByRatingOutputBoundary {
 
-    /**
-     * LoggedInViewModel.
-     */
-    private final HomeViewModel homeViewModel;
-    /**
-     * ViewManagerModel.
-     */
     private final ViewManagerModel viewManagerModel;
-    /**
-     * FilterByRatingViewModel.
-     */
+    private final HomeViewModel homeViewModel;
     private final FilterByRatingViewModel filterByRatingViewModel;
 
     /**
@@ -44,20 +35,20 @@ public class ToFilterByRatingPresenter implements ToFilterByRatingOutputBoundary
      */
     @Override
     public void prepareSuccessView() {
+        // get state information
         final HomeState homeState = homeViewModel.getState();
-
         final FilterByRatingState filterByRatingState = filterByRatingViewModel.getState();
+
+        // update filter by rating state information
         filterByRatingState.setUsername(homeState.getUsername());
         filterByRatingState.setPassword(homeState.getPassword());
+
+        // update view model with new state
         filterByRatingViewModel.setState(filterByRatingState);
         filterByRatingViewModel.firePropertyChanged();
 
-        // This code tells the View Manager to switch to the FilterByRatingView.
+        // tells the View Manager to switch to the FilterByRatingView.
         this.viewManagerModel.setState(filterByRatingViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
-    }
-
-    @Override
-    public void prepareFailView(final String error) {
     }
 }
