@@ -16,7 +16,8 @@ public class FilterByRatingPresenter implements FilterByRatingOutputBoundary {
 
     }
 
-    public void prepareFailView(FilterByRatingOutputData filterByRatingOutputData) {
+    @Override
+    public void prepareFailView(String errorMessage) {
 
     }
 }

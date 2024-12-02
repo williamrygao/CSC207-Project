@@ -3,7 +3,7 @@ package use_case.filter_by_genre;
 
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * Interface for data access related to filtering listings by genre.
