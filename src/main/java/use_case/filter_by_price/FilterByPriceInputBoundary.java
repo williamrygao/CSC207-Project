@@ -1,12 +1,12 @@
-package use_case.filter_by_rating;
+package use_case.filter_by_price;
 
 /**
- * Input Boundary for actions which are related to filtering books by rating.
+ * Input Boundary for actions which are related to filtering listings by price.
  */
-public interface FilterByRatingInputBoundary {
+public interface FilterByPriceInputBoundary {
     /**
-     * Executes the Filter By Rating use case.
-     * @param filterByRatingInputData the input data
+     * Executes the filter by price use case.
+     * @param filterByPriceInputData the input data
      */
-    void execute(FilterByRatingInputData filterByRatingInputData);
+    void execute(FilterByPriceInputData filterByPriceInputData);
 }
