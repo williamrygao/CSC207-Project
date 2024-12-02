@@ -1,6 +1,6 @@
-package interface_adapter.to_filter_by_rating_view;
+package interface_adapter.to_filter_by_rating;
 
-import use_case.to_filter_by_rating_view.ToFilterByRatingInputBoundary;
+import use_case.to_filter_by_rating.ToFilterByRatingInputBoundary;
 
 /**
  * The controller for the To Filter By Rating Use Case.
