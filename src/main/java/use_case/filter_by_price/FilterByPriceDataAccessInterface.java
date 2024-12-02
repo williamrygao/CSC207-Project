@@ -1,21 +1,17 @@
-package use_case.filter_by_rating;
+package use_case.filter_by_price;
 
 import java.util.List;
 
-import entity.Rating;
 import entity.listing.Listing;
 
 /**
- * DAO for the Filter By Rating Use Case.
+ * DAO for the Filter By Price Use Case.
  */
-public interface FilterByRatingDataAccessInterface {
+public interface FilterByPriceDataAccessInterface {
 
     /**
-     * Returns a list of Listing objects that have ratings above the minRating.
-     * @param minRating the minimum rating for the listings to be filtered by.
-     * @return a list of Listing objects that have ratings above the minRating.
+     * Returns a list of all available Listing objects.
+     * @return a list of all available Listing objects
      */
-    List<Listing> filterByRating(int minRating);
-
-    List<Rating> getAllRatings ();
+    List<Listing> getListings();
 }
