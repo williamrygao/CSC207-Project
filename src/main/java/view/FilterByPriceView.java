@@ -51,12 +51,12 @@ public class FilterByPriceView extends JPanel implements PropertyChangeListener 
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "BookID", "Rating", "Wishlist"};
+        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "BookID", "Rating"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(searchColumnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                return column == 5;
+                return column == 4;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
@@ -178,7 +178,7 @@ public class FilterByPriceView extends JPanel implements PropertyChangeListener 
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
                     listing.getBook().getBookId(),
-                    listing.getBook().getRating(), "Add to Wishlist"});
+                    listing.getBook().getRating()});
         }
     }
 
