@@ -15,11 +15,11 @@ import entity.book.BookFactory;
 import entity.user.CommonUserFactory;
 import entity.user.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.filter_by_rating.FilterByRatingController;
-import interface_adapter.filter_by_rating.FilterByRatingPresenter;
-import interface_adapter.filter_by_rating.FilterByRatingViewModel;
-import interface_adapter.to_filter_by_rating.ToFilterByRatingController;
-import interface_adapter.to_filter_by_rating.ToFilterByRatingPresenter;
+import interface_adapter.filter_by_price.FilterByPriceController;
+import interface_adapter.filter_by_price.FilterByPricePresenter;
+import interface_adapter.filter_by_price.FilterByPriceViewModel;
+import interface_adapter.to_filter_by_price.ToFilterByPriceController;
+import interface_adapter.to_filter_by_price.ToFilterByPricePresenter;
 import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.wishlist.add_to_wishlist.AddToWishlistPresenter;
 import interface_adapter.back_to_home.BackToHomeController;
@@ -54,12 +54,12 @@ import interface_adapter.update_listings.UpdateListingsController;
 import interface_adapter.update_listings.UpdateListingsPresenter;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistPresenter;
-import use_case.filter_by_rating.FilterByRatingInputBoundary;
-import use_case.filter_by_rating.FilterByRatingInteractor;
-import use_case.filter_by_rating.FilterByRatingOutputBoundary;
-import use_case.to_filter_by_rating.ToFilterByRatingInputBoundary;
-import use_case.to_filter_by_rating.ToFilterByRatingInteractor;
-import use_case.to_filter_by_rating.ToFilterByRatingOutputBoundary;
+import use_case.filter_by_price.FilterByPriceInputBoundary;
+import use_case.filter_by_price.FilterByPriceInteractor;
+import use_case.filter_by_price.FilterByPriceOutputBoundary;
+import use_case.to_filter_by_price.ToFilterByPriceInputBoundary;
+import use_case.to_filter_by_price.ToFilterByPriceInteractor;
+import use_case.to_filter_by_price.ToFilterByPriceOutputBoundary;
 import use_case.wishlist.add_to_wishlist.AddToWishlistInputBoundary;
 import use_case.wishlist.add_to_wishlist.AddToWishlistInteractor;
 import use_case.wishlist.add_to_wishlist.AddToWishlistOutputBoundary;
@@ -173,10 +173,10 @@ public class AppBuilder {
 
     private SellViewModel sellViewModel;
     private SearchViewModel searchViewModel;
-    private FilterByRatingViewModel filterByRatingViewModel;
+    private FilterByPriceViewModel filterByPriceViewModel;
     private SellView sellView;
     private SearchView searchView;
-    private FilterByRatingView filterByRatingView;
+    private FilterByPriceView filterByPriceView;
 
     private WishlistViewModel wishlistViewModel;
     private WishlistView wishlistView;
@@ -244,13 +244,13 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Filter By Rating View to the application.
+     * Adds the Filter By Price View to the application.
      * @return this builder
      */
-    public AppBuilder addFilterByRatingView() {
-        filterByRatingViewModel = new FilterByRatingViewModel();
-        filterByRatingView = new FilterByRatingView(filterByRatingViewModel);
-        cardPanel.add(filterByRatingView, filterByRatingView.getViewName());
+    public AppBuilder addFilterByPriceView() {
+        filterByPriceViewModel = new FilterByPriceViewModel();
+        filterByPriceView = new FilterByPriceView(filterByPriceViewModel);
+        cardPanel.add(filterByPriceView, filterByPriceView.getViewName());
         return this;
     }
 
@@ -381,38 +381,38 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the To Filter By Rating Use Case to the application.
+     * Adds the To Filter By Price Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addToFilterByRatingViewUseCase() {
-        final ToFilterByRatingOutputBoundary toFilterByRatingOutputBoundary =
-                new ToFilterByRatingPresenter(viewManagerModel, homeViewModel, filterByRatingViewModel);
+    public AppBuilder addToFilterByPriceViewUseCase() {
+        final ToFilterByPriceOutputBoundary toFilterByPriceOutputBoundary =
+                new ToFilterByPricePresenter(viewManagerModel, homeViewModel, filterByPriceViewModel);
 
-        final ToFilterByRatingInputBoundary toFilterByRatingInteractor =
-                new ToFilterByRatingInteractor(toFilterByRatingOutputBoundary);
+        final ToFilterByPriceInputBoundary toFilterByRatingInteractor =
+                new ToFilterByPriceInteractor(toFilterByPriceOutputBoundary);
 
-        final ToFilterByRatingController toFilterByRatingController =
-                new ToFilterByRatingController(toFilterByRatingInteractor);
+        final ToFilterByPriceController toFilterByPriceController =
+                new ToFilterByPriceController(toFilterByRatingInteractor);
 
-        homeView.setToFilterByRatingController(toFilterByRatingController);
+        homeView.setToFilterByRatingController(toFilterByPriceController);
         return this;
     }
 
     /**
-     * Adds the Filter By Rating Use Case to the application.
+     * Adds the Filter By Price Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addFilterByRatingUseCase() {
-        final FilterByRatingOutputBoundary filterByRatingPresenter =
-                new FilterByRatingPresenter(filterByRatingViewModel, homeViewModel);
+    public AppBuilder addFilterByPriceUseCase() {
+        final FilterByPriceOutputBoundary filterByPricePresenter =
+                new FilterByPricePresenter(filterByPriceViewModel, homeViewModel);
 
-        final FilterByRatingInputBoundary filterByRatingInteractor =
-                new FilterByRatingInteractor(ratingDataAccessObject, filterByRatingPresenter);
+        final FilterByPriceInputBoundary filterByPriceInteractor =
+                new FilterByPriceInteractor(listingDataAccessObject, filterByPricePresenter);
 
-        final FilterByRatingController filterByRatingController =
-                new FilterByRatingController(filterByRatingInteractor);
+        final FilterByPriceController filterByPriceController =
+                new FilterByPriceController(filterByPriceInteractor);
 
-        filterByRatingView.setFilterByRatingController(filterByRatingController);
+        filterByPriceView.setFilterByPriceController(filterByPriceController);
         return this;
     }
 
@@ -460,7 +460,7 @@ public class AppBuilder {
         final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
         sellView.setBackToHomeController(backToHomeController);
         searchView.setBackToHomeController(backToHomeController);
-        filterByRatingView.setBackToHomeController(backToHomeController);
+        filterByPriceView.setBackToHomeController(backToHomeController);
         wishlistView.setBackToHomeController(backToHomeController);
         return this;
     }
