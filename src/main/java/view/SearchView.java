@@ -1,9 +1,7 @@
 package view;
 
-import entity.book.Book;
-import entity.book.BookFactory;
+import entity.Listing;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.change_password.HomeState;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
@@ -25,6 +23,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "search";
     private final SearchViewModel searchViewModel;
+    private JTable listingsTable;
     private BackToHomeController backToHomeController;
     private SearchController searchController;
 
@@ -46,6 +45,8 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     public SearchView(SearchViewModel searchViewModel) {
         this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
+
+        setLayout(new BorderLayout());
 
         // Initialize the 'searchLabel' before adding it to the UI
         this.searchLabel = new JLabel("Search");
@@ -81,6 +82,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
         filteredBookTable = new JTable(tableModel);
 
+        listingsTable = new JTable(tableModel);
         sorter = new TableRowSorter<>(tableModel);
         filteredBookTable.setRowSorter(sorter);
 
@@ -206,6 +208,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(back)) {
                         backToHomeController.execute();
+                        updateSearchLabel("Please input book ID, author(s), title, and/or price of book to search");
                     }
                 }
         );
@@ -257,11 +260,28 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         this.add(bottomButtons);
     }
 
+    private void updateListingsTable() {
+        List<Listing> listings = searchViewModel.getState().getListings();
+
+        tableModel.setRowCount(0);
+
+        // Add rows to the table
+        for (Listing listing : listings) {
+            tableModel.addRow(new Object[] {
+                    listing.getBook().getTitle(),
+                    listing.getBook().getAuthors(),
+                    listing.getPrice(),
+                    listing.getBook().getBookId(),
+                    listing.getBook().getRating(), "Add to Wishlist"});
+        }
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
+        if (evt.getPropertyName().equals("Search Results Updated")) {
             final SearchState state = (SearchState) evt.getNewValue();
             username.setText(state.getUsername());
+            updateListingsTable();
         }
     }
 
