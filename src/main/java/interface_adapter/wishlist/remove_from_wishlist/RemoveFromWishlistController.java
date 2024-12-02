@@ -1,6 +1,6 @@
 package interface_adapter.wishlist.remove_from_wishlist;
 
-import entity.Listing;
+import entity.listing.Listing;
 import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInputBoundary;
 import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInputData;
 

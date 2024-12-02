@@ -1,6 +1,6 @@
 package use_case.wishlist;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

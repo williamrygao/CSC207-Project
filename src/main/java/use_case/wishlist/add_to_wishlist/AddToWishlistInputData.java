@@ -1,6 +1,6 @@
 package use_case.wishlist.add_to_wishlist;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The Input Data for the Add to wishlist Use Case.

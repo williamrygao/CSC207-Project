@@ -2,15 +2,13 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import entity.listing.ListingIterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.Listing;
-import entity.book.Book;
-import entity.book.BookFactory;
+import entity.listing.Listing;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,18 +27,15 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
 
-    private final BookFactory bookFactory;
     private final OkHttpClient httpClient;
     private final String firebaseBaseUrl;
 
     /**
      * FirebaseListingDataAccessObject constructor.
      *
-     * @param bookFactory   Factory for creating Book objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
-    public FirebaseListingDataAccessObject(final BookFactory bookFactory, final String firebaseBaseUrl) {
-        this.bookFactory = bookFactory;
+    public FirebaseListingDataAccessObject(final String firebaseBaseUrl) {
         this.firebaseBaseUrl = firebaseBaseUrl;
         this.httpClient = new OkHttpClient();
     }
@@ -149,42 +144,18 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
                 final String responseBody = response.body().string();
                 final JSONObject jsonResponse = new JSONObject(responseBody);
 
-                // Iterate over JSON keys to extract listings
-                final Iterator<String> keys = jsonResponse.keys();
-                while (keys.hasNext()) {
-                    final String key = keys.next();
-                    final JSONObject jsonListing = jsonResponse.getJSONObject(key);
-
-                    // Extract attributes from JSON and create a Listing
-                    final String bookID = jsonListing.getString("bookID");
-                    final String title = jsonListing.getString("title");
-                    final String authors = jsonListing.getString("authors");
-                    final String genre = jsonListing.getString("genre");
-                    final String bookPrice = jsonListing.getString("bookPrice");
-                    final String listingPrice = jsonListing.getString("listingPrice");
-                    final String seller = jsonListing.getString("seller");
-                    final float rating = jsonListing.getFloat("rating");
-                    final boolean isAvailable = jsonListing.getBoolean("isAvailable");
-
-                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
-                    // Create the Listing object using the BookFactory and extracted attributes
-                    listings.add(new Listing(
-                            bookID,
-                            book,
-                            listingPrice,
-                            seller,
-                            isAvailable
-                    ));
+                final ListingIterator listingIterator = new ListingIterator(jsonResponse);
+                while (listingIterator.hasNext()) {
+                    listings.add(listingIterator.next());
                 }
             }
             else {
                 System.err.println("Failed to fetch listings: " + response.message());
             }
         }
-        catch (IOException | JSONException e) {
-            e.printStackTrace();
+        catch (IOException | JSONException exception) {
+            exception.printStackTrace();
         }
-
         return listings;
     }
 

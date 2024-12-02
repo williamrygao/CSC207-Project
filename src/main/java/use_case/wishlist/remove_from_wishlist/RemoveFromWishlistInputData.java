@@ -1,6 +1,6 @@
 package use_case.wishlist.remove_from_wishlist;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The Input Data for the Remove from wishlist Use Case.

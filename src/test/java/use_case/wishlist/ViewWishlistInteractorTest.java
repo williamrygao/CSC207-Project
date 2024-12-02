@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.user.User;
 import use_case.wishlist.view_wishlist.*;
 
