@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.Objects;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -257,7 +256,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                         updateTable(currentState.getListings(), currentState.getWishlist());
                     }
                     catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number between 1 and 10.");
+                        JOptionPane.showMessageDialog(HomeView.this,
+                                "Invalid input. Please enter a number between 1 and 10.");
                     }
                 }
         );
