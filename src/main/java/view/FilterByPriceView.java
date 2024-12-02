@@ -83,9 +83,15 @@ public class FilterByPriceView extends JPanel implements PropertyChangeListener 
         // the action methods for the text input field, filter button, and back to home button
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final FilterByPriceState currentState = filterByPriceViewModel.getState();
-                currentState.setMaxPrice(Integer.parseInt(filterTextField.getText()));
-                filterByPriceViewModel.setState(currentState);
+                final String text = filterTextField.getText();
+                if (isNumeric(text)) {
+                    final FilterByPriceState currentState = filterByPriceViewModel.getState();
+                    currentState.setMaxPrice(Integer.parseInt(text));
+                    filterByPriceViewModel.setState(currentState);
+                }
+                else {
+                    filterByPriceViewModel.getState().setMaxPrice(0);
+                }
             }
 
             @Override
@@ -107,8 +113,14 @@ public class FilterByPriceView extends JPanel implements PropertyChangeListener 
         filterButton.addActionListener(
             evt -> {
                 if (evt.getSource().equals(filterButton)) {
-                    final int maxPrice = filterByPriceViewModel.getState().getMaxPrice();
-                    filterByPriceController.execute(maxPrice);
+                    if (isNumeric(filterTextField.getText())) {
+                        final int maxPrice = filterByPriceViewModel.getState().getMaxPrice();
+                        filterByPriceController.execute(maxPrice);
+                    }
+                    else {
+                        filterByPriceController.error(FilterByPriceView.this,
+                                "Please input an integer value.");
+                    }
                 }
             }
         );
@@ -167,6 +179,21 @@ public class FilterByPriceView extends JPanel implements PropertyChangeListener 
                     listing.getPrice(),
                     listing.getBook().getBookId(),
                     listing.getBook().getRating(), "Add to Wishlist"});
+        }
+    }
+
+    /**
+     * Checks whether a string is numeric.
+     * @param str the input string
+     * @return true if the string can be converted to an integer, false otherwise
+     */
+    public static boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
         }
     }
 }
