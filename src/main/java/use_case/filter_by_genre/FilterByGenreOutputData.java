@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The output data for the "Filter Books by Genre" use case.

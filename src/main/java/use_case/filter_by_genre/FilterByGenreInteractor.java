@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The interactor (use case) class for the "Filter Books by Genre" functionality.

@@ -2,19 +2,19 @@ package use_case.filter_by_rating;
 
 import java.util.List;
 
-import entity.book.Book;
+import entity.listing.Listing;
 /**
  * Output Data for the Filter By Rating Use Case.
  */
 
 public class FilterByRatingOutputData {
-    private final List<Book> books;
+    private final List<Listing> books;
 
-    public FilterByRatingOutputData(List<Book> books) {
+    public FilterByRatingOutputData(List<Listing> books) {
         this.books = books;
     }
 
-    public List<Book> getBooks() {
+    public List<Listing> getBooks() {
         return books;
     }
 }

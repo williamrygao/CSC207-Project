@@ -2,7 +2,7 @@ package use_case.filter_by_rating;
 
 import java.util.List;
 
-import entity.book.Book;
+import entity.listing.Listing;
 
 /**
  * The Filter By Rating Interactor.
@@ -23,7 +23,7 @@ public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
         final int rating = filterByRatingInputData.getRating();
 
         // retrieve books in database with that rating or higher
-        final List<Book> books = filterByRatingDataAccessObject.filterByRating(rating);
+        final List<Listing> books = filterByRatingDataAccessObject.filterByRating(rating);
 
         // prepare views using the presenter
         final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(books);
