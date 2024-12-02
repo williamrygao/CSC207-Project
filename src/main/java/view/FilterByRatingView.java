@@ -99,6 +99,13 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
             }
         );
 
+        this.add(title);
+        this.add(filterTextPanel);
+        this.add(filterLabel);
+        this.add(filterTextField);
+        this.add(filterButton);
+        this.add(backButton);
+
     }
 
     public void setBackToHomeController(BackToHomeController backToHomeController) {

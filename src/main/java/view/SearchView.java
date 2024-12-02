@@ -1,6 +1,6 @@
 package view;
 
-import entity.Listing;
+
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
@@ -14,7 +14,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 /**
  * The View for when the user is selling a book.
