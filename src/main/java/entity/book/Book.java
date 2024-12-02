@@ -44,13 +44,13 @@ public class Book {
 
     public double getAverageRating() {
         if (ratings.isEmpty()) {
-            return 0.0; // Return 0 if there are no ratings
+            return 0.0;
         }
         int sum = 0;
         for (int rating : ratings) {
             sum += rating;
         }
-        return sum / (double) ratings.size(); // Calculate and return the average rating
+        return sum / (double) ratings.size();
     }
 
     public List<Integer> getRatings() {
@@ -58,7 +58,7 @@ public class Book {
     }
 
     public void addRating(int rating) {
-        ratings.add(rating); // Add new rating to the list
+        ratings.add(rating);
     }
 
     public void setRatings(List<Integer> ratings) {
