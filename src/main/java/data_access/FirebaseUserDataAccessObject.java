@@ -278,11 +278,6 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public String getCurrentUsername() {
-        return this.currentUsername;
-    }
-
-    @Override
     public List<Listing> getWishlist(User user) {
         // Assuming current username is stored somehow (e.g., in a member variable or method)
         final String username = user.getName();
