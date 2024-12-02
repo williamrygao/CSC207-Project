@@ -25,8 +25,8 @@ public class RemoveFromWishlistPresenter implements RemoveFromWishlistOutputBoun
         if (viewManagerModel.getState().equals("home")) {
             homeViewModel.firePropertyChanged("removedFromWishlist");
         }
-        else if (viewManagerModel.getState().equals("removedFromWishlist")) {
-            wishlistViewModel.firePropertyChanged("wishlist");
+        else if (viewManagerModel.getState().equals("wishlist")) {
+            wishlistViewModel.firePropertyChanged("removedFromWishlist");
         }
     }
 
