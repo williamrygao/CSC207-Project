@@ -109,6 +109,10 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
         this.filterByRatingController = filterByRatingController;
     }
 
+    public String getViewName() {
+        return viewName;
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("listings filtered")) {
