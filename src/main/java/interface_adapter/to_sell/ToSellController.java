@@ -1,4 +1,4 @@
-package interface_adapter.to_sell_view;
+package interface_adapter.to_sell;
 
 import use_case.to_sell_view.ToSellInputBoundary;
 

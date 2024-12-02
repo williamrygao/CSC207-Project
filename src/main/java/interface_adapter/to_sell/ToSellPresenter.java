@@ -1,4 +1,4 @@
-package interface_adapter.to_sell_view;
+package interface_adapter.to_sell;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;

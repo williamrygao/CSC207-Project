@@ -2,7 +2,7 @@ package interface_adapter.wishlist.add_to_wishlist;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeViewModel;
-import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.WishlistViewModel;
 import use_case.wishlist.add_to_wishlist.AddToWishlistOutputBoundary;
 import use_case.wishlist.add_to_wishlist.AddToWishlistOutputData;
 
@@ -23,15 +23,20 @@ public class AddToWishlistPresenter implements AddToWishlistOutputBoundary {
     @Override
     public void prepareSuccessView(AddToWishlistOutputData addToWishlistOutputData) {
         if (viewManagerModel.getState().equals("home")) {
-            homeViewModel.firePropertyChanged("wishlist");
+            homeViewModel.firePropertyChanged("addedToWishlist");
         }
         else if (viewManagerModel.getState().equals("wishlist")) {
-            wishlistViewModel.firePropertyChanged("wishlist");
+            wishlistViewModel.firePropertyChanged("addedToWishlist");
         }
     }
 
     @Override
     public void prepareFailView(String error) {
-
+        if (viewManagerModel.getState().equals("home")) {
+            homeViewModel.firePropertyChanged("wishlistAddFail");
+        }
+        else if (viewManagerModel.getState().equals("wishlist")) {
+            wishlistViewModel.firePropertyChanged("wishlistAddFail");
+        }
     }
 }

@@ -2,16 +2,14 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.book.Book;
-import entity.book.BookFactory;
-import entity.Listing;
+import entity.listing.Listing;
+import entity.listing.ListingIterator;
 import entity.user.User;
 import entity.user.UserFactory;
 import okhttp3.MediaType;
@@ -25,7 +23,6 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
-import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.update_listings.UpdateListingsUserDataAccessInterface;
 import use_case.wishlist.view_wishlist.ViewWishlistUserDataAccessInterface;
@@ -37,7 +34,6 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
-        SellUserDataAccessInterface,
         RemoveFromWishlistUserDataAccessInterface,
         AddToWishlistUserDataAccessInterface,
         ViewWishlistUserDataAccessInterface,
@@ -50,7 +46,6 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     private final UserFactory userFactory;
     private final OkHttpClient httpClient;
     private final String firebaseBaseUrl;
-    private BookFactory bookFactory;
     private String currentUsername;
 
     /**
@@ -58,11 +53,9 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
      *
      * @param userFactory Factory for creating User objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
-     * @param bookFactory Factory for creating Book objects.
      */
-    public FirebaseUserDataAccessObject(final UserFactory userFactory, final BookFactory bookFactory, final String firebaseBaseUrl) {
+    public FirebaseUserDataAccessObject(final UserFactory userFactory, final String firebaseBaseUrl) {
         this.userFactory = userFactory;
-        this.bookFactory = bookFactory;
         this.firebaseBaseUrl = firebaseBaseUrl;
         this.httpClient = new OkHttpClient();
     }
@@ -199,30 +192,15 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                 }
 
                 final JSONObject wishlistJson = new JSONObject(responseBody);
+                final ListingIterator listingIterator = new ListingIterator(wishlistJson);
 
-                final Iterator<String> keys = wishlistJson.keys();
                 String listingToRemoveKey = null;
 
-                while (keys.hasNext()) {
-                    final String key = keys.next();
-                    final JSONObject jsonListing = wishlistJson.getJSONObject(key);
+                while (listingIterator.hasNext()) {
+                    final Listing currentListing = listingIterator.next();
 
-                    final String bookID = jsonListing.getString("bookID");
-                    final String title = jsonListing.getString("title");
-                    final String authors = jsonListing.getString("authors");
-                    final String genre = jsonListing.getString("genre");
-                    final String bookPrice = jsonListing.getString("bookPrice");
-                    final String listingPrice = jsonListing.getString("listingPrice");
-                    final String seller = jsonListing.getString("seller");
-                    final float rating = jsonListing.getFloat("rating");
-                    final boolean isAvailable = jsonListing.getBoolean("isAvailable");
-
-                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
-                    final Listing currentListing = new Listing(bookID, book, listingPrice, seller, isAvailable);
-
-                    // Use the equals method to verify identity
                     if (listing.equals(currentListing)) {
-                        listingToRemoveKey = key;
+                        listingToRemoveKey = listingIterator.getKey();
                         break;
                     }
                 }
@@ -300,11 +278,6 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public String getCurrentUsername() {
-        return this.currentUsername;
-    }
-
-    @Override
     public List<Listing> getWishlist(User user) {
         // Assuming current username is stored somehow (e.g., in a member variable or method)
         final String username = user.getName();
@@ -326,31 +299,14 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                     return List.of();
                 }
 
-                final JSONObject wishlistJson = new JSONObject(responseBody);
-
-                // Convert the JSON into a List of Listing objects
                 final List<Listing> wishlist = new ArrayList<>();
-                for (String key : wishlistJson.keySet()) {
-                    final JSONObject listingJson = wishlistJson.getJSONObject(key);
 
-                    // Extract the details for each listing
-                    final String bookID = listingJson.getString("bookID");
-                    final String title = listingJson.getString("title");
-                    final String authors = listingJson.getString("authors");
-                    final String genre = listingJson.getString("genre");
-                    final String bookPrice = listingJson.getString("bookPrice");
-                    final String listingPrice = listingJson.getString("listingPrice");
-                    final String seller = listingJson.getString("seller");
-                    final float rating = listingJson.getFloat("rating");
-                    final boolean isAvailable = listingJson.getBoolean("isAvailable");
+                final JSONObject wishlistJson = new JSONObject(responseBody);
+                final ListingIterator listingIterator = new ListingIterator(wishlistJson);
 
-                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
-
-                    // Create a Listing object (you need to have a proper constructor for Listing)
-                    final Listing listing = new Listing(bookID, book, listingPrice, seller, isAvailable);
-                    wishlist.add(listing);
+                while (listingIterator.hasNext()) {
+                    wishlist.add(listingIterator.next());
                 }
-
                 return wishlist;
             }
             else {

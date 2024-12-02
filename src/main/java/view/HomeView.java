@@ -20,17 +20,18 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import entity.Listing;
-import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import entity.listing.Listing;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.to_filter_by_rating.ToFilterByRatingController;
 import interface_adapter.to_search_view.ToSearchController;
+import interface_adapter.to_sell.ToSellController;
 import interface_adapter.update_listings.UpdateListingsController;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 
 /**
@@ -44,6 +45,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private LogoutController logoutController;
     private ToSellController toSellController;
     private ToSearchController toSearchController;
+    private ToFilterByRatingController toFilterByRatingController;
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
@@ -54,6 +56,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOut;
     private final JButton toSell;
     private final JButton toSearch;
+    private final JButton toFilterByRating;
     private final JButton viewWishlist;
     private final JButton toRate;
 
@@ -101,7 +104,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         bookTable = new JTable(tableModel);
 
-
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
 
@@ -120,6 +122,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         toSearch = new JButton("Search for a Book");
         topButtons.add(toSearch);
+
+        toFilterByRating = new JButton("Filter by Rating");
+        topButtons.add(toFilterByRating);
 
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
@@ -222,6 +227,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        toFilterByRating.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(toFilterByRating)) {
+                        toFilterByRatingController.execute();
+                    }
+                }
+        );
+
         viewWishlist.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(viewWishlist)) {
@@ -261,8 +274,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
-
-
 
         checkboxEditor.addActionListener(
                 evt -> {
@@ -319,16 +330,35 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(HomeView.this, "Password was successfully updated for " + state.getUsername() + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
-        else if (evt.getPropertyName().equals("wishlist")) {
+        else if (evt.getPropertyName().equals("addedToWishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(HomeView.this, "Wishlist updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Added to " + state.getUsername() + "'s wishlist!"
+            );
+        }
+        else if (evt.getPropertyName().equals("wishlistAddFail")) {
+            JOptionPane.showMessageDialog(null, "Failed to add to wishlist.");
+        }
+        else if (evt.getPropertyName().equals("removedFromWishlist")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            JOptionPane.showMessageDialog(
+                    null, "Removed from " + state.getUsername() + "'s wishlist."
+            );
+        }
+        else if (evt.getPropertyName().equals("wishlistRemoveFail")) {
+            JOptionPane.showMessageDialog(null, "Failed to remove from wishlist.");
+        }
+        else if (evt.getPropertyName().equals("viewWishlistError")) {
+            JOptionPane.showMessageDialog(null, "Failed to view wishlist.");
         }
     }
 
     private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
         for (Listing listing : listings) {
-            double averageRating = listing.getBook().getAverageRating();
+            // is the variable below necessary?
+            final double averageRating = listing.getBook().getAverageRating();
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
@@ -350,6 +380,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setToSearchController(ToSearchController toSearchController) {
         this.toSearchController = toSearchController;
+    }
+
+    public void setToFilterByRatingController(ToFilterByRatingController toFilterByRatingController) {
+        this.toFilterByRatingController = toFilterByRatingController;
     }
 
     public void setViewWishlistController(ViewWishlistController viewWishlistController) {
