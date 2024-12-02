@@ -322,10 +322,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             updateListingsController.execute(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("filtered by price")) {
-            final HomeState state = (HomeState) evt.getNewValue();
-            filterTableByPrice(state.getListings());
-        }
         else if (evt.getPropertyName().equals("updateTable")) {
             final HomeState state = (HomeState) evt.getNewValue();
             updateTable(state.getListings(), state.getWishlist());
@@ -368,19 +364,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     listing.getPrice(),
                     listing.getBook().getAverageRating(),
                     wishlist.contains(listing),
-            };
-            tableModel.addRow(rowData);
-        }
-    }
-
-    private void filterTableByPrice(List<Listing> listings) {
-        tableModel.setRowCount(0);
-        for (Listing listing : listings) {
-            final Object[] rowData = {
-                    listing.getBook().getTitle(),
-                    listing.getBook().getAuthors(),
-                    listing.getPrice(),
-                    listing.getBook().getAverageRating(),
             };
             tableModel.addRow(rowData);
         }
