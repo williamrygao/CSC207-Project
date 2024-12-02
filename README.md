@@ -210,13 +210,6 @@ To run tests, use the built-in testing tools in IntelliJ (JUnit) or execute the 
 mvn test
 ```
 
-**6. Feedback & Contributions**
-
-If you encounter any issues or would like to suggest features, please feel free to submit [feedback form](https://docs.google.com/forms/d/e/1FAIpQLSdMBz0mUjYl57bAOSNlAt0em3yHeEJynOQUuhzR0vUzXEaiwA/viewform?usp=sf_link). or contribute via GitHub:
-Fork the repository and submit a Pull Request with your changes.
-
-Report bugs or submit feature requests by opening Issues in the GitHub repository.
-
 ## License
 
 This project is dedicated to the public domain under the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) license. 
