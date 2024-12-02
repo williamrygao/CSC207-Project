@@ -28,14 +28,14 @@ Joe's Bookstore is designed to make the process of browsing and selling books as
 - Secure sign-up and login functionality.<br>
 - User data is securely stored for easy access to wishlists, and more.
 
-**2. Book Search and Rating system**
+**2. Browse Listings**
 
-- Search for books using specific queries such as book title, author, and more.<br>
-- Users can rate books they’ve read, helping others discover highly-rated titles.
+- View detailed information on all available listings, with the ability to sort by title, author, price, rating, and wishlist status.
 
-**3. Browse Categories**
+**3. Refine Search**
 
-- Explore books sorted by genre or price.
+- Restrict the displayed listings by setting a maximum price or minimum rating.<br>
+- Search listings using specific queries such as book title, author, and more.
 
 **4. Discover and Sell Books**
 
