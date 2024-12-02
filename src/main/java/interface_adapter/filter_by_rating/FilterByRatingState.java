@@ -1,16 +1,11 @@
 package interface_adapter.filter_by_rating;
 
-import entity.listing.Listing;
-
-import java.util.List;
-
 /**
  * The state representing the filter by rating process.
  */
 public class FilterByRatingState {
     private String username = "";
     private String password = "";
-    private String filterError;
     private int minRating;
 
     public FilterByRatingState(FilterByRatingState copy) {
@@ -36,14 +31,6 @@ public class FilterByRatingState {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFilterError() {
-        return filterError;
-    }
-
-    public void setFilterError(String filterError) {
-        this.filterError = filterError;
     }
 
     public int getMinRating() {
