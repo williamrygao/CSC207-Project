@@ -1,6 +1,7 @@
 package view;
 
 
+import entity.listing.Listing;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
@@ -12,6 +13,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.List;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -260,7 +262,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     }
 
     private void updateListingsTable() {
-        List<Listing> listings = searchViewModel.getState().getListings();
+        final List<Listing> listings = searchViewModel.getState().getListings();
 
         tableModel.setRowCount(0);
 

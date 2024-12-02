@@ -1,9 +1,9 @@
 package interface_adapter.search;
 
-import entity.Listing;
-import interface_adapter.ViewModel;
-
 import java.util.List;
+
+import entity.listing.Listing;
+import interface_adapter.ViewModel;
 
 /**
  * The View Model for the Search View.
