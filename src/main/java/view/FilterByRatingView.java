@@ -22,8 +22,6 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
     private BackToHomeController backToHomeController;
     private FilterByRatingController filterByRatingController;
 
-    private final JLabel username;
-
     private final JTextField filterTextField = new JTextField(5);
     private final JButton filterButton;
     private final JButton backButton;
@@ -84,10 +82,13 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
             }
         );
 
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
+        this.add(Box.createVerticalStrut(50));
         this.add(filterTextPanel);
         this.add(filterButton);
         this.add(backButton);
+        this.add(Box.createVerticalStrut(50));
 
     }
 
