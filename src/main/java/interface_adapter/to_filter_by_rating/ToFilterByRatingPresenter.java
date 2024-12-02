@@ -39,7 +39,7 @@ public class ToFilterByRatingPresenter implements ToFilterByRatingOutputBoundary
         final HomeState homeState = homeViewModel.getState();
         final FilterByRatingState filterByRatingState = filterByRatingViewModel.getState();
 
-        // update filter by rating state information
+        // update Filter By Rating state information
         filterByRatingState.setUsername(homeState.getUsername());
         filterByRatingState.setPassword(homeState.getPassword());
 
@@ -47,7 +47,7 @@ public class ToFilterByRatingPresenter implements ToFilterByRatingOutputBoundary
         filterByRatingViewModel.setState(filterByRatingState);
         filterByRatingViewModel.firePropertyChanged();
 
-        // tells the View Manager to switch to the FilterByRatingView.
+        // tells the view manager to switch to the FilterByRatingView.
         this.viewManagerModel.setState(filterByRatingViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
