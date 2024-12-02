@@ -30,15 +30,21 @@ public class SearchController {
 
         userSearchUseCaseInteractor.execute(searchInputData);
 
-        return "Search Completed Successfully";
+        return "Search Completed Successfully!";
     }
 
     /**
-     * Executes the Search Use Case for errors.
-     * @param errorMessage the error message to display to user
+     * Executes the Search Use Case to display messages (error/informational messages).
+     * @param message the error message to display to user
      * @param center where the panel will be centered
+     * @param title title of panel
      */
-    public void error(Component center, String errorMessage) {
-        JOptionPane.showMessageDialog(center, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+    public void message(Component center, String message, String title) {
+        if ("Error".equals(title)) {
+            JOptionPane.showMessageDialog(center, message, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(center, message, title, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }
