@@ -339,7 +339,7 @@ public class AppBuilder {
         final SellOutputBoundary sellOutputBoundary = new SellPresenter(sellViewModel, homeViewModel);
 
         final SellInputBoundary sellInteractor =
-                new SellInteractor(userDataAccessObject, listingDataAccessObject, sellOutputBoundary, bookFactory);
+                new SellInteractor(listingDataAccessObject, sellOutputBoundary, bookFactory);
 
         final SellController sellController = new SellController(
                 sellInteractor);

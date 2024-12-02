@@ -8,15 +8,13 @@ import entity.listing.Listing;
  * The Sell Interactor.
  */
 public class SellInteractor implements SellInputBoundary {
-    private final SellUserDataAccessInterface userDataAccessObject;
     private final SellListingDataAccessInterface listingDataAccessObject;
     private final SellOutputBoundary userPresenter;
     private final BookFactory bookFactory;
 
-    public SellInteractor(SellUserDataAccessInterface sellUserDataAccessInterface, SellListingDataAccessInterface listingDataAccessObject,
+    public SellInteractor(SellListingDataAccessInterface listingDataAccessObject,
                           SellOutputBoundary sellOutputBoundary,
                           BookFactory bookFactory) {
-        this.userDataAccessObject = sellUserDataAccessInterface;
         this.listingDataAccessObject = listingDataAccessObject;
         this.userPresenter = sellOutputBoundary;
         this.bookFactory = bookFactory;

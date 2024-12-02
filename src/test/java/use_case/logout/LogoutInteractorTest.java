@@ -22,8 +22,6 @@ class LogoutInteractorTest {
     void successTest() {
         LogoutInputData inputData = new LogoutInputData("Paul");
 
-        when(mockUserRepository.getCurrentUsername()).thenReturn("Paul");
-
         doNothing().when(mockPresenter).prepareSuccessView(any(LogoutOutputData.class));
         doNothing().when(mockPresenter).prepareFailView(anyString());
 
