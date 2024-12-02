@@ -13,22 +13,18 @@ import java.net.URL;
  * Google Books API.
  */
 public class GoogleBooksApi {
-    public static final String API_KEY = loadApiKey();
     private static final int HTTP_OK = 200;
+    private final String apiKey;
 
-    /**
-     * Test.
-     * @param args the arguments
-     */
-    public static void main(String[] args) {
-        System.out.println(getBookByVolumeId("9xHCAgAAQBAJ"));
+    public GoogleBooksApi() {
+        this.apiKey = loadApiKey();
     }
 
-    /*
+    /**
      * Load API Key from api_key.env file.
      * @return ApiKey
      */
-    public static String loadApiKey() {
+    public static String loadApiKey() throws RuntimeException {
         try (BufferedReader reader = new BufferedReader(new FileReader("api_key.env"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -49,9 +45,10 @@ public class GoogleBooksApi {
      * @param volumeId the volumeId
      * @return a json file containing all information returned from Google API
      */
-    public static String getBookByVolumeId(String volumeId) {
+    public String getBookByVolumeId(String volumeId) {
+        String result = "";
         try {
-            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeId + "?key=" + API_KEY;
+            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeId + "?key=" + apiKey;
             final URL url = new URL(urlString);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -70,29 +67,66 @@ public class GoogleBooksApi {
             br.close();
             conn.disconnect();
 
-            return response.toString();
+            result = response.toString();
         }
-
-        catch (Exception exception) {
+        catch (IOException exception) {
             exception.printStackTrace();
-            return null;
+            result = null;
         }
+        return result;
     }
 
-    public static String getBookPrice(String volumeID) {
+    /**
+     * Get book price.
+     * @param volumeID volumeID
+     * @return price
+     */
+    public String getBookPrice(String volumeID) {
         String message = "";
-        String response = getBookByVolumeId(volumeID);
-        final JSONObject jsonResponse = new JSONObject(response.toString());
-        final JSONObject saleInfo = jsonResponse.optJSONObject("saleInfo");
-        if (saleInfo != null && saleInfo.has("retailPrice")) {
-            final JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
-            final double price = retailPrice.getDouble("amount");
-            final String currency = retailPrice.getString("currencyCode");
+        final int httpSuccess = 200;
+        try {
+            // Construct the URL for the Google Books API request
+            final String urlString = "https://www.googleapis.com/books/v1/volumes/" + volumeID + "?key=" + apiKey;
+            final URL url = new URL(urlString);
+            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
 
-            message = String.format("Price: %.2f %s", price, currency);
+            // Check if the response code has passed (200 not 404 or something else)
+            if (conn.getResponseCode() != httpSuccess) {
+                throw new RuntimeException("Failed: HTTP error code : " + conn.getResponseCode());
+            }
+
+            // Read the API response into a StringBuilder
+            final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            final StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+            br.close();
+            conn.disconnect();
+
+            // Parse the JSON response
+            final JSONObject jsonResponse = new JSONObject(response.toString());
+            final JSONObject saleInfo = jsonResponse.optJSONObject("saleInfo");
+
+            // Check if price information is available
+            if (saleInfo != null && saleInfo.has("retailPrice")) {
+                final JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
+                final double price = retailPrice.getDouble("amount");
+                final String currency = retailPrice.getString("currencyCode");
+
+                // Format the message with the price and currency code
+                message = String.format("Price: %.2f %s", price, currency);
+            }
+            else {
+                message = "Price information not available.";
+            }
         }
-        else {
-            message = "Price information not available.";
+        catch (IOException exception) {
+            exception.printStackTrace();
+            message = "Error retrieving price information.";
         }
         return message;
     }

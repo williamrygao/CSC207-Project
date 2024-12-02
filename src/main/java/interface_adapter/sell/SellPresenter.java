@@ -6,7 +6,7 @@ import use_case.sell.SellOutputBoundary;
 import use_case.sell.SellOutputData;
 
 /**
- * The Presenter for the Change Password Use Case.
+ * The Presenter for the Sell Use Case.
  */
 public class SellPresenter implements SellOutputBoundary {
 
@@ -24,7 +24,6 @@ public class SellPresenter implements SellOutputBoundary {
         final HomeState homeState = homeViewModel.getState();
         homeState.addListing(outputData.getListing());
         this.homeViewModel.setState(homeState);
-        this.homeViewModel.firePropertyChanged("listing");
 
         // Pop-up in Sell View.
         sellViewModel.firePropertyChanged("listed for sale");
@@ -32,6 +31,8 @@ public class SellPresenter implements SellOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        // note: this use case currently can't fail
+        final SellState sellState = sellViewModel.getState();
+        sellState.setSellError(error);
+        sellViewModel.firePropertyChanged("not sold");
     }
 }

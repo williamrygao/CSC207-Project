@@ -3,6 +3,16 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .idea/easycode.ignore
+api_key.env
+homework-5.iml
+key.json
+src/main/resources
+misc.xml
+vcs.xml
+compiler.xml
+encodings.xml
+sell-use-case.puml
+add-to-wishlist-use-case.puml
 
 target/
 
@@ -30,3 +40,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+.gitignore

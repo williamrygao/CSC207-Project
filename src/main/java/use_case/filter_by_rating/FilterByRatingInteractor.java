@@ -2,17 +2,17 @@ package use_case.filter_by_rating;
 
 import java.util.List;
 
-import entity.Book;
+import entity.Listing;
 
 /**
  * The Filter By Rating Interactor.
  */
 public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
     private final FilterByRatingDataAccessInterface filterByRatingDataAccessObject;
-    private final use_case.filterRating.FilterByRatingOutputBoundary filterByRatingPresenter;
+    private final FilterByRatingOutputBoundary filterByRatingPresenter;
 
     public FilterByRatingInteractor(FilterByRatingDataAccessInterface filterByRatingDataAccessInterface,
-                                    use_case.filterRating.FilterByRatingOutputBoundary filterByRatingOutputBoundary) {
+                                    FilterByRatingOutputBoundary filterByRatingOutputBoundary) {
         this.filterByRatingDataAccessObject = filterByRatingDataAccessInterface;
         this.filterByRatingPresenter = filterByRatingOutputBoundary;
     }
@@ -20,13 +20,12 @@ public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
     @Override
     public void execute(FilterByRatingInputData filterByRatingInputData) {
         // retrieve rating to filter by
-        final int rating = filterByRatingInputData.getRating();
+        final int minRating = filterByRatingInputData.getRating();
 
         // retrieve books in database with that rating or higher
-        final List<Book> books = filterByRatingDataAccessObject.filterByRating(rating);
+        final List<Listing> listings = filterByRatingDataAccessObject.filterByRating(minRating);
 
-        // prepare views using the presenter
-        final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(books);
+        // pass output data to the presenter
 
     }
 

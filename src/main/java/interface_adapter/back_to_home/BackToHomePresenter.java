@@ -27,7 +27,8 @@ public class BackToHomePresenter implements BackToHomeOutputBoundary {
     public void prepareSuccessView() {
         this.viewManagerModel.setState(homeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
-        homeViewModel.firePropertyChanged("listing");
+        homeViewModel.firePropertyChanged();
+        homeViewModel.firePropertyChanged("listings");
     }
 
     @Override

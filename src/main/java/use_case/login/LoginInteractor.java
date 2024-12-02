@@ -1,23 +1,17 @@
 package use_case.login;
 
-import java.util.List;
-
-import entity.Listing;
-import entity.User;
+import entity.user.User;
 
 /**
  * The Login Interactor.
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
-    private final LoginListingDataAccessInterface listingDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
     public LoginInteractor(LoginUserDataAccessInterface userDataAccessObject,
-                           LoginListingDataAccessInterface listingDataAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userDataAccessObject = userDataAccessObject;
-        this.listingDataAccessObject = listingDataAccessObject;
         this.loginPresenter = loginOutputBoundary;
     }
 
@@ -26,21 +20,18 @@ public class LoginInteractor implements LoginInputBoundary {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
         if (!userDataAccessObject.existsByName(username)) {
-            loginPresenter.prepareFailView(username + ": Account does not exist.");
+            loginPresenter.prepareFailView("We cannot find an account with that username.");
         }
         else {
             final String pwd = userDataAccessObject.get(username).getPassword();
             if (!password.equals(pwd)) {
-                loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
+                loginPresenter.prepareFailView("Your password is incorrect.");
             }
             else {
-
-                final User user = userDataAccessObject.get(loginInputData.getUsername());
+                final User user = userDataAccessObject.get(username);
                 userDataAccessObject.setCurrentUsername(user.getName());
 
-                final List<Listing> listings = listingDataAccessObject.getListings();
-
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false, listings);
+                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

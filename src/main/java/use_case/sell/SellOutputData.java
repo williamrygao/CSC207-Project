@@ -3,7 +3,7 @@ package use_case.sell;
 import entity.Listing;
 
 /**
- * Output Data for the Signup Use Case.
+ * Output Data for the Sell Use Case.
  */
 public class SellOutputData {
 

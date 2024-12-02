@@ -1,6 +1,6 @@
 package use_case.sell;
 
-import entity.User;
+import entity.user.User;
 
 /**
  * DAO for the Sell Use Case.

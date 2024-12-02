@@ -2,6 +2,10 @@ package interface_adapter.signup;
 
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInputData;
+import view.SignupView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Controller for the Signup Use Case.
@@ -29,10 +33,8 @@ public class SignupController {
      * @param password1 the password
      * @param password2 the password repeated
      */
-    public void execute(final String username, final String password1,
-                        final String password2) {
-        final SignupInputData signupInputData = new SignupInputData(
-                username, password1, password2);
+    public void execute(final String username, final String password1, final String password2) {
+        final SignupInputData signupInputData = new SignupInputData(username, password1, password2);
 
         userSignupUseCaseInteractor.execute(signupInputData);
     }
@@ -42,5 +44,14 @@ public class SignupController {
      */
     public void switchToLoginView() {
         userSignupUseCaseInteractor.switchToLoginView();
+    }
+
+    /**
+     * Executes the Signup Use Case for errors.
+     * @param errorMessage the error message to display to user
+     * @param center where the panel will be centered
+     */
+    public void error(Component center, String errorMessage) {
+        JOptionPane.showMessageDialog(center, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
