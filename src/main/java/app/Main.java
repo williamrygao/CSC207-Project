@@ -13,7 +13,7 @@ public class Main {
     public static void main(final String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder.addLoginView().addSignupView().addHomeView()
-                                            .addSellView().addSearchView().addWishlistView()
+                                            .addSellView().addSearchView().addWishlistView().addFilterByRatingView()
                                             .addSignupUseCase().addLoginUseCase().addLogoutUseCase()
                                             .addToSellViewUseCase().addToSearchViewUseCase()
                                             .addToFilterByRatingViewUseCase().addSellUseCase().addSearchUseCase()

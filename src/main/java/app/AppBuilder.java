@@ -243,7 +243,16 @@ public class AppBuilder {
         return this;
     }
 
-
+    /**
+     * Adds the Filter By Rating View to the application.
+     * @return this builder
+     */
+    public AppBuilder addFilterByRatingView() {
+        filterByRatingViewModel = new FilterByRatingViewModel();
+        filterByRatingView = new FilterByRatingView(filterByRatingViewModel);
+        cardPanel.add(filterByRatingView, filterByRatingView.getViewName());
+        return this;
+    }
 
     /**
      * Adds the Wishlist View to the application.
