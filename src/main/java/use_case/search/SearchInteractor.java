@@ -27,28 +27,29 @@ public class SearchInteractor implements SearchInputBoundary {
         final String title = searchInputData.getTitle();
         final String price = searchInputData.getPrice();
 
-        List<Listing> matchingListings = new ArrayList<>();
+        final List<Listing> matchingListings = new ArrayList<>();
 
         final List<Listing> allListings = bookDataAccessObject.getListings();
 
         // Perform partial search and filter listings based on any of the fields
         for (Listing listing : allListings) {
-            if (listing.getBook().getBookId().contains(bookID)
-                    || listing.getBook().getAuthors().contains(authors)
-                    || listing.getBook().getTitle().contains(title)
-                    || listing.getPrice().contains(price)) {
+            if ((bookID.isEmpty() || listing.getBook().getBookId().contains(bookID))
+                    && (authors.isEmpty() || listing.getBook().getAuthors().contains(authors))
+                    && (title.isEmpty() || listing.getBook().getTitle().contains(title))
+                    && (price.isEmpty() || listing.getPrice().contains(price))) {
                 matchingListings.add(listing);
             }
         }
 
-        // Prepare the output data to pass to the presenter
+        // Pass the filtered listings to the presenter
         if (!matchingListings.isEmpty()) {
-            SearchOutputData searchOutputData = new SearchOutputData(seller, matchingListings, false);
+            final SearchOutputData searchOutputData = new SearchOutputData(seller, matchingListings, false);
             userPresenter.prepareSuccessView(searchOutputData);
         }
         else {
-            // Handle failure: No results found
+            // No results found
             userPresenter.prepareFailView("No matching results found");
         }
     }
 }
+

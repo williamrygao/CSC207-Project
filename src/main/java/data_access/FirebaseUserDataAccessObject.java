@@ -307,6 +307,7 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
                 while (listingIterator.hasNext()) {
                     wishlist.add(listingIterator.next());
                 }
+
                 return wishlist;
             }
             else {

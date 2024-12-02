@@ -1,9 +1,9 @@
 package entity.user;
 
-import entity.listing.Listing;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.listing.Listing;
 
 /**
  * A simple implementation of the User interface.

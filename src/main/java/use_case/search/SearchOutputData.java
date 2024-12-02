@@ -1,8 +1,8 @@
 package use_case.search;
 
-import entity.listing.Listing;
-
 import java.util.List;
+
+import entity.listing.Listing;
 
 /**
  * Output Data for the Search Use Case.
