@@ -22,10 +22,7 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
     private BackToHomeController backToHomeController;
     private FilterByRatingController filterByRatingController;
 
-    private final JLabel username;
-    private JLabel filterLabel;
-
-    private final JTextField filterTextField = new JTextField(15);
+    private final JTextField filterTextField = new JTextField(5);
     private final JButton filterButton;
     private final JButton backButton;
 
@@ -33,28 +30,14 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
         this.filterByRatingViewModel = filterByRatingViewModel;
         this.filterByRatingViewModel.addPropertyChangeListener(this);
 
-        this.filterLabel = new JLabel("Filter by Rating");
         final JLabel title = new JLabel("Filter by Rating");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
-        usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        username = new JLabel();
-        username.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final LabelTextPanel filterTextPanel = new LabelTextPanel(
+                new JLabel("Please input a minimum rating from 1-10 to filter"), filterTextField);
 
-        final LabelTextPanel filterTextPanel = new LabelTextPanel(new JLabel("Minimum Rating"), filterTextField);
-
-        // text fields and buttons
-        filterLabel = new JLabel("Please input a minimum rating from 1-10 to filter");
-        filterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        final JPanel topButtons = new JPanel();
         filterButton = new JButton("Filter");
-        topButtons.add(filterButton);
-
-        final JPanel bottomButtons = new JPanel();
         backButton = new JButton("Back");
-        bottomButtons.add(backButton);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -99,12 +82,13 @@ public class FilterByRatingView extends JPanel implements PropertyChangeListener
             }
         );
 
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
+        this.add(Box.createVerticalStrut(50));
         this.add(filterTextPanel);
-        this.add(filterLabel);
-        this.add(filterTextField);
         this.add(filterButton);
         this.add(backButton);
+        this.add(Box.createVerticalStrut(50));
 
     }
 
