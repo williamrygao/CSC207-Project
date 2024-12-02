@@ -30,7 +30,7 @@ public class SearchController {
 
         userSearchUseCaseInteractor.execute(searchInputData);
 
-        return "Error: not implemented";
+        return "Search Completed Successfully";
     }
 
     /**

@@ -1,61 +1,64 @@
 package interface_adapter.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import entity.Listing;
+
 /**
  * The State information representing book characterization for search.
  */
 public class SearchState {
     private String username = "";
-    private String bookID = "";
     private String password = "";
-    private String passwordError;
+    private String bookID = "";
     private String authors;
     private String title;
     private String price;
+    private List<Listing> listings;
 
-    public SearchState(SearchState copy) {
-        username = copy.username;
-        password = copy.password;
-        passwordError = copy.passwordError;
-        authors = copy.authors;
-        title = copy.title;
-        price = copy.price;
-    }
-
-    // Because of the previous copy constructor, the default constructor must be explicit.
     public SearchState() {
-
-    }
-
-    public String getUsername() {
-        return username;
+        listings = new ArrayList<>();
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setPasswordError(String passwordError) {
-        this.passwordError = passwordError;
+    public String getPassword() {
+        return password;
     }
 
     public void setAuthors(String authors) {
         this.authors = authors;
     }
 
+    public String getAuthors() {
+        return authors;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setPrice(String price) {
         this.price = price;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPrice() {
+        return price;
     }
 
     public void setBookID(String book) {
@@ -66,15 +69,11 @@ public class SearchState {
         return bookID;
     }
 
-    public String getAuthors() {
-        return authors;
+    public void setListings(List<Listing> listings) {
+        this.listings = listings;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getPrice() {
-        return price;
+    public List<Listing> getListings() {
+        return listings;
     }
 }
