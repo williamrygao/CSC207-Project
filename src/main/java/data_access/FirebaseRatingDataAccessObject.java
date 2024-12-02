@@ -1,6 +1,6 @@
 package data_access;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.Rating;
 import entity.user.User;
 import okhttp3.*;

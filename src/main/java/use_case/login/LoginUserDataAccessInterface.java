@@ -1,6 +1,6 @@
 package use_case.login;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.user.User;
 
 import java.util.List;

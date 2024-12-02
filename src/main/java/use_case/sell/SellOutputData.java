@@ -1,6 +1,6 @@
 package use_case.sell;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * Output Data for the Sell Use Case.

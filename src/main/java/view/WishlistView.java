@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import entity.Listing;
+import entity.listing.Listing;
 import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;

@@ -1,7 +1,7 @@
 package use_case.leave_rating;
 
 import com.google.api.core.ApiFuture;
-import entity.Listing;
+import entity.listing.Listing;
 import entity.user.User;
 import entity.user.UserFactory;
 import com.google.firebase.database.DatabaseReference;

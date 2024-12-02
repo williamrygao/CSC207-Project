@@ -1,6 +1,6 @@
 package data_access;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.user.User;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

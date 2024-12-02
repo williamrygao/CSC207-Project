@@ -2,7 +2,7 @@ package interface_adapter.wishlist.view_wishlist;
 
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;

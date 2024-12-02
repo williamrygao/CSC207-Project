@@ -20,7 +20,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import entity.Listing;
+import entity.listing.Listing;
 import interface_adapter.wishlist.WishlistState;
 import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.change_password.ChangePasswordController;
@@ -289,7 +289,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
         }
         else if (evt.getPropertyName().equals("addedToWishlist")) {
-            final WishlistState state = (WishlistState) evt.getNewValue();
+            final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(
                     null,
                     "Added to " + state.getUsername() + "'s wishlist!"
@@ -299,7 +299,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             JOptionPane.showMessageDialog(null, "Failed to add to wishlist.");
         }
         else if (evt.getPropertyName().equals("removedFromWishlist")) {
-            final WishlistState state = (WishlistState) evt.getNewValue();
+            final HomeState state = (HomeState) evt.getNewValue();
             JOptionPane.showMessageDialog(
                     null, "Removed from " + state.getUsername() + "'s wishlist."
             );
