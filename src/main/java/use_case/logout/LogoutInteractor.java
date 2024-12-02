@@ -30,22 +30,16 @@ public class LogoutInteractor implements LogoutInputBoundary {
      */
     @Override
     public void execute(final LogoutInputData logoutInputData) {
-        // * get the username out of the input data,
-        // * set the username to null in the DAO
-        // * instantiate the `LogoutOutputData`,which needs to contain username.
-        // * tell the presenter to prepare a success view.
         final String username = logoutInputData.getUsername();
 
-        // I (Victor) added this fail condition but unsure if needed
-        if (username == null) {
+        // If the username is null, you can log a message or handle the error gracefully instead of triggering a failure
+        if (username == null || username.isEmpty()) {
             logoutPresenter.prepareFailView("Username not found.");
         }
         else {
+            // Proceed with logging out
             userDataAccessObject.setCurrentUsername(null);
 
-            // I'm pretty sure the useCaseFailed argument is supposed to be
-            // false unless I interpreted it wrong
-            // Documenting here just in case (delete if all tests pass)
             final LogoutOutputData logoutOutputData = new LogoutOutputData(username, false);
             logoutPresenter.prepareSuccessView(logoutOutputData);
         }

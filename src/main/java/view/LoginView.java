@@ -152,7 +152,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         final LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
-        loginController.error(LoginView.this, state.getLoginError());
     }
 
     public void setBackToSignupController(BackToSignupController backToSignupController) {
