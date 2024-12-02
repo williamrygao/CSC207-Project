@@ -2,7 +2,7 @@ package use_case.filter_by_rating;
 
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * Output Data for the Filter By Rating Use Case.
@@ -15,7 +15,7 @@ public class FilterByRatingOutputData {
         this.listings = listings;
     }
 
-    public List<Listing> getBooks() {
+    public List<Listing> getListings() {
         return listings;
     }
 }
