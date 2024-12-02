@@ -5,9 +5,6 @@ import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
-import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
-import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -31,10 +28,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final SearchViewModel searchViewModel;
     private BackToHomeController backToHomeController;
     private SearchController searchController;
-
-    private ViewWishlistController viewWishlistController;
-    private AddToWishlistController addToWishlistController;
-    private RemoveFromWishlistController removeFromWishlistController;
 
     private final JLabel username;
     private JLabel searchLabel;
@@ -73,12 +66,12 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         username = new JLabel();
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "Book ID", "Rating", "Wishlist"};
+        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "BookID", "Rating"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(searchColumnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                return column == 5;
+                return false;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
@@ -92,9 +85,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         filteredBookTable = new JTable(tableModel);
         sorter = new TableRowSorter<>(tableModel);
         filteredBookTable.setRowSorter(sorter);
-
-        final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
-        filteredBookTable.getColumnModel().getColumn(5).setCellEditor(checkboxEditor);
 
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(filteredBookTable);
@@ -248,27 +238,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-        checkboxEditor.addActionListener(
-                evt -> {
-                    final int row = filteredBookTable.getEditingRow();
-                    if (row != -1) {
-                        final SearchState currentState = searchViewModel.getState();
-                        final Boolean isChecked = (Boolean) filteredBookTable.getValueAt(row, 5);
-                        tableModel.fireTableDataChanged();
-                        final Listing listing = currentState.getWishlist().get(row);
-                        final String currentUsername = currentState.getUsername();
-                        if (!isChecked) {
-                            // Call your controller's method to add to wishlist
-                            addToWishlistController.execute(currentUsername, listing);
-                        }
-                        else {
-                            // Call your controller's method to remove from wishlist
-                            removeFromWishlistController.execute(currentUsername, listing);
-                        }
-                    }
-                }
-        );
-
         this.add(Box.createVerticalStrut(20));
         this.add(title);
         this.add(Box.createVerticalStrut(20));
@@ -332,14 +301,12 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         // Now update the table with only the filtered listings
         tableModel.setRowCount(0);
         for (Listing listing : filteredListings) {
-            boolean isInWishlist = currentWishlist.contains(listing);
             tableModel.addRow(new Object[]{
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
                     listing.getBook().getBookId(),
-                    listing.getBook().getRating(), isInWishlist}
-            );
+                    listing.getBook().getRating()});
         }
         return filteredListings.size();
     }
@@ -349,10 +316,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final SearchState state = (SearchState) evt.getNewValue();
             username.setText(state.getUsername());
-        }
-        else if (evt.getPropertyName().equals("wishlist")) {
-            final SearchState state = (SearchState) evt.getNewValue();
-            JOptionPane.showMessageDialog(SearchView.this, "Wishlist updated for " + state.getUsername());
         }
     }
 
