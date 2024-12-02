@@ -40,10 +40,6 @@ public class FilterByRatingPresenter implements FilterByRatingOutputBoundary {
 
     @Override
     public void prepareFailView(String errorMessage) {
-        // update FilterByRatingState with error message
-        final FilterByRatingState filterByRatingState = filterByRatingViewModel.getState();
-        filterByRatingState.setFilterError("error");
-
         // prompt the Filter By Rating view to display an error message
         filterByRatingViewModel.firePropertyChanged("error");
     }
