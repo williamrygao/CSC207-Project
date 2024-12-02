@@ -2,7 +2,7 @@ package interface_adapter.update_listings;
 
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import use_case.update_listings.UpdateListingsOutputBoundary;

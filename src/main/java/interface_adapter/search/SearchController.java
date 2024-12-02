@@ -3,6 +3,9 @@ package interface_adapter.search;
 import use_case.search.SearchInputBoundary;
 import use_case.search.SearchInputData;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Controller for the Search Use Case.
  */
@@ -28,5 +31,14 @@ public class SearchController {
         userSearchUseCaseInteractor.execute(searchInputData);
 
         return "Error: not implemented";
+    }
+
+    /**
+     * Executes the Search Use Case for errors.
+     * @param errorMessage the error message to display to user
+     * @param center where the panel will be centered
+     */
+    public void error(Component center, String errorMessage) {
+        JOptionPane.showMessageDialog(center, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

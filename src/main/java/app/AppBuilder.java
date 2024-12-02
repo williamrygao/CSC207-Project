@@ -31,7 +31,7 @@ import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistPresenter;
-import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.WishlistViewModel;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.search.SearchViewModel;
@@ -134,10 +134,10 @@ public class AppBuilder {
     private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
-            FirebaseUserDataAccessObject(userFactory, bookFactory, firebaseBaseURL);
+            FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
 
     private final FirebaseListingDataAccessObject listingDataAccessObject = new
-            FirebaseListingDataAccessObject(bookFactory, firebaseBaseURL);
+            FirebaseListingDataAccessObject(firebaseBaseURL);
 
     private final FirebaseRatingDataAccessObject ratingDataAccessObject = new
             FirebaseRatingDataAccessObject(firebaseBaseURL);

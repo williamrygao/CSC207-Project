@@ -1,6 +1,6 @@
 package entity.user;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 import java.util.ArrayList;
 import java.util.List;

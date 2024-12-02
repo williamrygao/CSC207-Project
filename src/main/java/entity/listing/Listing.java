@@ -1,4 +1,4 @@
-package entity;
+package entity.listing;
 
 import java.io.Serializable;
 

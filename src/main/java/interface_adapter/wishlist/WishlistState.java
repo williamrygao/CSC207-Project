@@ -1,9 +1,9 @@
-package interface_adapter.wishlist.remove_from_wishlist;
+package interface_adapter.wishlist;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The State information representing the wishlist user.

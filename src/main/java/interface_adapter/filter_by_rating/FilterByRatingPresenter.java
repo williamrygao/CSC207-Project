@@ -17,7 +17,8 @@ public class FilterByRatingPresenter {
 
     }
 
-    public void prepareFailView(FilterByRatingOutputData filterByRatingOutputData) {
+    @Override
+    public void prepareFailView(String errorMessage) {
 
     }
 }

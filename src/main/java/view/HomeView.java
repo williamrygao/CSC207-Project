@@ -20,17 +20,17 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import entity.Listing;
-import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import entity.listing.Listing;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.to_search_view.ToSearchController;
+import interface_adapter.to_sell_view.ToSellController;
 import interface_adapter.update_listings.UpdateListingsController;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 
 /**
@@ -101,7 +101,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         bookTable = new JTable(tableModel);
 
-
         sorter = new TableRowSorter<>(tableModel);
         bookTable.setRowSorter(sorter);
 
@@ -138,9 +137,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final HomeState currentState = homeViewModel.getState();
-                currentState.setPassword(passwordInputField.getText());
-                homeViewModel.setState(currentState);
             }
 
             @Override
@@ -163,10 +159,39 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
                         final HomeState currentState = homeViewModel.getState();
-                        this.changePasswordController.execute(
-                                currentState.getUsername(),
-                                currentState.getPassword()
-                        );
+                        final String oldPassword = currentState.getPassword();
+                        final String newPassword = passwordInputField.getText();
+
+                        if (newPassword == null || newPassword.isEmpty()) {
+                            JOptionPane.showMessageDialog(HomeView.this, "Please enter a valid password", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                        else if (newPassword.equals(oldPassword)) {
+                            JOptionPane.showMessageDialog(HomeView.this, "New password cannot be the same as the old "
+                                    + "password. Please choose a different one.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else if (newPassword.equals(currentState.getUsername())) {
+                            JOptionPane.showMessageDialog(HomeView.this, "New password cannot be the same as your "
+                                    + "username. Please choose a different one.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            final int option = JOptionPane.showConfirmDialog(
+                                    HomeView.this,
+                                    "Are you sure you want to change your password?",
+                                    "Password Change Conformation",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE
+                            );
+                            if (option == JOptionPane.YES_OPTION) {
+                                this.changePasswordController.execute(
+                                        currentState.getUsername(),
+                                        newPassword);
+                            }
+                            // If NO_OPTION is selected, do nothing and stay on the current screen
+                        }
+
+                        currentState.setPassword(newPassword);
+                        homeViewModel.setState(currentState);
                     }
                 }
         );
@@ -228,13 +253,13 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
                         // After updating, refresh the table to reflect changes
                         updateTable(currentState.getListings(), currentState.getWishlist());
-                    } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number between 1 and 10.");
+                    }
+                    catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(HomeView.this,
+                                "Invalid input. Please enter a number between 1 and 10.");
                     }
                 }
         );
-
-
 
         checkboxEditor.addActionListener(
                 evt -> {
@@ -248,7 +273,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                         if (!isChecked) {
                             // Call your controller's method to add to wishlist
                             addToWishlistController.execute(currentUsername, listing);
-                        } else {
+                        }
+                        else {
                             // Call your controller's method to remove from wishlist
                             removeFromWishlistController.execute(currentUsername, listing);
                         }
@@ -288,18 +314,36 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(HomeView.this, "Password was successfully updated for " + state.getUsername() + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
-        else if (evt.getPropertyName().equals("wishlist")) {
+        else if (evt.getPropertyName().equals("addedToWishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "Wishlist updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Added to " + state.getUsername() + "'s wishlist!"
+            );
+        }
+        else if (evt.getPropertyName().equals("wishlistAddFail")) {
+            JOptionPane.showMessageDialog(null, "Failed to add to wishlist.");
+        }
+        else if (evt.getPropertyName().equals("removedFromWishlist")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            JOptionPane.showMessageDialog(
+                    null, "Removed from " + state.getUsername() + "'s wishlist."
+            );
+        }
+        else if (evt.getPropertyName().equals("wishlistRemoveFail")) {
+            JOptionPane.showMessageDialog(null, "Failed to remove from wishlist.");
+        }
+        else if (evt.getPropertyName().equals("viewWishlistError")) {
+            JOptionPane.showMessageDialog(null, "Failed to view wishlist.");
         }
     }
 
     private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
         for (Listing listing : listings) {
-            double averageRating = listing.getBook().getAverageRating();
+            final double averageRating = listing.getBook().getAverageRating();
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),

@@ -3,14 +3,13 @@ package interface_adapter.change_password;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The State information representing the logged-in user.
  */
 public class HomeState {
     private String username = "";
-
     private String password = "";
     private String passwordError;
 
