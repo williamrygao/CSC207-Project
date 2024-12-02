@@ -66,7 +66,6 @@ class LoginInteractorTest {
         // Simulate that the user exists in the repository
         when(mockUserRepository.existsByName("Paul")).thenReturn(true);
         when(mockUserRepository.get("Paul")).thenReturn(user);
-        when(mockUserRepository.getCurrentUsername()).thenReturn("Paul");
 
         // This creates a successPresenter that tests whether the test case is as we expect.
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
@@ -85,8 +84,6 @@ class LoginInteractorTest {
         interactor.execute(inputData);
 
         verify(mockUserRepository).setCurrentUsername("Paul");
-
-        assertEquals("Paul", mockUserRepository.getCurrentUsername());
     }
 
     @Test
