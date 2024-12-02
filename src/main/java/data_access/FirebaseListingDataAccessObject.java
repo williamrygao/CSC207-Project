@@ -2,43 +2,40 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import entity.listing.ListingIterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.Listing;
-import entity.book.Book;
-import entity.book.BookFactory;
+import entity.listing.Listing;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import use_case.filter_by_genre.FilterByGenreDataAccessInterface;
 import use_case.sell.SellListingDataAccessInterface;
 import use_case.update_listings.UpdateListingsListingDataAccessInterface;
 
 /**
  * The DAO for book data.
  */
-public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface, UpdateListingsListingDataAccessInterface {
+public class FirebaseListingDataAccessObject implements SellListingDataAccessInterface,
+        UpdateListingsListingDataAccessInterface, FilterByGenreDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
 
-    private final BookFactory bookFactory;
     private final OkHttpClient httpClient;
     private final String firebaseBaseUrl;
 
     /**
      * FirebaseListingDataAccessObject constructor.
      *
-     * @param bookFactory   Factory for creating Book objects.
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
-    public FirebaseListingDataAccessObject(final BookFactory bookFactory, final String firebaseBaseUrl) {
-        this.bookFactory = bookFactory;
+    public FirebaseListingDataAccessObject(final String firebaseBaseUrl) {
         this.firebaseBaseUrl = firebaseBaseUrl;
         this.httpClient = new OkHttpClient();
     }
@@ -147,42 +144,51 @@ public class FirebaseListingDataAccessObject implements SellListingDataAccessInt
                 final String responseBody = response.body().string();
                 final JSONObject jsonResponse = new JSONObject(responseBody);
 
-                // Iterate over JSON keys to extract listings
-                final Iterator<String> keys = jsonResponse.keys();
-                while (keys.hasNext()) {
-                    final String key = keys.next();
-                    final JSONObject jsonListing = jsonResponse.getJSONObject(key);
-
-                    // Extract attributes from JSON and create a Listing
-                    final String bookID = jsonListing.getString("bookID");
-                    final String title = jsonListing.getString("title");
-                    final String authors = jsonListing.getString("authors");
-                    final String genre = jsonListing.getString("genre");
-                    final String bookPrice = jsonListing.getString("bookPrice");
-                    final String listingPrice = jsonListing.getString("listingPrice");
-                    final String seller = jsonListing.getString("seller");
-                    final float rating = jsonListing.getFloat("rating");
-                    final boolean isAvailable = jsonListing.getBoolean("isAvailable");
-
-                    final Book book = new Book(bookID, title, authors, genre, bookPrice, rating);
-                    // Create the Listing object using the BookFactory and extracted attributes
-                    listings.add(new Listing(
-                            bookID,
-                            book,
-                            listingPrice,
-                            seller,
-                            isAvailable
-                    ));
+                final ListingIterator listingIterator = new ListingIterator(jsonResponse);
+                while (listingIterator.hasNext()) {
+                    listings.add(listingIterator.next());
                 }
             }
             else {
                 System.err.println("Failed to fetch listings: " + response.message());
             }
         }
-        catch (IOException | JSONException e) {
-            e.printStackTrace();
+        catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return listings;
+    }
+
+    /**
+     * Retrieves listings that match the given genre search term (case-insensitive, partial matches allowed).
+     *
+     * @param genre the genre search term
+     * @return a list of listings that match the genre
+     */
+
+    @Override
+    public List<Listing> getListingsByGenre(String genre) {
+        if (genre == null || genre.trim().isEmpty()) {
+            return new ArrayList<>();
         }
 
-        return listings;
+        final String searchGenre = genre.toLowerCase().trim();
+        final List<Listing> allListings = getListings();
+        if (allListings == null) {
+            return new ArrayList<>();
+        }
+
+        final List<Listing> filteredListings = new ArrayList<>();
+        for (Listing listing : allListings) {
+            if (listing == null || listing.getBook() == null || listing.getBook().getGenre() == null) {
+                continue;
+            }
+
+            final String bookGenre = listing.getBook().getGenre().toLowerCase();
+            if (bookGenre.contains(searchGenre)) {
+                filteredListings.add(listing);
+            }
+        }
+        return filteredListings;
     }
 }

@@ -2,12 +2,12 @@ package interface_adapter.wishlist.view_wishlist;
 
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
-import interface_adapter.wishlist.remove_from_wishlist.WishlistState;
-import interface_adapter.wishlist.remove_from_wishlist.WishlistViewModel;
+import interface_adapter.wishlist.WishlistState;
+import interface_adapter.wishlist.WishlistViewModel;
 import use_case.wishlist.view_wishlist.ViewWishlistOutputBoundary;
 import use_case.wishlist.view_wishlist.ViewWishlistOutputData;
 
@@ -47,6 +47,6 @@ public class ViewWishlistPresenter implements ViewWishlistOutputBoundary {
 
     @Override
     public void prepareFailView(final String error) {
-
+        homeViewModel.firePropertyChanged("viewWishlistError");
     }
 }

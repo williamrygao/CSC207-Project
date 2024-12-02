@@ -51,7 +51,7 @@ public class SellView extends JPanel implements PropertyChangeListener {
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Create priceLabel to display price
-        priceLabel = new JLabel("Retail price will be displayed here if available.");
+        priceLabel = new JLabel("Retail price will be displayed if available.");
         priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel priceInfo = new LabelTextPanel(new JLabel("Your Price"), priceInputField);
@@ -132,11 +132,11 @@ public class SellView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(price)) {
                         final String bookID = bookIDInputField.getText();
                         if (bookID == null || bookID.isEmpty()) {
-                            updatePriceLabel("Error, please input a valid book ID");
+                            sellController.message(SellView.this, "Error, please input a valid book ID", "Error");
                         }
                         else {
                             final String priceMessage = sellController.getBookPrice(bookID);
-                            updatePriceLabel(priceMessage);
+                            sellController.message(SellView.this, priceMessage, "Retail Price");
                         }
                     }
                 }
@@ -148,9 +148,13 @@ public class SellView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(sell)) {
                         final SellState currentState = sellViewModel.getState();
+                        final String bookID = bookIDInputField.getText();
                         final String sellingPrice = priceInputField.getText();
-                        if (sellingPrice == null || sellingPrice.isEmpty()) {
-                            updatePriceLabel("Error, please input a valid selling price");
+                        if (bookID == null || bookID.isEmpty()) {
+                            sellController.message(SellView.this, "Error, please input a valid book ID", "Error");
+                        }
+                        else if (sellingPrice == null || sellingPrice.isEmpty()) {
+                            sellController.message(SellView.this, "Error, please input a valid selling price", "Error");
                         }
                         else {
                             sellController.execute(currentState.getUsername(), currentState.getPassword(),
@@ -183,11 +187,11 @@ public class SellView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("not sold")) {
             final SellState state = (SellState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, state.getSellError());
+            JOptionPane.showMessageDialog(SellView.this, state.getSellError());
         }
         else if (evt.getPropertyName().equals("listed for sale")) {
             final SellState state = (SellState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, createSellMessage(priceInputField.getText(),
+            JOptionPane.showMessageDialog(SellView.this, createSellMessage(priceInputField.getText(),
                     bookIDInputField.getText(), state.getUsername()));
         }
     }
@@ -202,14 +206,6 @@ public class SellView extends JPanel implements PropertyChangeListener {
 
     public void setBackToHomeController(BackToHomeController backToHomeController) {
         this.backToHomeController = backToHomeController;
-    }
-
-    /**
-     * Updates the price label with the fetched price.
-     * @param priceMessage a string of the fetched price
-     */
-    public void updatePriceLabel(String priceMessage) {
-        priceLabel.setText(priceMessage);
     }
 
     /**

@@ -1,6 +1,6 @@
 package use_case.leave_rating;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.Rating;
 import entity.user.User;
 

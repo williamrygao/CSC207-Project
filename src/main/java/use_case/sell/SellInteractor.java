@@ -2,7 +2,7 @@ package use_case.sell;
 
 import entity.book.Book;
 import entity.book.BookFactory;
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * The Sell Interactor.

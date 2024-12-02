@@ -1,20 +1,15 @@
 package use_case.filter_by_genre;
 
 /**
- * Input boundary interface for the "Filter Books by Genre" use case.
- * Acts as the primary interface for the controller to trigger the filtering process.
+ * Interface for the input boundary of the "Filter Books by Genre" use case.
+ * This interface defines the method to be called for filtering books by genre.
  */
-
-public class FilterByGenreInputBoundary {
+public interface FilterByGenreInputBoundary {
 
     /**
-     * Executes the filtering process based on the provided input data.
+     * Filters books by genre based on the input data.
      *
-     * @param inputData the data required to filter books by genre
+     * @param inputData the input data containing the genre to filter by
      */
-
-    void filterBooks(FilterByGenreInputData inputData) {
-
-    }
-
+    void filterByGenre(FilterByGenreInputData inputData);
 }

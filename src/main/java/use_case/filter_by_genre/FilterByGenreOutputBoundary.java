@@ -1,19 +1,16 @@
 package use_case.filter_by_genre;
 
 /**
- * Output boundary interface for the "Filter Books by Genre" use case.
- * Defines the methods required for presenting the filtered book data to the view.
+ * Interface for the output boundary of the "Filter Books by Genre" use case.
+ * Defines the method to handle presenting the filtered book listings.
  */
+public interface FilterByGenreOutputBoundary {
 
-public class FilterByGenreOutputBoundary {
     /**
-     * Presents the filtered books and any related information to the view.
+     * Prepares and presents the filtered book listings.
+     * This method is called to display the filtered data to the user or the next layer in the system.
      *
-     * @param outputData the data containing the filtered list of books
+     * @param outputData the data containing the filtered listings
      */
-
-    void presentFilteredBooks(FilterByGenreOutputData outputData) {
-
-    }
-
+    void presentFilteredListings(FilterByGenreOutputData outputData);
 }

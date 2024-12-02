@@ -2,7 +2,7 @@ package use_case.wishlist.view_wishlist;
 
 import java.util.List;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * Output Data for the View Wishlist Use Case.

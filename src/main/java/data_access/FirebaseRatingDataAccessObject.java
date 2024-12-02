@@ -1,6 +1,6 @@
 package data_access;
 
-import entity.Listing;
+import entity.listing.Listing;
 import entity.Rating;
 import entity.book.Book;
 import entity.user.User;

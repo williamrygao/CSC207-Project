@@ -1,16 +1,28 @@
 package use_case.filter_by_genre;
 
-/**
- * Deals with data structure representing the input data for the "Filter Books by Genre" use case.
- * Contains the criteria required to filter books.
- */
-
 public class FilterByGenreInputData {
+
+    private final String genre;
+
     /**
-     * The genre used to filter books.
+     * Constructor to initialize the genre to be used for filtering.
+     *
+     * @param genre the genre to filter by
+     * @throws IllegalArgumentException if the genre is null or empty
      */
+    public FilterByGenreInputData(String genre) {
+        if (genre == null || genre.trim().isEmpty()) {
+            throw new IllegalArgumentException("Genre cannot be empty.");
+        }
+        this.genre = genre;
+    }
 
-    private String genre;
-    // Constructor, getters, and setters to be added upon implementation
+    /**
+     * Returns the genre for filtering.
+     *
+     * @return the genre to filter by
+     */
+    public String getGenre() {
+        return genre;
+    }
 }
-

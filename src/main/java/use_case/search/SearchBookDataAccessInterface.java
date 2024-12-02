@@ -1,6 +1,6 @@
 package use_case.search;
 
-import entity.Listing;
+import entity.listing.Listing;
 
 /**
  * DAO for the Sell Use Case.
