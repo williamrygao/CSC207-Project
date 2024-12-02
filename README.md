@@ -7,7 +7,7 @@
 * Zefeng Wu (ZefW)
 
 ## Purpose
-Joe's Bookstore is an online marketplace for books. It permits browsing, buying, and selling books of any kind. Born out
+Joe's Bookstore is an online marketplace for books. It permits browsing and selling books of any kind. Born out
 of an elementary desire for quality literature, Joe has designed a state-of-the-art software for discovering and
 purchasing books.
 
@@ -21,42 +21,36 @@ purchasing books.
 
 ## Features
 
-Joe's Bookstore is designed to make the process of browsing, buying, and selling books as simple and efficient as possible. Below are the core features of the software:
+Joe's Bookstore is designed to make the process of browsing and selling books as simple and efficient as possible. Below are the core features of the software:
 
 **1. User Authentication**
 
 - Secure sign-up and login functionality.<br>
-- User data is securely stored for easy access to purchase history, wishlists, and more.
+- User data is securely stored for easy access to wishlists, and more.
 
-**2. Book Search and Rating system**
+![User Authentication](images/User-Authentication.png)
 
-- Search for books using specific queries such as book title, author, and more.<br>
-- Users can rate books they’ve read, helping others discover highly-rated titles.
+**2. Browse Listings**
 
-**3. Browse Categories**
+- View detailed information on all available listings, with the ability to sort by title, author, price, rating, and wishlist status.
 
-- Apply filters to sort results by categories/genres or rating.<br>
-- Explore books sorted by different categories/genres or ratings to find books of interest.
+![Home Page](images/Home-Page.png)
 
-**4. Purchase and Sell Books**
+**3. Refine Search**
 
-- User can build a wishlist.<br>
-- Users can buy books listed by others or list their own books for sale.
+- Restrict the displayed listings by setting a maximum price or minimum rating.<br>
+- Search listings using specific queries such as book title, author, and more.
 
-**5. Google Books API Integration**
+![Filter By Price](images/Filter-By-Price.png)
 
-Fetches detailed book information from the Google Books API including:
-- Title, authors, category/genre, description, availability, and ratings.<br>
-- Allows real-time access to a vast catalog of books, providing the most up-to-date information available.
+**4. Discover and Sell Books**
 
-**6. Firebase Integration**
+- User can build a wishlist of books they wish to buy.<br>
+- Users can list their own books for sale.
 
-- Handles user authentication, book listings, and user data storage.<br>
-- Contributors can add new books or update existing listings via the Firebase Admin SDK.
+![Retail Price](images/Retail-Price.png)
 
-**7. Unit and Integration Tests**
-
-- Built-in unit tests and integration tests to ensure key functionality works seamlessly.
+![Wishlist](images/Wishlist.png)
 
 ## Installation Instructions
 
@@ -90,12 +84,31 @@ Before installing Joe's Bookstore, ensure you have/can access the following:
 
 **4. GoogleBooksAPI (Data Access)**
 
-   The Google Books API can be accessed using the [endpoint](https://www.googleapis.com/books/v1/volumes?q=search%20terms) to retrieve book data based on search queries.
+   Generate an API key to make calls to the Google Books API, which Joe's Bookstore uses to retrieve detailed book data. Instructions can be found at [Google Books API Guide](https://developers.google.com/books/overview). Once you have your API key, store it in a file called api_key.env in your local repository, in the following format:
+
+```bash
+API_KEY="*your API key here*"   
+```
 
 **5. Firebase Account & Firebase SDK (For contributors):**
 
-   Set up a [Firebase](https://firebase.google.com/) account. Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object.
-   API Key for the database used for the project would be made available to admins for modifications and updates.
+   Set up a [Firebase](https://firebase.google.com/) account. Once you’ve created a Firebase project, you can generate an API key and the Firebase configuration object. In src/main/resources/, include a file serviceAccount.json in the following format:
+
+```json
+{
+  "type": "service_account",
+  "project_id": "csc207project-ed2f9",
+  "private_key_id": "*your private key ID here*",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n*your private key here*\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-d6nlw@csc207project-ed2f9.iam.gserviceaccount.com",
+  "client_id": "105179899008478085244",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-d6nlw%40csc207project-ed2f9.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+```
 
 **6. Git:**
 
@@ -152,11 +165,11 @@ Main Features:
 
 - **Search for Books:** Enter search terms (e.g., book title, author) to find relevant books.
 
-- **Filters and Sorting:** You can sort by price, ratings, or publication date to refine your search results.
+- **Sorting:** You can sort all listings by title, author, price, or rating.
 
-- **Browse Categories:** Explore books sorted by genre/category or rating.
+- **Browse Categories:** Explore books sorted by genre or price.
 
-- **Purchase/Sell Books:** Buy or List books for sale .
+- **Sell Books:** List books for sale.
 
 **3. Google Books API Integration**
 
@@ -196,13 +209,6 @@ To run tests, use the built-in testing tools in IntelliJ (JUnit) or execute the 
 ```bash
 mvn test
 ```
-
-**6. Feedback & Contributions**
-
-If you encounter any issues or would like to suggest features, please feel free to submit [feedback form](https://docs.google.com/forms/d/e/1FAIpQLSdMBz0mUjYl57bAOSNlAt0em3yHeEJynOQUuhzR0vUzXEaiwA/viewform?usp=sf_link). or contribute via GitHub:
-Fork the repository and submit a Pull Request with your changes.
-
-Report bugs or submit feature requests by opening Issues in the GitHub repository.
 
 ## License
 
