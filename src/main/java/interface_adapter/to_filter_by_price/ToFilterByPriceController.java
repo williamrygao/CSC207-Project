@@ -1,26 +1,26 @@
-package interface_adapter.to_filter_by_rating;
+package interface_adapter.to_filter_by_price;
 
-import use_case.to_filter_by_rating.ToFilterByRatingInputBoundary;
+import use_case.to_filter_by_price.ToFilterByPriceInputBoundary;
 
 /**
- * The controller for the To Filter By Rating Use Case.
+ * The controller for the To Filter By Price Use Case.
  */
-public class ToFilterByRatingController {
+public class ToFilterByPriceController {
 
-    private final ToFilterByRatingInputBoundary toFilterByRatingInteractor;
+    private final ToFilterByPriceInputBoundary toFilterByPriceInteractor;
 
     /**
-     * ToFilterByRatingController method.
-     * @param toFilterByRatingInteractor the use case interactor
+     * ToFilterByPriceController constructor method.
+     * @param toFilterByPriceInteractor the use case interactor
      */
-    public ToFilterByRatingController(final ToFilterByRatingInputBoundary toFilterByRatingInteractor) {
-        this.toFilterByRatingInteractor = toFilterByRatingInteractor;
+    public ToFilterByPriceController(final ToFilterByPriceInputBoundary toFilterByPriceInteractor) {
+        this.toFilterByPriceInteractor = toFilterByPriceInteractor;
     }
 
     /**
-     * Executes the To Filter By Rating Use Case.
+     * Executes the To Filter By Price Use Case.
      */
     public void execute() {
-        toFilterByRatingInteractor.execute();
+        toFilterByPriceInteractor.execute();
     }
 }

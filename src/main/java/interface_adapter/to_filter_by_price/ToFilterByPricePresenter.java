@@ -1,30 +1,30 @@
-package interface_adapter.to_filter_by_rating;
+package interface_adapter.to_filter_by_price;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.filter_by_price.FilterByPriceState;
 import interface_adapter.filter_by_price.FilterByPriceViewModel;
-import use_case.to_filter_by_rating.ToFilterByRatingOutputBoundary;
+import use_case.to_filter_by_price.ToFilterByPriceOutputBoundary;
 
 /**
- * The Presenter for the To Filter By Rating Use Case.
+ * The Presenter for the To Filter By Price Use Case.
  */
-public class ToFilterByRatingPresenter implements ToFilterByRatingOutputBoundary {
+public class ToFilterByPricePresenter implements ToFilterByPriceOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final HomeViewModel homeViewModel;
     private final FilterByPriceViewModel filterByPriceViewModel;
 
     /**
-     * Constructs a ToFilterByRatingPresenter with the specified view models.
+     * Constructs a ToFilterByPricePresenter with the specified view models.
      * @param viewManagerModel the model that manages the current view state
      * @param homeViewModel the view model of the logged-in user's state
      * @param filterByPriceViewModel the view model representing the search state
      */
-    public ToFilterByRatingPresenter(final ViewManagerModel viewManagerModel,
-                                     final HomeViewModel homeViewModel,
-                                     final FilterByPriceViewModel filterByPriceViewModel) {
+    public ToFilterByPricePresenter(final ViewManagerModel viewManagerModel,
+                                    final HomeViewModel homeViewModel,
+                                    final FilterByPriceViewModel filterByPriceViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.homeViewModel = homeViewModel;
         this.filterByPriceViewModel = filterByPriceViewModel;
@@ -39,7 +39,7 @@ public class ToFilterByRatingPresenter implements ToFilterByRatingOutputBoundary
         final HomeState homeState = homeViewModel.getState();
         final FilterByPriceState filterByPriceState = filterByPriceViewModel.getState();
 
-        // update Filter By Rating state information
+        // update Filter By Price state information
         filterByPriceState.setUsername(homeState.getUsername());
         filterByPriceState.setPassword(homeState.getPassword());
 
