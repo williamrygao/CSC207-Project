@@ -1,11 +1,11 @@
-package use_case.to_filter_by_rating;
+package use_case.to_filter_by_price;
 
 /**
- * Input Boundary for going to Filter By Rating view.
+ * Input Boundary for going to Filter By Price view.
  */
-public interface ToFilterByRatingInputBoundary {
+public interface ToFilterByPriceInputBoundary {
     /**
-     * Executes the To Filter By Rating use case.
+     * Executes the To Filter By Price use case.
      */
     void execute();
 }

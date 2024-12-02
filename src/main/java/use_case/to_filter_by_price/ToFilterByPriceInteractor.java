@@ -1,13 +1,13 @@
-package use_case.to_filter_by_rating;
+package use_case.to_filter_by_price;
 
 /**
- * The To Filter By Rating Interactor.
+ * The To Filter By Price Interactor.
  */
-public class ToFilterByRatingInteractor implements ToFilterByRatingInputBoundary {
-    private final ToFilterByRatingOutputBoundary toFilterByRatingPresenter;
+public class ToFilterByPriceInteractor implements ToFilterByPriceInputBoundary {
+    private final ToFilterByPriceOutputBoundary toFilterByPricePresenter;
 
-    public ToFilterByRatingInteractor(final ToFilterByRatingOutputBoundary toFilterByRatingOutputBoundary) {
-        this.toFilterByRatingPresenter = toFilterByRatingOutputBoundary;
+    public ToFilterByPriceInteractor(final ToFilterByPriceOutputBoundary toFilterByPriceOutputBoundary) {
+        this.toFilterByPricePresenter = toFilterByPriceOutputBoundary;
     }
 
     /**
@@ -15,6 +15,6 @@ public class ToFilterByRatingInteractor implements ToFilterByRatingInputBoundary
      */
     @Override
     public void execute() {
-        toFilterByRatingPresenter.prepareSuccessView();
+        toFilterByPricePresenter.prepareSuccessView();
     }
 }

@@ -1,11 +1,11 @@
-package use_case.to_filter_by_rating;
+package use_case.to_filter_by_price;
 
 /**
- * The output boundary for the To Filter By Rating View Use Case.
+ * The output boundary for the To Filter By Price View Use Case.
  */
-public interface ToFilterByRatingOutputBoundary {
+public interface ToFilterByPriceOutputBoundary {
     /**
-     * Prepares the success view for the To Filter By Rating Use Case.
+     * Prepares the success view for the To Filter By Price Use Case.
      */
     void prepareSuccessView();
 }
