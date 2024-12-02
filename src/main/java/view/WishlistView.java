@@ -11,11 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.listing.Listing;
-import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 import interface_adapter.wishlist.WishlistState;
 import interface_adapter.wishlist.WishlistViewModel;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 
 /**
  * The View for when the user is viewing their personal wishlist.
@@ -49,6 +49,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         username = new JLabel();
+        username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -118,9 +119,12 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        this.add(Box.createVerticalStrut(20));
         this.add(title);
+        this.add(Box.createVerticalStrut(20));
         this.add(usernameInfo);
         this.add(username);
+        this.add(Box.createVerticalStrut(20));
 
         this.add(listings);
 
