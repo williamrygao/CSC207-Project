@@ -2,19 +2,21 @@ package use_case.search;
 
 import entity.Listing;
 
+import java.util.List;
+
 /**
  * Output Data for the Search Use Case.
  */
 public class SearchOutputData {
 
     private final String username;
-    private final Listing listing;
+    private final List<Listing> listings;
 
     private final boolean useCaseFailed;
 
-    public SearchOutputData(String username, Listing listing, boolean useCaseFailed) {
+    public SearchOutputData(String username, List<Listing> listings, boolean useCaseFailed) {
         this.username = username;
-        this.listing = listing;
+        this.listings = listings;
         this.useCaseFailed = useCaseFailed;
     }
 
@@ -22,8 +24,8 @@ public class SearchOutputData {
         return username;
     }
 
-    public Listing getListing() {
-        return listing;
+    public List<Listing> getListings() {
+        return listings;
     }
 
     public boolean isUseCaseFailed() {
