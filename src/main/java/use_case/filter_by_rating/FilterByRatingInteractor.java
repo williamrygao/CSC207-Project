@@ -19,15 +19,15 @@ public class FilterByRatingInteractor implements FilterByRatingInputBoundary {
 
     @Override
     public void execute(FilterByRatingInputData filterByRatingInputData) {
-        // retrieve rating to filter by
-        final int rating = filterByRatingInputData.getRating();
+        // retrieve minimum rating to filter by
+        final int minRating = filterByRatingInputData.getRating();
 
         // retrieve books in database with that rating or higher
-        final List<Listing> books = filterByRatingDataAccessObject.filterByRating(rating);
+        final List<Listing> listings = filterByRatingDataAccessObject.filterByRating(minRating);
 
-        // prepare views using the presenter
-        final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(books);
-
+        // pass output data to the presenter
+        final FilterByRatingOutputData filterByRatingOutputData = new FilterByRatingOutputData(listings);
+        this.filterByRatingPresenter.prepareSuccessView(filterByRatingOutputData);
     }
 
 }

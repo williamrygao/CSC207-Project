@@ -26,8 +26,9 @@ import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.to_filter_by_rating.ToFilterByRatingController;
 import interface_adapter.to_search_view.ToSearchController;
-import interface_adapter.to_sell_view.ToSellController;
+import interface_adapter.to_sell.ToSellController;
 import interface_adapter.update_listings.UpdateListingsController;
 import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
 import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
@@ -44,6 +45,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private LogoutController logoutController;
     private ToSellController toSellController;
     private ToSearchController toSearchController;
+    private ToFilterByRatingController toFilterByRatingController;
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
@@ -54,6 +56,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOut;
     private final JButton toSell;
     private final JButton toSearch;
+    private final JButton toFilterByRating;
     private final JButton viewWishlist;
     private final JButton toRate;
 
@@ -119,6 +122,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         toSearch = new JButton("Search for a Book");
         topButtons.add(toSearch);
+
+        toFilterByRating = new JButton("Filter by Rating");
+        topButtons.add(toFilterByRating);
 
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
@@ -217,6 +223,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(toSearch)) {
                         toSearchController.execute();
+                    }
+                }
+        );
+
+        toFilterByRating.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(toFilterByRating)) {
+                        toFilterByRatingController.execute();
                     }
                 }
         );
@@ -343,6 +357,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private void updateTable(List<Listing> listings, List<Listing> wishlist) {
         tableModel.setRowCount(0);
         for (Listing listing : listings) {
+            // is the variable below necessary?
             final double averageRating = listing.getBook().getAverageRating();
             final Object[] rowData = {
                     listing.getBook().getTitle(),
@@ -365,6 +380,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setToSearchController(ToSearchController toSearchController) {
         this.toSearchController = toSearchController;
+    }
+
+    public void setToFilterByRatingController(ToFilterByRatingController toFilterByRatingController) {
+        this.toFilterByRatingController = toFilterByRatingController;
     }
 
     public void setViewWishlistController(ViewWishlistController viewWishlistController) {

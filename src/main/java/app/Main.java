@@ -15,8 +15,9 @@ public class Main {
         final JFrame application = appBuilder.addLoginView().addSignupView().addHomeView()
                                             .addSellView().addSearchView().addWishlistView()
                                             .addSignupUseCase().addLoginUseCase().addLogoutUseCase()
-                                            .addToSellViewUseCase().addToSearchViewUseCase().addSellUseCase()
-                                            .addSearchUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
+                                            .addToSellViewUseCase().addToSearchViewUseCase()
+                                            .addToFilterByRatingViewUseCase().addSellUseCase().addSearchUseCase()
+                                            .addFilterByRatingUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
                                             .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
                                             .addBackToSignupUseCase().addChangePasswordUseCase()
                                             .addUpdateListingsUseCase().build();
