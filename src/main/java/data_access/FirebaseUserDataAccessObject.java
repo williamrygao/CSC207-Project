@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.book.Book;
 import entity.listing.Listing;
 import entity.listing.ListingIterator;
 import entity.user.User;
@@ -24,7 +23,6 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistUserDataAccessInterface;
-import use_case.sell.SellUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.update_listings.UpdateListingsUserDataAccessInterface;
 import use_case.wishlist.view_wishlist.ViewWishlistUserDataAccessInterface;
@@ -36,7 +34,6 @@ public class FirebaseUserDataAccessObject implements SignupUserDataAccessInterfa
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
-        SellUserDataAccessInterface,
         RemoveFromWishlistUserDataAccessInterface,
         AddToWishlistUserDataAccessInterface,
         ViewWishlistUserDataAccessInterface,

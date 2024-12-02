@@ -11,30 +11,11 @@ import entity.user.User;
 public interface UpdateListingsUserDataAccessInterface {
 
     /**
-     * Checks if the given username exists.
-     * @param username the username to look for
-     * @return true if a user with the given username exists; false otherwise
-     */
-    boolean existsByName(String username);
-
-    /**
-     * Saves the user.
-     * @param user the user to save
-     */
-    void save(User user);
-
-    /**
      * Returns the user with the given username.
      * @param username the username to look up
      * @return the user with the given username
      */
     User get(String username);
-
-    /**
-     * Returns the username of the curren user of the application.
-     * @return the username of the current user; null indicates that no one is logged into the application.
-     */
-    String getCurrentUsername();
 
     /**
      * Sets the username indicating who is the current user of the application.
@@ -44,6 +25,7 @@ public interface UpdateListingsUserDataAccessInterface {
 
     /**
      * Get this user's wishlist.
+     * @param user the user
      * @return wishlist
      */
     List<Listing> getWishlist(User user);
