@@ -32,7 +32,6 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
     /**
      * FirebaseRatingDataAccessObject constructor.
-     *
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
     public FirebaseRatingDataAccessObject(final String firebaseBaseUrl) {
@@ -42,18 +41,19 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
     @Override
     public boolean existsByBookID(String bookID) {
-        String url = firebaseBaseUrl + "/ratings/" + bookID + ".json";
-        Request request = new Request.Builder()
+        final String url = firebaseBaseUrl + "/ratings/" + bookID + ".json";
+        final Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.code() == SUCCESS_CODE) {
-                JSONObject jsonResponse = new JSONObject(response.body().string());
+                final JSONObject jsonResponse = new JSONObject(response.body().string());
                 return jsonResponse.length() > 0;
             }
-        } catch (IOException | JSONException exception) {
+        }
+        catch (IOException | JSONException exception) {
             exception.printStackTrace();
         }
         return false;
@@ -150,7 +150,6 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
     /**
      * Retrieves all ratings from the Firebase database.
-     *
      * @return a list of ratings or an empty list if none exist or an error occurs.
      */
     public List<Rating> getAllRatings() {

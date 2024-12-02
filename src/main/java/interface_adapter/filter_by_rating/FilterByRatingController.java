@@ -11,7 +11,7 @@ public class FilterByRatingController {
     private final FilterByRatingInputBoundary filterByRatingInteractor;
 
     public FilterByRatingController(FilterByRatingInputBoundary filterByRatingInteractor) {
-            this.filterByRatingInteractor = filterByRatingInteractor;
+        this.filterByRatingInteractor = filterByRatingInteractor;
     }
 
     /**

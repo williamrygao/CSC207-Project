@@ -2,6 +2,7 @@ package use_case.filter_by_rating;
 
 import java.util.List;
 
+import entity.Rating;
 import entity.listing.Listing;
 
 /**
@@ -15,4 +16,6 @@ public interface FilterByRatingDataAccessInterface {
      * @return a list of Listing objects that have ratings above the minRating.
      */
     List<Listing> filterByRating(int minRating);
+
+    List<Rating> getAllRatings ();
 }
