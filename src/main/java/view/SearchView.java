@@ -338,15 +338,15 @@ public class SearchView extends JPanel implements PropertyChangeListener {
      */
     public void createSearchMessage(String searchMessage, int itemsFound) {
         if (itemsFound == 0) {
-            JOptionPane.showMessageDialog(SearchView.this, searchMessage + " We could not find any books that fit your"
-                    + "search query.", "Search Failed", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(SearchView.this, " We could not find any books that fit your"
+                    + " search query.", "Search Failed", JOptionPane.ERROR_MESSAGE);
         }
         else if (itemsFound == 1) {
             JOptionPane.showMessageDialog(SearchView.this, searchMessage + " We were able to find " + itemsFound
                     + " book that fit your search query.", "Search Query", JOptionPane.INFORMATION_MESSAGE);
         }
         else {
-            JOptionPane.showMessageDialog(SearchView.this, " We were able to find " + itemsFound
+            JOptionPane.showMessageDialog(SearchView.this, searchMessage + " We were able to find " + itemsFound
                     + " books that fit your search query.", "Search Query", JOptionPane.INFORMATION_MESSAGE);
         }
 
