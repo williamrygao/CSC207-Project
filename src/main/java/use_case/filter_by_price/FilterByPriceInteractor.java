@@ -1,9 +1,9 @@
 package use_case.filter_by_price;
 
-import entity.listing.Listing;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.listing.Listing;
 
 /**
  * The Filter By Price Interactor.
