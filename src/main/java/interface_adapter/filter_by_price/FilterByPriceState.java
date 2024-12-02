@@ -1,19 +1,25 @@
-package interface_adapter.filter_by_rating;
+package interface_adapter.filter_by_price;
+
+import entity.listing.Listing;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The state representing the filter by rating process.
+ * The state representing the filter by price process.
  */
-public class FilterByRatingState {
+public class FilterByPriceState {
     private String username = "";
     private String password = "";
-    private int minRating;
+    private int maxPrice;
+    private List<Listing> listings;
 
-    public FilterByRatingState(FilterByRatingState copy) {
+    public FilterByPriceState(FilterByPriceState copy) {
         this.username = copy.getUsername();
         this.password = copy.getPassword();
     }
 
-    public FilterByRatingState() {
+    public FilterByPriceState() {
 
     }
 
@@ -33,11 +39,19 @@ public class FilterByRatingState {
         this.password = password;
     }
 
-    public int getMinRating() {
-        return minRating;
+    public int getMaxPrice() {
+        return maxPrice;
     }
 
-    public void setMinRating(int minRating) {
-        this.minRating = minRating;
+    public void setMaxPrice(int maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public List<Listing> getListings() {
+        return listings;
+    }
+
+    public void setListings(List<Listing> listings) {
+        this.listings = listings;
     }
 }
