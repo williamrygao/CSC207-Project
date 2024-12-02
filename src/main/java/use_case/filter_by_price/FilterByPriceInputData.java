@@ -1,16 +1,16 @@
-package use_case.filter_by_rating;
+package use_case.filter_by_price;
 
 /**
- * The Input Data for the Filter By Rating Use Case.
+ * The Input Data for the Filter By Price Use Case.
  */
-public class FilterByRatingInputData {
-    private final int rating;
+public class FilterByPriceInputData {
+    private final int price;
 
-    public FilterByRatingInputData(int rating) {
-        this.rating = rating;
+    public FilterByPriceInputData(int price) {
+        this.price = price;
     }
 
-    int getRating() {
-        return rating;
+    int getPrice() {
+        return price;
     }
 }
