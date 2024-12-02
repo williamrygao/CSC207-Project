@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -137,9 +138,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final HomeState currentState = homeViewModel.getState();
-                currentState.setPassword(passwordInputField.getText());
-                homeViewModel.setState(currentState);
             }
 
             @Override
@@ -162,10 +160,39 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
                         final HomeState currentState = homeViewModel.getState();
-                        this.changePasswordController.execute(
-                                currentState.getUsername(),
-                                currentState.getPassword()
-                        );
+                        final String oldPassword = currentState.getPassword();
+                        final String newPassword = passwordInputField.getText();
+
+                        if (newPassword == null || newPassword.isEmpty()) {
+                            JOptionPane.showMessageDialog(HomeView.this, "Please enter a valid password", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                        else if (newPassword.equals(oldPassword)) {
+                            JOptionPane.showMessageDialog(HomeView.this, "New password cannot be the same as the old "
+                                    + "password. Please choose a different one.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else if (newPassword.equals(currentState.getUsername())) {
+                            JOptionPane.showMessageDialog(HomeView.this, "New password cannot be the same as your "
+                                    + "username. Please choose a different one.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            final int option = JOptionPane.showConfirmDialog(
+                                    HomeView.this,
+                                    "Are you sure you want to change your password?",
+                                    "Password Change Conformation",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE
+                            );
+                            if (option == JOptionPane.YES_OPTION) {
+                                this.changePasswordController.execute(
+                                        currentState.getUsername(),
+                                        newPassword);
+                            }
+                            // If NO_OPTION is selected, do nothing and stay on the current screen
+                        }
+
+                        currentState.setPassword(newPassword);
+                        homeViewModel.setState(currentState);
                     }
                 }
         );
@@ -227,7 +254,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
                         // After updating, refresh the table to reflect changes
                         updateTable(currentState.getListings(), currentState.getWishlist());
-                    } catch (NumberFormatException e) {
+                    }
+                    catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number between 1 and 10.");
                     }
                 }
@@ -245,7 +273,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                         if (!isChecked) {
                             // Call your controller's method to add to wishlist
                             addToWishlistController.execute(currentUsername, listing);
-                        } else {
+                        }
+                        else {
                             // Call your controller's method to remove from wishlist
                             removeFromWishlistController.execute(currentUsername, listing);
                         }
@@ -285,7 +314,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(HomeView.this, "Password was successfully updated for " + state.getUsername() + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (evt.getPropertyName().equals("addedToWishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();

@@ -3,6 +3,9 @@ package interface_adapter.sell;
 import use_case.sell.SellInputBoundary;
 import use_case.sell.SellInputData;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Controller for the Sell Use Case.
  */
@@ -42,5 +45,20 @@ public class SellController {
      */
     public String getUsername() {
         return this.currentUsername;
+    }
+
+    /**
+     * Executes the Sell Use Case for messages (errors or price display).
+     * @param message the message to display to user
+     * @param center where the panel will be centered
+     * @param title the title for the panel
+     */
+    public void message(Component center, String message, String title) {
+        if ("Error".equals(title)) {
+            JOptionPane.showMessageDialog(center, message, title, JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(center, message, title, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

@@ -1,12 +1,19 @@
 package use_case.filter_by_genre;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import entity.Listing;
+
 /**
  * The interactor (use case) class for the "Filter Books by Genre" functionality.
  * Implements the business logic to filter books and coordinates data flow between
  * the input boundary, output boundary, and data access interface.
  */
+public class FilterByGenreInteractor implements FilterByGenreInputBoundary {
 
-public class FilterByGenreInteractor {
+    private static final Logger LOGGER = Logger.getLogger(FilterByGenreInteractor.class.getName());
 
     /**
      * Interface for accessing book data.
@@ -30,4 +37,36 @@ public class FilterByGenreInteractor {
         this.outputBoundary = outputBoundary;
     }
 
+    /**
+     * Handles the use case of filtering books by genre.
+     *
+     * @param inputData the data containing the genre to filter by
+     */
+    @Override
+    public void filterByGenre(FilterByGenreInputData inputData) {
+        // Extract the genre from the input data
+        final String genre = inputData.getGenre();
+
+        // Validation: genre should not be null or empty
+        if (genre == null || genre.trim().isEmpty()) {
+            LOGGER.log(Level.WARNING, "Received empty or null genre.");
+            throw new IllegalArgumentException("Genre cannot be empty or null.");
+        }
+
+        // Retrieve the listings from the data access layer
+        final List<Listing> filteredListings;
+        try {
+            filteredListings = dataAccess.getListingsByGenre(genre);
+        }
+        catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error retrieving listings by genre: " + genre, ex);
+            throw new RuntimeException("Failed to retrieve listings.", ex);
+        }
+
+        // Prepare the output data
+        final FilterByGenreOutputData outputData = new FilterByGenreOutputData(filteredListings);
+
+        // Send the filtered listings to the output boundary
+        outputBoundary.presentFilteredListings(outputData);
+    }
 }
