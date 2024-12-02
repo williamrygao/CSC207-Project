@@ -78,6 +78,7 @@ Before installing Joe's Bookstore, ensure you have/can access the following:
 
 ```bash
 API_KEY="*your API key here*"   
+```
 
 **5. Firebase Account & Firebase SDK (For contributors):**
 
@@ -97,6 +98,7 @@ API_KEY="*your API key here*"
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-d6nlw%40csc207project-ed2f9.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
 }
+```
 
 **6. Git:**
 
