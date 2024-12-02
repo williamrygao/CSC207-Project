@@ -1,9 +1,6 @@
 package view;
 
-import entity.book.Book;
-import entity.book.BookFactory;
 import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.change_password.HomeState;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
@@ -16,7 +13,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 /**
  * The View for when the user is selling a book.

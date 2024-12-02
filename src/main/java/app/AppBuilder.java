@@ -461,6 +461,7 @@ public class AppBuilder {
         final BackToHomeController backToHomeController = new BackToHomeController(backToHomeInteractor);
         sellView.setBackToHomeController(backToHomeController);
         searchView.setBackToHomeController(backToHomeController);
+        filterByRatingView.setBackToHomeController(backToHomeController);
         wishlistView.setBackToHomeController(backToHomeController);
         return this;
     }
