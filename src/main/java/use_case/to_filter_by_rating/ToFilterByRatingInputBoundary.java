@@ -1,4 +1,4 @@
-package use_case.to_filter_by_rating_view;
+package use_case.to_filter_by_rating;
 
 /**
  * Input Boundary for going to Filter By Rating view.

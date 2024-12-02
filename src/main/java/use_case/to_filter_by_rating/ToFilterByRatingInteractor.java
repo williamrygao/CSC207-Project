@@ -1,4 +1,4 @@
-package use_case.to_filter_by_rating_view;
+package use_case.to_filter_by_rating;
 
 /**
  * The To Filter By Rating Interactor.
