@@ -1,6 +1,5 @@
 package interface_adapter.leave_rating;
 
-import entity.listing.Listing;
 import use_case.leave_rating.LeaveRatingInputBoundary;
 import use_case.leave_rating.LeaveRatingInputData;
 
