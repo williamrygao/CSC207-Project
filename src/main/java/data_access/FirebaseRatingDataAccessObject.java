@@ -8,6 +8,7 @@ import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import use_case.filter_by_rating.FilterByRatingDataAccessInterface;
 import use_case.leave_rating.LeaveRatingDataAccessInterface;
 
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
         return false; // Default to false if an error occurs
     }
 
-    public double fetchAverageRatingFromDatabase(String bookId) {
+    public float fetchAverageRatingFromDatabase(String bookId) {
         String url = firebaseBaseUrl + "/ratings/" + bookId + ".json";
 
         Request request = new Request.Builder()
@@ -80,8 +81,8 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
                 // Handle empty or null responses gracefully
                 if (responseBody.equals("null") || responseBody.trim().isEmpty()) {
-                    System.err.println("No ratings found for bookId: " + bookId);
-                    return 0.0; // Return default rating
+
+                    return 0.0f; // Return default rating
                 }
 
                 try {
@@ -103,12 +104,12 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
                         // Calculate average if valid ratings are found
                         if (validRatingsCount > 0) {
-                            return total / (double) validRatingsCount;
+                            return total / (float) validRatingsCount;
                         } else {
                             System.err.println("No valid ratings found for bookId: " + bookId);
                         }
                     } else {
-                        System.err.println("No ratings array found for bookId: " + bookId);
+
                     }
                 } catch (JSONException e) {
                     // Handle malformed JSON
@@ -125,7 +126,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
             System.err.println("Error fetching average rating for bookId: " + bookId);
         }
 
-        return 0.0; // Default to 0.0 if an error occurs
+        return 0.0f; // Default to 0.0 if an error occurs
     }
 
 
@@ -302,6 +303,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
             e.printStackTrace();
         }
     }
+
 
     public List<Listing> filterByRating(int minRating) {
 
