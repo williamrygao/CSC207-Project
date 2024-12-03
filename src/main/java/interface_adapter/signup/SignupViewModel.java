@@ -31,7 +31,7 @@ public class SignupViewModel extends ViewModel<SignupState> {
     /**
      * String CANCEL_BUTTON_LABEL = "Cancel".
      */
-    public static final String CANCEL_BUTTON_LABEL = "Cancel";
+    public static final String QUIT_BUTTON_LABEL = "Quit";
 
     /**
      * String TO_LOGIN_BUTTON_LABEL = "Go to Login".
