@@ -1,7 +1,5 @@
 package use_case.leave_rating;
 
-import entity.listing.Listing;
-
 /**
  * The Input Data for the LeaveRating use case.
  */
