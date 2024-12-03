@@ -20,13 +20,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import data_access.FirebaseRatingDataAccessObject;
 import entity.listing.Listing;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.to_filter_by_price.ToFilterByPriceController;
+import interface_adapter.to_filter_by_rating.ToFilterByRatingController;
 import interface_adapter.to_search_view.ToSearchController;
 import interface_adapter.to_sell.ToSellController;
 import interface_adapter.update_listings.UpdateListingsController;
@@ -45,7 +46,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private LogoutController logoutController;
     private ToSellController toSellController;
     private ToSearchController toSearchController;
-    private ToFilterByPriceController toFilterByPriceController;
+    private ToFilterByRatingController toFilterByRatingController;
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
@@ -56,7 +57,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOut;
     private final JButton toSell;
     private final JButton toSearch;
-    private final JButton toFilterByPrice;
+    private final JButton toFilterByRating;
     private final JButton viewWishlist;
     private final JButton toRate;
 
@@ -123,8 +124,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         toSearch = new JButton("Search for a Book");
         topButtons.add(toSearch);
 
-        toFilterByPrice = new JButton("Filter by Price");
-        topButtons.add(toFilterByPrice);
+        toFilterByRating = new JButton("Filter by Rating");
+        topButtons.add(toFilterByRating);
 
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
@@ -227,10 +228,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-        toFilterByPrice.addActionListener(
+        toFilterByRating.addActionListener(
                 evt -> {
-                    if (evt.getSource().equals(toFilterByPrice)) {
-                        toFilterByPriceController.execute();
+                    if (evt.getSource().equals(toFilterByRating)) {
+                        toFilterByRatingController.execute();
                     }
                 }
         );
@@ -246,34 +247,52 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         toRate.addActionListener(
                 evt -> {
-                    // Action for rating a book
-                    String bookId = JOptionPane.showInputDialog("Enter Book ID:");
-                    String rating = JOptionPane.showInputDialog("Enter a rating (1 to 10):");
-
-                    try {
-                        int ratingValue = Integer.parseInt(rating);
-                        if (ratingValue < 1 || ratingValue > 10) {
-                            throw new NumberFormatException("Rating must be between 1 and 10.");
-                        }
-
-                        // Find the book by bookId and add the new rating
+                    if (evt.getSource().equals(toRate)) {
                         final HomeState currentState = homeViewModel.getState();
-                        for (Listing listing : currentState.getListings()) {
-                            if (listing.getBook().getBookId().equals(bookId)) {
-                                // Add the new rating to the book's list of ratings
-                                listing.getBook().addRating(ratingValue);
-                            }
-                        }
 
-                        // After updating, refresh the table to reflect changes
-                        updateTable(currentState.getListings(), currentState.getWishlist());
-                    }
-                    catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(HomeView.this,
-                                "Invalid input. Please enter a number between 1 and 10.");
+                        // Prompt the user for the Book ID and Rating
+                        String bookID = JOptionPane.showInputDialog("Enter Book ID:");
+                        String ratingInput = JOptionPane.showInputDialog("Enter a rating (1 to 10):");
+
+                        try {
+                            int newRating = Integer.parseInt(ratingInput);
+
+                            if (newRating < 1 || newRating > 10) {
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "Rating must be between 1 and 10.",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                            } else {
+
+                                // Execute the Leave Rating Use Case
+                                leaveRatingController.execute(
+                                        currentState.getUsername(),
+                                        currentState.getPassword(),
+                                        bookID,
+                                        newRating
+                                );
+
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "Rating submitted successfully!",
+                                        "Success",
+                                        JOptionPane.INFORMATION_MESSAGE
+                                );
+                            }
+                        } catch (NumberFormatException e) {
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "Invalid input. Please enter a number between 1 and 10.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
                     }
                 }
         );
+
 
         checkboxEditor.addActionListener(
                 evt -> {
@@ -355,20 +374,24 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     }
 
     private void updateTable(List<Listing> listings, List<Listing> wishlist) {
-        tableModel.setRowCount(0);
+        tableModel.setRowCount(0); // Clear existing rows
+        FirebaseRatingDataAccessObject ratingDAO = new FirebaseRatingDataAccessObject("https://csc207project-ed2f9-default-rtdb.firebaseio.com/");
+
         for (Listing listing : listings) {
-            final double averageRating = listing.getBook().getAverageRating();
+            // Fetch the average rating dynamically
+            double averageRating = ratingDAO.fetchAverageRatingFromDatabase(listing.getBook().getBookId());
+
+            // Prepare the table row data
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
-                    listing.getBook().getAverageRating(),
+                    averageRating, // Use dynamically fetched average rating
                     wishlist.contains(listing),
             };
             tableModel.addRow(rowData);
         }
     }
-
     public String getViewName() {
         return viewName;
     }
@@ -381,8 +404,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.toSearchController = toSearchController;
     }
 
-    public void setToFilterByRatingController(ToFilterByPriceController toFilterByPriceController) {
-        this.toFilterByPriceController = toFilterByPriceController;
+    public void setToFilterByRatingController(ToFilterByRatingController toFilterByRatingController) {
+        this.toFilterByRatingController = toFilterByRatingController;
     }
 
     public void setViewWishlistController(ViewWishlistController viewWishlistController) {
@@ -407,6 +430,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setToSellController(ToSellController toSellController) {
         this.toSellController = toSellController;
+    }
+    public void setToLeaveRatingController(LeaveRatingController leaveRatingController) {
+        this.leaveRatingController = leaveRatingController;
     }
 }
 
