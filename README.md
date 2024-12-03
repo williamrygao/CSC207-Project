@@ -34,7 +34,7 @@ Joe's Bookstore is designed to make the process of browsing and selling books as
 
 - View detailed information on all available listings, with the ability to sort by title, author, genre, price, rating, and wishlist status.
 
-![Home Page](images/Home-Page.png)
+![Home Page](images/HomePage.png)
 
 **3. Refine Search**
 
@@ -42,6 +42,7 @@ Joe's Bookstore is designed to make the process of browsing and selling books as
 - Search listings using specific queries such as book title, author, genre and more.
 
 ![Filter By Price](images/Filter-By-Price.png)
+![Filter By Price](images/Filter-By-Genre.png)
 
 **4. Discover and Sell Books**
 
