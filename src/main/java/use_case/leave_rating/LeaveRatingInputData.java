@@ -11,7 +11,6 @@ public class LeaveRatingInputData {
 
     private final String password;
 
-    private final Listing listing;
 
     private final String bookid;
 
@@ -22,16 +21,15 @@ public class LeaveRatingInputData {
      *
      * @param username the username
      * @param password the password
-     * @param listing  the listing
      * @param newRating  the new rating
      */
-     public LeaveRatingInputData(final String username, final String password, String bookid, Listing listing, final Integer newRating) {
+     public LeaveRatingInputData(final String username, final String password, String bookid, final Integer newRating) {
         this.username = username;
         this.password = password;
         this.bookid = bookid;
-        this.listing = listing;
         this.newRating = newRating;
     }
+
 
     /**
      * * Getter for username.
@@ -40,10 +38,6 @@ public class LeaveRatingInputData {
      */
     public String getUsername() {
         return username;
-    }
-
-    public Listing getListing() {
-        return listing;
     }
 
     public String getBookid() {
