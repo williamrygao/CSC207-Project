@@ -13,6 +13,18 @@ public class Book {
 
     private String bookId;
     private String title;
+
+    private String author;
+    private String description;
+    private List<String> sellers;
+
+    public Book(String bookId) {
+        this.bookId = bookId;
+        this.sellers = new ArrayList<>();
+    }
+
+    // Getters and Setters for title, author, description
+
     private String authors;
     private String description;
     private String genre;
@@ -31,6 +43,7 @@ public class Book {
 
     // Getters and Setters for title, authors, description
 
+
     public String getBookId() {
         return bookId;
     }
@@ -47,12 +60,21 @@ public class Book {
         this.title = title;
     }
 
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+
     public String getAuthors() {
         return authors;
     }
 
     public void setAuthors(String authors) {
         this.authors = authors;
+
     }
 
     public String getDescription() {
@@ -62,6 +84,7 @@ public class Book {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public String getGenre() {
         return genre;
@@ -79,14 +102,19 @@ public class Book {
         return rating;
     }
 
+
     public List<String> getSellers() {
         return sellers;
     }
+
+
+    // Method to add a seller who is offering this book
 
     /**
     * Method to add a seller who is offering this book.
      * @param sellerId represents the sellerID
      */
+
     public void addSeller(String sellerId) {
         sellers.add(sellerId);
     }
@@ -128,18 +156,27 @@ public class Book {
                 +
                 ", title='" + title + '\''
                 +
+
+                ", author='" + author + '\''
+                +
+                ", description='" + description + '\''
+                +
+
                 ", authors='" + authors + '\''
                 +
                 ", description='" + description + '\''
                 +
                 ", genre='" + genre + '\''
                 +
+
                 ", sellers=" + sellers
                 +
                 '}';
     }
 
+
     public void updateRating(int rating) {
 
     }
+
 }
