@@ -34,6 +34,27 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-database</artifactId>
+            <version>20.0.2</version>
+        </dependency>
+
+        <!-- Google Cloud libraries -->
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-firestore</artifactId>
+            <version>3.26.5</version>
+        </dependency>
+
+
+
     </dependencies>
 
 

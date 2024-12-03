@@ -1,6 +1,8 @@
 package use_case.login;
 
-import data_access.InMemoryUserDataAccessObject;
+import data_access.FirebaseListingDataAccessObject;
+import data_access.FirebaseUserDataAccessObject;
+import entity.BookFactory;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
@@ -11,11 +13,16 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
+    public final UserFactory userFactory = new CommonUserFactory();
+    public final String firebaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
+    public final BookFactory bookFactory = new BookFactory();
+    public final LoginListingDataAccessInterface bookRepository = new FirebaseListingDataAccessObject(bookFactory, firebaseURL);
 
     @Test
     void successTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
@@ -35,14 +42,15 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, successPresenter);
         interactor.execute(inputData);
     }
 
     @Test
     void successUserLoggedInTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
@@ -62,7 +70,7 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, successPresenter);
         assertEquals(null, userRepository.getCurrentUsername());
 
         interactor.execute(inputData);
@@ -70,8 +78,9 @@ class LoginInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "wrong");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // For this failure test, we need to add Paul to the data access repository before we log in, and
         // the passwords should not match.
@@ -93,14 +102,15 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, failurePresenter);
         interactor.execute(inputData);
     }
 
     @Test
     void failureUserDoesNotExistTest() {
+        UserFactory userFactory = new CommonUserFactory();
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new FirebaseUserDataAccessObject(userFactory, firebaseURL);
 
         // Add Paul to the repo so that when we check later they already exist
 
@@ -118,7 +128,7 @@ class LoginInteractorTest {
             }
         };
 
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, bookRepository, failurePresenter);
         interactor.execute(inputData);
     }
 }
