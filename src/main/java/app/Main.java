@@ -18,7 +18,7 @@ public class Main {
                                             .addToSellViewUseCase().addToSearchViewUseCase()
                                             .addToFilterByPriceViewUseCase().addSellUseCase().addSearchUseCase()
                                             .addFilterByPriceUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
-                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
+                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase().addLeaveRatingUseCase()
                                             .addBackToSignupUseCase().addChangePasswordUseCase()
                                             .addUpdateListingsUseCase().build();
 
