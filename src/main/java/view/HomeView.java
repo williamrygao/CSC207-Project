@@ -273,6 +273,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                                         bookID,
                                         newRating
                                 );
+// Refresh the HomeView
+                                updateListingsController.execute(currentState.getUsername());
 
                                 JOptionPane.showMessageDialog(
                                         null,
@@ -380,14 +382,15 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         for (Listing listing : listings) {
             // Fetch the average rating dynamically
-            double averageRating = ratingDAO.fetchAverageRatingFromDatabase(listing.getBook().getBookId());
+            float averageRating = ratingDAO.fetchAverageRatingFromDatabase(listing.getBook().getBookId());
+            listing.getBook().setRating(averageRating);
 
             // Prepare the table row data
             final Object[] rowData = {
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
-                    averageRating, // Use dynamically fetched average rating
+                    listing.getBook().getRating(), // Use dynamically fetched average rating
                     wishlist.contains(listing),
             };
             tableModel.addRow(rowData);
