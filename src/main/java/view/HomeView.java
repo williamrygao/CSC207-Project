@@ -25,6 +25,7 @@ import entity.listing.Listing;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
+import interface_adapter.to_filter_by_genre.ToFilterByGenreController;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.to_filter_by_price.ToFilterByPriceController;
@@ -49,6 +50,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private ToFilterByPriceController toFilterByPriceController;
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
+    private ToFilterByGenreController toFilterByGenreController;
     private RemoveFromWishlistController removeFromWishlistController;
     private UpdateListingsController updateListingsController;
     private LeaveRatingController leaveRatingController;
@@ -57,6 +59,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOut;
     private final JButton toSell;
     private final JButton toSearch;
+    private final JButton toFilterByGenre;
     private final JButton toFilterByPrice;
     private final JButton viewWishlist;
     private final JButton toRate;
@@ -126,6 +129,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         toFilterByPrice = new JButton("Filter by Price");
         topButtons.add(toFilterByPrice);
+
+        toFilterByGenre = new JButton("Filter by Genre");
+        topButtons.add(toFilterByGenre);
 
         viewWishlist = new JButton("My Wishlist");
         topButtons.add(viewWishlist);
@@ -228,6 +234,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        toFilterByGenre.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(toFilterByGenre)) {
+                        toFilterByGenreController.execute();
+                    }
+                }
+        );
+
         toFilterByPrice.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(toFilterByPrice)) {
@@ -244,6 +258,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
+
+
 
         toRate.addActionListener(
                 evt -> {
@@ -406,6 +422,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setToSearchController(ToSearchController toSearchController) {
         this.toSearchController = toSearchController;
+    }
+
+    public void setToFilterByGenreController(ToFilterByGenreController toFilterByGenreController) {
+        this.toFilterByGenreController = toFilterByGenreController;
     }
 
     public void setToFilterByRatingController(ToFilterByPriceController toFilterByPriceController) {

@@ -15,6 +15,17 @@ import entity.book.BookFactory;
 import entity.user.CommonUserFactory;
 import entity.user.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.filter_by_genre.FilterByGenreController;
+import interface_adapter.filter_by_genre.FilterByGenrePresenter;
+import interface_adapter.filter_by_genre.FilterByGenreViewModel;
+import interface_adapter.to_filter_by_genre.ToFilterByGenreController;
+import interface_adapter.to_filter_by_genre.ToFilterByGenrePresenter;
+import use_case.filter_by_genre.FilterByGenreInputBoundary;
+import use_case.filter_by_genre.FilterByGenreInteractor;
+import use_case.filter_by_genre.FilterByGenreOutputBoundary;
+import use_case.to_filter_by_genre.ToFilterByGenreInputBoundary;
+import use_case.to_filter_by_genre.ToFilterByGenreInteractor;
+import use_case.to_filter_by_genre.ToFilterByGenreOutputBoundary;
 import interface_adapter.filter_by_price.FilterByPriceController;
 import interface_adapter.filter_by_price.FilterByPricePresenter;
 import interface_adapter.filter_by_price.FilterByPriceViewModel;
@@ -178,9 +189,11 @@ public class AppBuilder {
 
     private SellViewModel sellViewModel;
     private SearchViewModel searchViewModel;
+    private FilterByGenreViewModel filterByGenreViewModel;
     private FilterByPriceViewModel filterByPriceViewModel;
     private SellView sellView;
     private SearchView searchView;
+    private FilterByGenreView filterByGenreView;
     private FilterByPriceView filterByPriceView;
 
     private WishlistViewModel wishlistViewModel;
@@ -256,6 +269,17 @@ public class AppBuilder {
         filterByPriceViewModel = new FilterByPriceViewModel();
         filterByPriceView = new FilterByPriceView(filterByPriceViewModel);
         cardPanel.add(filterByPriceView, filterByPriceView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Filter by genre View to the application.
+     * @return this builder
+     */
+    public AppBuilder addFilterByGenreView() {
+        filterByGenreViewModel = new FilterByGenreViewModel();
+        filterByGenreView = new FilterByGenreView(filterByGenreViewModel);
+        cardPanel.add(filterByGenreView, filterByGenreView.getViewName());
         return this;
     }
 
@@ -368,6 +392,42 @@ public class AppBuilder {
         final SellController sellController = new SellController(
                 sellInteractor);
         sellView.setSellController(sellController);
+        return this;
+    }
+
+    /**
+     * Adds the To Filter By Genre Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addToFilterByGenreViewUseCase() {
+        final ToFilterByGenreOutputBoundary toFilterByGenreOutputBoundary =
+                new ToFilterByGenrePresenter(viewManagerModel, homeViewModel, filterByGenreViewModel);
+
+        final ToFilterByGenreInputBoundary toFilterByGenreInteractor =
+                new ToFilterByGenreInteractor(toFilterByGenreOutputBoundary);
+
+        final ToFilterByGenreController toFilterByGenreController =
+                new ToFilterByGenreController(toFilterByGenreInteractor);
+
+        homeView.setToFilterByGenreController(toFilterByGenreController);
+        return this;
+    }
+
+    /**
+     * Adds the Filter By Genre Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addFilterByGenreUseCase() {
+        final FilterByGenreOutputBoundary filterByGenrePresenter =
+                new FilterByGenrePresenter(filterByGenreViewModel, homeViewModel);
+
+        final FilterByGenreInputBoundary filterByGenreInteractor =
+                new FilterByGenreInteractor(listingDataAccessObject, filterByGenrePresenter);
+
+        final FilterByGenreController filterByGenreController =
+                new FilterByGenreController(filterByGenreInteractor);
+
+        filterByGenreView.setFilterByGenreController(filterByGenreController);
         return this;
     }
 

@@ -7,9 +7,9 @@ package use_case.filter_by_genre;
 public interface FilterByGenreInputBoundary {
 
     /**
-     * Filters books by genre based on the input data.
+     * Executes the Filter Books by Genre use case.
      *
      * @param inputData the input data containing the genre to filter by
      */
-    void filterByGenre(FilterByGenreInputData inputData);
+    void execute(FilterByGenreInputData inputData);
 }
