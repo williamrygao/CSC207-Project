@@ -13,12 +13,12 @@ public class Main {
     public static void main(final String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder.addLoginView().addSignupView().addHomeView()
-                                            .addSellView().addSearchView().addWishlistView().addFilterByPriceView()
+                                            .addSellView().addSearchView().addWishlistView().addFilterByRatingView()
                                             .addSignupUseCase().addLoginUseCase().addLogoutUseCase()
                                             .addToSellViewUseCase().addToSearchViewUseCase()
-                                            .addToFilterByPriceViewUseCase().addSellUseCase().addSearchUseCase()
-                                            .addFilterByPriceUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
-                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
+                                            .addToFilterByRatingViewUseCase().addSellUseCase().addSearchUseCase()
+                                            .addFilterByRatingUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
+                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase().addLeaveRatingUseCase()
                                             .addBackToSignupUseCase().addChangePasswordUseCase()
                                             .addUpdateListingsUseCase().build();
 
