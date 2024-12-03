@@ -8,7 +8,6 @@ import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import use_case.filter_by_rating.FilterByRatingDataAccessInterface;
 import use_case.leave_rating.LeaveRatingDataAccessInterface;
 
 import java.io.IOException;
@@ -19,8 +18,7 @@ import java.util.List;
 /**
  * The DAO for rating data.
  */
-public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInterface,
-        FilterByRatingDataAccessInterface {
+public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -305,7 +303,6 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
         }
     }
 
-    @Override
     public List<Listing> filterByRating(int minRating) {
 
         // Collect all ratings
