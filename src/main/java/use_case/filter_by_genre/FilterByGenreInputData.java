@@ -1,5 +1,8 @@
 package use_case.filter_by_genre;
 
+/**
+ * The Input Data for the Genre Use Case.
+ */
 public class FilterByGenreInputData {
 
     private final String genre;
@@ -8,17 +11,13 @@ public class FilterByGenreInputData {
      * Constructor to initialize the genre to be used for filtering.
      *
      * @param genre the genre to filter by
-     * @throws IllegalArgumentException if the genre is null or empty
      */
     public FilterByGenreInputData(String genre) {
-        if (genre == null || genre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Genre cannot be empty.");
-        }
         this.genre = genre;
     }
 
     /**
-     * Returns the genre for filtering.
+     * Getter for genre.
      *
      * @return the genre to filter by
      */
