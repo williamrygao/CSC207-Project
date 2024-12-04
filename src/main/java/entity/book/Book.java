@@ -47,17 +47,14 @@ public class Book {
      * @return average rating
      */
     public double getAverageRating() {
-        double result = 0.0;
         if (ratings.isEmpty()) {
-            result = 0.0;
+            return 0.0;
         }
         int sum = 0;
         for (int bookRating : ratings) {
             sum += bookRating;
         }
-        result = sum / (double) ratings.size();
-
-        return result;
+        return sum / (double) ratings.size();
     }
 
     public List<Integer> getRatings() {
