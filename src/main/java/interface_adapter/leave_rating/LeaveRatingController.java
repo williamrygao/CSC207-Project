@@ -39,7 +39,7 @@ public class LeaveRatingController {
         }
 
         // Create the input data object
-        LeaveRatingInputData inputData = new LeaveRatingInputData(username, password, bookID, newRating);
+        final LeaveRatingInputData inputData = new LeaveRatingInputData(username, password, bookID, newRating);
 
         // Pass the input data to the interactor
         leaveRatingInteractor.execute(inputData);

@@ -12,30 +12,42 @@ public class LeaveRatingViewModel extends ViewModel<LeaveRatingState> {
         setState(new LeaveRatingState());
     }
 
-    // Update the state with a new bookID
+    /**
+     * Method to update the state with a new book ID.
+     * @param bookID the book ID
+     */
     public void setBookID(String bookID) {
-        LeaveRatingState currentState = getState();
+        final LeaveRatingState currentState = getState();
         currentState.setBookID(bookID);
         setState(currentState);
     }
 
-    // Update the state with a new rating
+    /**
+     * Method to update the state with a new rating.
+     * @param rating the book rating
+     */
     public void setRating(double rating) {
-        LeaveRatingState currentState = getState();
+        final LeaveRatingState currentState = getState();
         currentState.setNewRating(rating);
         setState(currentState);
     }
 
-    // Update the state with an error message
+    /**
+     * Method to update the state with an error message.
+     * @param errorMessage the error message
+     */
     public void setErrorMessage(String errorMessage) {
-        LeaveRatingState currentState = getState();
+        final LeaveRatingState currentState = getState();
         currentState.setError(errorMessage);
         setState(currentState);
     }
 
-    // Update the state with a success message
+    /**
+     * Method to update the state with a success message.
+     * @param successMessage the success message
+     */
     public void setSuccessMessage(String successMessage) {
-        LeaveRatingState currentState = getState();
+        final LeaveRatingState currentState = getState();
         currentState.setSuccessMessage(successMessage);
         setState(currentState);
     }
