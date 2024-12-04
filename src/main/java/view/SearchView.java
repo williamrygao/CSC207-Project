@@ -81,7 +81,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         username = new JLabel();
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "BookID", "Rating"};
+        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "Book ID", "Rating", "Wishlist"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(searchColumnNames, 0) {
@@ -368,7 +368,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
                     listing.getBook().getBookId(),
-                    listing.getBook().getRating()});
+                    listing.getBook().getRating(), isInWishlist});
         }
         return filteredListings.size();
     }
