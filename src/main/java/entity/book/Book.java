@@ -42,23 +42,34 @@ public class Book {
         return bookId;
     }
 
+    /**
+     * Get average rating for book method.
+     * @return average rating
+     */
     public double getAverageRating() {
+        double result = 0.0;
         if (ratings.isEmpty()) {
-            return 0.0;
+            result = 0.0;
         }
         int sum = 0;
-        for (int rating : ratings) {
-            sum += rating;
+        for (int bookRating : ratings) {
+            sum += bookRating;
         }
-        return sum / (double) ratings.size();
+        result = sum / (double) ratings.size();
+
+        return result;
     }
 
     public List<Integer> getRatings() {
         return ratings;
     }
 
-    public void addRating(int rating) {
-        ratings.add(rating);
+    /**
+     * Add rating method.
+     * @param bookRating the book's rating
+     */
+    public void addRating(int bookRating) {
+        ratings.add(bookRating);
     }
 
     public void setRatings(List<Integer> ratings) {
