@@ -6,7 +6,9 @@ import entity.listing.Listing;
 import entity.user.User;
 
 /**
- * DAO for the Update Listings Use Case.
+ * Represents the Data Access Object (DAO) for user-related operations
+ * in the Update Listings use case. This interface abstracts data retrieval
+ * and manipulation, enabling flexibility in storage implementation.
  */
 public interface UpdateListingsUserDataAccessInterface {
 
@@ -24,9 +26,10 @@ public interface UpdateListingsUserDataAccessInterface {
     void setCurrentUsername(String username);
 
     /**
-     * Get this user's wishlist.
-     * @param user the user
-     * @return wishlist
+     * Retrieves the wishlist of the specified user.
+     *
+     * @param user the User object whose wishlist is to be retrieved.
+     * @return a list of listings representing the user's wishlist.
      */
     List<Listing> getWishlist(User user);
 }
