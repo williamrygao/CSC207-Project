@@ -1,10 +1,11 @@
 package interface_adapter.login;
 
-import use_case.login.LoginInputBoundary;
-import use_case.login.LoginInputData;
+import java.awt.*;
 
 import javax.swing.*;
-import java.awt.*;
+
+import use_case.login.LoginInputBoundary;
+import use_case.login.LoginInputData;
 
 /**
  * The controller for the Login Use Case.
