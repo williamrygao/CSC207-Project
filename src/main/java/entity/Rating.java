@@ -35,7 +35,8 @@ public class Rating {
             ratings.add(rating);
         }
         else {
-            throw new IllegalArgumentException("Invalid rating: " + rating + ". Rating must be between " + MIN + " and " + MAX + ".");
+            throw new IllegalArgumentException("Invalid rating: " + rating + ". Rating must be between "
+                    + MIN + " and " + MAX + ".");
         }
     }
 
