@@ -1,11 +1,11 @@
 package interface_adapter.signup;
 
-import use_case.signup.SignupInputBoundary;
-import use_case.signup.SignupInputData;
-import view.SignupView;
+import java.awt.*;
 
 import javax.swing.*;
-import java.awt.*;
+
+import use_case.signup.SignupInputBoundary;
+import use_case.signup.SignupInputData;
 
 /**
  * Controller for the Signup Use Case.
