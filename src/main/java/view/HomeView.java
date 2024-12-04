@@ -120,24 +120,25 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         listings.setLayout(new BorderLayout());
         listings.add(tableScrollPane, BorderLayout.CENTER);
 
-        final JPanel topButtons = new JPanel();
+        final JPanel firstLayerButtons = new JPanel();
+        final JPanel secondLayerButtons = new JPanel();
         toSell = new JButton("Sell A Book");
-        topButtons.add(toSell);
+        firstLayerButtons.add(toSell);
 
         toSearch = new JButton("Search for a Book");
-        topButtons.add(toSearch);
-
-        toFilterByGenre = new JButton("Filter by Genre");
-        topButtons.add(toFilterByGenre);
-
-        toFilterByPrice = new JButton("Filter by Price");
-        topButtons.add(toFilterByPrice);
+        firstLayerButtons.add(toSearch);
 
         viewWishlist = new JButton("My Wishlist");
-        topButtons.add(viewWishlist);
+        firstLayerButtons.add(viewWishlist);
+
+        toFilterByGenre = new JButton("Filter by Genre");
+        secondLayerButtons.add(toFilterByGenre);
+
+        toFilterByPrice = new JButton("Filter by Price");
+        secondLayerButtons.add(toFilterByPrice);
 
         toRate = new JButton("Rate a Book");
-        topButtons.add(toRate);
+        secondLayerButtons.add(toRate);
 
         final JPanel bottomButtons = new JPanel();
         logOut = new JButton("Log Out");
@@ -340,7 +341,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.add(username);
         this.add(Box.createVerticalStrut(20));
 
-        this.add(topButtons);
+        this.add(firstLayerButtons);
+        this.add(Box.createVerticalStrut(10));
+        this.add(secondLayerButtons);
+        this.add(Box.createVerticalStrut(10));
 
         this.add(listings);
 
