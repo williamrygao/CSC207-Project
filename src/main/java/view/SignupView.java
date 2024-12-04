@@ -27,7 +27,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private SignupController signupController;
 
     private final JButton signUp;
-    private final JButton cancel;
+    private final JButton quit;
     private final JButton toLogin;
 
     public SignupView(SignupViewModel signupViewModel) {
@@ -49,8 +49,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         buttons.add(toLogin);
         signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
         buttons.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
+        quit = new JButton(SignupViewModel.QUIT_BUTTON_LABEL);
+        buttons.add(quit);
 
         signUp.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -89,15 +89,15 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 }
         );
 
-        cancel.addActionListener(
+        quit.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(cancel)) {
+                        if (evt.getSource().equals(quit)) {
                             // Show a confirmation dialog before exiting
                             final int option = JOptionPane.showConfirmDialog(
                                     SignupView.this,
-                                    "Are you sure you want to cancel and exit?",
+                                    "Are you sure you want to quit and exit?",
                                     "Exit Confirmation",
                                     JOptionPane.YES_NO_OPTION,
                                     JOptionPane.WARNING_MESSAGE

@@ -319,7 +319,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                     if (row != -1) {
                         final HomeState currentState = homeViewModel.getState();
                         final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
-                        tableModel.fireTableDataChanged();
+
                         final Listing listing = currentState.getListings().get(row);
                         final String currentUsername = currentState.getUsername();
                         if (!isChecked) {
@@ -330,6 +330,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                             // Call your controller's method to remove from wishlist
                             removeFromWishlistController.execute(currentUsername, listing);
                         }
+
+                        tableModel.fireTableDataChanged();
                     }
                 }
         );
@@ -366,29 +368,25 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("password")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(HomeView.this, "Password was successfully updated for " + state.getUsername() + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(HomeView.this, "Password was successfully updated for "+ state.getUsername()
+                    + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (evt.getPropertyName().equals("addedToWishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Added to " + state.getUsername() + "'s wishlist!"
-            );
+            JOptionPane.showMessageDialog(HomeView.this, "Added to " + state.getUsername() + "'s wishlist!");
         }
         else if (evt.getPropertyName().equals("wishlistAddFail")) {
-            JOptionPane.showMessageDialog(null, "Failed to add to wishlist.");
+            JOptionPane.showMessageDialog(HomeView.this, "Failed to add to wishlist.");
         }
         else if (evt.getPropertyName().equals("removedFromWishlist")) {
             final HomeState state = (HomeState) evt.getNewValue();
-            JOptionPane.showMessageDialog(
-                    null, "Removed from " + state.getUsername() + "'s wishlist."
-            );
+            JOptionPane.showMessageDialog(HomeView.this, "Removed from " + state.getUsername() + "'s wishlist.");
         }
         else if (evt.getPropertyName().equals("wishlistRemoveFail")) {
-            JOptionPane.showMessageDialog(null, "Failed to remove from wishlist.");
+            JOptionPane.showMessageDialog(HomeView.this, "Failed to remove from wishlist.");
         }
         else if (evt.getPropertyName().equals("viewWishlistError")) {
-            JOptionPane.showMessageDialog(null, "Failed to view wishlist.");
+            JOptionPane.showMessageDialog(HomeView.this, "Failed to view wishlist.");
         }
     }
 

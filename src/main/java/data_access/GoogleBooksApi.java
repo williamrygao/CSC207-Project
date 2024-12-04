@@ -1,13 +1,13 @@
 package data_access;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.json.JSONObject;
 
 /**
  * Google Books API.
@@ -23,6 +23,7 @@ public class GoogleBooksApi {
     /**
      * Load API Key from api_key.env file.
      * @return ApiKey
+     * @throws RuntimeException runtime exception
      */
     public static String loadApiKey() throws RuntimeException {
         try (BufferedReader reader = new BufferedReader(new FileReader("api_key.env"))) {
