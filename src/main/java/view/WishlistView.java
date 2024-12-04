@@ -142,22 +142,18 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
         }
         else if (evt.getPropertyName().equals("addedToWishlist")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Added to " + state.getUsername() + "'s wishlist!"
+            JOptionPane.showMessageDialog(WishlistView.this, "Added to " + state.getUsername() + "'s wishlist!"
             );
         }
         else if (evt.getPropertyName().equals("wishlistAddFail")) {
-            JOptionPane.showMessageDialog(null, "Failed to add to wishlist.");
+            JOptionPane.showMessageDialog(WishlistView.this, "Failed to add to wishlist.");
         }
         else if (evt.getPropertyName().equals("removedFromWishlist")) {
             final WishlistState state = (WishlistState) evt.getNewValue();
-            JOptionPane.showMessageDialog(
-                    null, "Removed from " + state.getUsername() + "'s wishlist."
-            );
+            JOptionPane.showMessageDialog(WishlistView.this, "Removed from " + state.getUsername() + "'s wishlist.");
         }
         else if (evt.getPropertyName().equals("wishlistRemoveFail")) {
-            JOptionPane.showMessageDialog(null, "Failed to remove from wishlist.");
+            JOptionPane.showMessageDialog(WishlistView.this, "Failed to remove from wishlist.");
         }
     }
 
