@@ -14,10 +14,12 @@ import use_case.filter_by_genre.FilterByGenreOutputData;
 public class FilterByGenrePresenter implements FilterByGenreOutputBoundary {
     private final FilterByGenreViewModel filterByGenreViewModel;
     private final HomeViewModel homeViewModel;
+
     public FilterByGenrePresenter(FilterByGenreViewModel filterByGenreViewModel, HomeViewModel homeViewModel) {
         this.filterByGenreViewModel = filterByGenreViewModel;
         this.homeViewModel = homeViewModel;
     }
+
     @Override
     public void prepareSuccessView(FilterByGenreOutputData filterByGenreOutputData) {
         // Update the UI with the filtered listings
@@ -27,6 +29,7 @@ public class FilterByGenrePresenter implements FilterByGenreOutputBoundary {
         filterByGenreViewModel.setState(state);
         filterByGenreViewModel.firePropertyChanged("listings filtered");
     }
+
     @Override
     public void prepareFailView(String errorMessage) {
         // Update the UI with the error message

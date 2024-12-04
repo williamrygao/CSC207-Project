@@ -3,6 +3,7 @@ package interface_adapter.filter_by_genre;
 import java.util.List;
 
 import entity.listing.Listing;
+
 /**
  * Represents the UI state for the "Filter Books by Genre" functionality.
  */

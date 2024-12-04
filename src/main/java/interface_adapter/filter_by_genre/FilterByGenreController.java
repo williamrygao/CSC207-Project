@@ -1,17 +1,22 @@
 package interface_adapter.filter_by_genre;
 
+import java.awt.*;
+
+import javax.swing.*;
+
 import use_case.filter_by_genre.FilterByGenreInputBoundary;
 import use_case.filter_by_genre.FilterByGenreInputData;
-import javax.swing.*;
-import java.awt.*;
+
 /**
  * Controller for the Filter Books by Genre Use Case.
  */
 public class FilterByGenreController {
     private final FilterByGenreInputBoundary filterByGenreInteractor;
+
     public FilterByGenreController(FilterByGenreInputBoundary filterByGenreInteractor) {
         this.filterByGenreInteractor = filterByGenreInteractor;
     }
+
     /**
      * Execute the Filter Books by Genre Use Case.
      * @param genre genre to filter listings by
@@ -20,6 +25,7 @@ public class FilterByGenreController {
         final FilterByGenreInputData filterByGenreInputData = new FilterByGenreInputData(genre);
         filterByGenreInteractor.execute(filterByGenreInputData);
     }
+
     /**
      * Executes error messages for the filter by price use case.
      * @param errorMessage the error message to display to user
