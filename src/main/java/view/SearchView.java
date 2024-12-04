@@ -53,6 +53,11 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final TableRowSorter<DefaultTableModel> sorter;
 
     public SearchView(SearchViewModel searchViewModel, HomeViewModel homeViewModel) {
+
+        final int twenty = 20;
+        final int ten = 10;
+        final int five = 5;
+        final int four = 5;
         this.searchViewModel = searchViewModel;
         this.homeViewModel = homeViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
@@ -80,14 +85,14 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(searchColumnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                return column == 5;
+                return column == five;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 5) {
+                if (columnIndex == five) {
                     return Boolean.class;
                 }
-                if (columnIndex == 4) {
+                if (columnIndex == four) {
                     return Double.class;
                 }
                 return String.class;
@@ -99,7 +104,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         filteredBookTable.setRowSorter(sorter);
 
         final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
-        filteredBookTable.getColumnModel().getColumn(5).setCellEditor(checkboxEditor);
+        filteredBookTable.getColumnModel().getColumn(five).setCellEditor(checkboxEditor);
 
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(filteredBookTable);
@@ -292,12 +297,12 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(twenty));
         this.add(title);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(twenty));
         this.add(usernameInfo);
         this.add(username);
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(ten));
 
         this.add(topButtons);
 
@@ -308,9 +313,9 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
         this.add(listings);
 
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(ten));
         this.add(searchLabel);
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(ten));
 
         this.add(bottomButtons);
     }
