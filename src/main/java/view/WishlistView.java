@@ -104,7 +104,7 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
                     if (row != -1) {
                         final WishlistState currentState = wishlistViewModel.getState();
                         final Boolean isChecked = (Boolean) bookTable.getValueAt(row, 4);
-                        tableModel.fireTableDataChanged();
+
                         final Listing listing = currentState.getWishlist().get(row);
                         final String currentUsername = currentState.getUsername();
                         if (!isChecked) {
@@ -115,6 +115,8 @@ public class WishlistView extends JPanel implements PropertyChangeListener {
                             // Call your controller's method to remove from wishlist
                             removeFromWishlistController.execute(currentUsername, listing);
                         }
+
+                        tableModel.fireTableDataChanged();
                     }
                 }
         );

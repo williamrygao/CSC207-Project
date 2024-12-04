@@ -243,7 +243,7 @@ public class AppBuilder {
      */
     public AppBuilder addSearchView() {
         searchViewModel = new SearchViewModel();
-        searchView = new SearchView(searchViewModel);
+        searchView = new SearchView(searchViewModel, homeViewModel);
         cardPanel.add(searchView, searchView.getViewName());
         return this;
     }
@@ -493,12 +493,13 @@ public class AppBuilder {
      */
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary =
-                new RemoveFromWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
+                new RemoveFromWishlistPresenter(wishlistViewModel, homeViewModel, searchViewModel, viewManagerModel);
         final RemoveFromWishlistInputBoundary removeFromWishlistInteractor =
                 new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
         final RemoveFromWishlistController removeFromWishlistController =
                 new RemoveFromWishlistController(removeFromWishlistInteractor);
         homeView.setRemoveFromWishlistController(removeFromWishlistController);
+        searchView.setRemoveFromWishlistController(removeFromWishlistController);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
         return this;
     }
@@ -512,6 +513,7 @@ public class AppBuilder {
         final UpdateListingsInputBoundary updateListingsInteractor = new UpdateListingsInteractor(userDataAccessObject, listingDataAccessObject, updateListingsOutputBoundary);
         final UpdateListingsController updateListingsController = new UpdateListingsController(updateListingsInteractor);
         homeView.setUpdateListingsController(updateListingsController);
+        searchView.setUpdateListingsController(updateListingsController);
         return this;
     }
 
@@ -521,11 +523,12 @@ public class AppBuilder {
      */
     public AppBuilder addAddToWishlistUseCase() {
         final AddToWishlistOutputBoundary addToWishlistOutputBoundary =
-                new AddToWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
+                new AddToWishlistPresenter(wishlistViewModel, homeViewModel, searchViewModel, viewManagerModel);
         final AddToWishlistInputBoundary addToWishlistInteractor =
                 new AddToWishlistInteractor(userDataAccessObject, addToWishlistOutputBoundary);
         final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor);
         homeView.setAddToWishlistController(addToWishlistController);
+        searchView.setAddToWishlistController(addToWishlistController);
         wishlistView.setAddToWishlistController(addToWishlistController);
         return this;
     }

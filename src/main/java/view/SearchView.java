@@ -1,23 +1,27 @@
 package view;
 
-import entity.listing.Listing;
-import interface_adapter.back_to_home.BackToHomeController;
-import interface_adapter.search.SearchController;
-import interface_adapter.search.SearchState;
-import interface_adapter.search.SearchViewModel;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
-import java.util.List;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import entity.listing.Listing;
+import interface_adapter.back_to_home.BackToHomeController;
+import interface_adapter.change_password.HomeState;
+import interface_adapter.change_password.HomeViewModel;
+import interface_adapter.search.SearchController;
+import interface_adapter.search.SearchState;
+import interface_adapter.search.SearchViewModel;
+import interface_adapter.update_listings.UpdateListingsController;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
 
 /**
  * The View for when the user is selling a book.
@@ -26,8 +30,13 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "search";
     private final SearchViewModel searchViewModel;
+    private final HomeViewModel homeViewModel;
     private BackToHomeController backToHomeController;
     private SearchController searchController;
+
+    private UpdateListingsController updateListingsController;
+    private AddToWishlistController addToWishlistController;
+    private RemoveFromWishlistController removeFromWishlistController;
 
     private final JLabel username;
     private JLabel searchLabel;
@@ -44,8 +53,14 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final DefaultTableModel tableModel;
     private final TableRowSorter<DefaultTableModel> sorter;
 
-    public SearchView(SearchViewModel searchViewModel) {
+    public SearchView(SearchViewModel searchViewModel, HomeViewModel homeViewModel) {
+
+        final int twenty = 20;
+        final int ten = 10;
+        final int five = 5;
+        final int four = 5;
         this.searchViewModel = searchViewModel;
+        this.homeViewModel = homeViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
@@ -71,11 +86,14 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(searchColumnNames, 0) {
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return column == five;
             }
 
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 4) {
+                if (columnIndex == five) {
+                    return Boolean.class;
+                }
+                if (columnIndex == four) {
                     return Double.class;
                 }
                 return String.class;
@@ -86,6 +104,9 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         sorter = new TableRowSorter<>(tableModel);
         filteredBookTable.setRowSorter(sorter);
 
+        final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
+        filteredBookTable.getColumnModel().getColumn(five).setCellEditor(checkboxEditor);
+      
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(filteredBookTable);
 
@@ -238,12 +259,50 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-        this.add(Box.createVerticalStrut(20));
+        checkboxEditor.addActionListener(
+                evt -> {
+                    final int row = filteredBookTable.getEditingRow();
+                    if (row != -1) {
+                        final SearchState currentState = searchViewModel.getState();
+                        final Boolean isChecked = (Boolean) filteredBookTable.getValueAt(row, 5);
+
+                        final String bookId = (String) filteredBookTable.getValueAt(row, 3);
+
+                        // Find the listing by bookId (instead of row)
+                        Listing listingToModify = null;
+                        for (Listing listing : currentState.getListings()) {
+                            if (listing.getBook().getBookId().equals(bookId)) {
+                                listingToModify = listing;
+                                break;
+                            }
+                        }
+
+                        // If we found the listing, update wishlist
+                        if (listingToModify != null) {
+                            final String currentUsername = currentState.getUsername();
+                            if (!isChecked) {
+                                addToWishlistController.execute(currentUsername, listingToModify);
+                            }
+                            else {
+                                removeFromWishlistController.execute(currentUsername, listingToModify);
+                            }
+
+                            // Refresh the table to reflect changes
+                            tableModel.fireTableDataChanged();
+                        }
+                        // Note: This action listener is different from the HomeView implementation because the row number
+                        // changes after filtering the search. Using the 'getRow' method directly would cause errors due to this.
+                        // As a result, checking the wishlist becomes more complex. This took significant debugging to resolve.
+                    }
+                }
+        );
+
+        this.add(Box.createVerticalStrut(twenty));
         this.add(title);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(twenty));
         this.add(usernameInfo);
         this.add(username);
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(ten));
 
         this.add(topButtons);
 
@@ -254,16 +313,16 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
         this.add(listings);
 
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(ten));
         this.add(searchLabel);
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(ten));
 
         this.add(bottomButtons);
     }
 
     /**
      * Method that implements logic for code to search through database and find
-     * suitable books relative to search query
+     * suitable books relative to search query.
      * @param bookID the bookID listed for book
      * @param authors the authors listed for book
      * @param title the title listed for book
@@ -271,10 +330,11 @@ public class SearchView extends JPanel implements PropertyChangeListener {
      * @return the number of books that match search query (to be used in output message to user)
      */
     private int updateListingsTable(String bookID, String authors, String title, String price) {
+        // Retrieve all current wishlist from home view
+        final List<Listing> currentWishlist = homeViewModel.getState().getWishlist();
         // Retrieve all listings from the model
-        List<Listing> currentWishlist = searchViewModel.getState().getWishlist();
-        List<Listing> listings = searchViewModel.getState().getListings();
-        List<Listing> filteredListings = new ArrayList<>();
+        final List<Listing> listings = searchViewModel.getState().getListings();
+        final List<Listing> filteredListings = new ArrayList<>();
 
         // Check each listing for a match with the search term
         for (Listing listing : listings) {
@@ -298,9 +358,11 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             }
         }
 
-        // Now update the table with only the filtered listings
+        // Clear table
         tableModel.setRowCount(0);
+        // Update table with filtered listings only
         for (Listing listing : filteredListings) {
+            final boolean isInWishlist = currentWishlist.contains(listing);
             tableModel.addRow(new Object[]{
                     listing.getBook().getTitle(),
                     listing.getBook().getAuthors(),
@@ -317,6 +379,28 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             final SearchState state = (SearchState) evt.getNewValue();
             username.setText(state.getUsername());
         }
+        else if (evt.getPropertyName().equals("listings")) {
+            final HomeState state = (HomeState) evt.getNewValue();
+            updateListingsController.execute(state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("updateTable")) {
+            final SearchState state = (SearchState) evt.getNewValue();
+            updateListingsTable(state.getBookID(), state.getAuthors(), state.getTitle(), state.getPrice());
+        }
+        else if (evt.getPropertyName().equals("addedToWishlist")) {
+            final SearchState state = (SearchState) evt.getNewValue();
+            JOptionPane.showMessageDialog(SearchView.this, "Added to " + state.getUsername() + "'s wishlist!");
+        }
+        else if (evt.getPropertyName().equals("wishlistAddFail")) {
+            JOptionPane.showMessageDialog(SearchView.this, "Failed to add to wishlist.");
+        }
+        else if (evt.getPropertyName().equals("removedFromWishlist")) {
+            final SearchState state = (SearchState) evt.getNewValue();
+            JOptionPane.showMessageDialog(SearchView.this, "Removed from " + state.getUsername() + "'s wishlist.");
+        }
+        else if (evt.getPropertyName().equals("wishlistRemoveFail")) {
+            JOptionPane.showMessageDialog(SearchView.this, "Failed to remove from wishlist.");
+        }
     }
 
     public void setSearchController(SearchController searchController) {
@@ -327,8 +411,20 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         return viewName;
     }
 
+    public void setUpdateListingsController(UpdateListingsController updateListingsController) {
+        this.updateListingsController = updateListingsController;
+    }
+
     public void setBackToHomeController(BackToHomeController backToHomeController) {
         this.backToHomeController = backToHomeController;
+    }
+
+    public void setRemoveFromWishlistController(RemoveFromWishlistController removeFromWishlistController) {
+        this.removeFromWishlistController = removeFromWishlistController;
+    }
+
+    public void setAddToWishlistController(AddToWishlistController addToWishlistController) {
+        this.addToWishlistController = addToWishlistController;
     }
 
     /**
