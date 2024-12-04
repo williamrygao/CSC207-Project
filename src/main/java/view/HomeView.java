@@ -27,6 +27,7 @@ import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.to_filter_by_genre.ToFilterByGenreController;
 import interface_adapter.to_filter_by_price.ToFilterByPriceController;
 import interface_adapter.to_search_view.ToSearchController;
 import interface_adapter.to_sell.ToSellController;
@@ -49,6 +50,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private ToFilterByPriceController toFilterByPriceController;
     private ViewWishlistController viewWishlistController;
     private AddToWishlistController addToWishlistController;
+    private ToFilterByGenreController toFilterByGenreController;
     private RemoveFromWishlistController removeFromWishlistController;
     private UpdateListingsController updateListingsController;
     private LeaveRatingController leaveRatingController;
@@ -57,6 +59,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOut;
     private final JButton toSell;
     private final JButton toSearch;
+    private final JButton toFilterByGenre;
     private final JButton toFilterByPrice;
     private final JButton viewWishlist;
     private final JButton toRate;
@@ -123,6 +126,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         toSearch = new JButton("Search for a Book");
         topButtons.add(toSearch);
+
+        toFilterByGenre = new JButton("Filter by Genre");
+        topButtons.add(toFilterByGenre);
 
         toFilterByPrice = new JButton("Filter by Price");
         topButtons.add(toFilterByPrice);
@@ -228,6 +234,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        toFilterByGenre.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(toFilterByGenre)) {
+                        toFilterByGenreController.execute();
+                    }
+                }
+        );
+
         toFilterByPrice.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(toFilterByPrice)) {
@@ -273,7 +287,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                                         bookID,
                                         newRating
                                 );
-// Refresh the HomeView
+                                // Refresh the HomeView
                                 updateListingsController.execute(currentState.getUsername());
 
                                 JOptionPane.showMessageDialog(
@@ -283,7 +297,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                                         JOptionPane.INFORMATION_MESSAGE
                                 );
                             }
-                        } catch (NumberFormatException e) {
+                        }
+                        catch (NumberFormatException e) {
                             JOptionPane.showMessageDialog(
                                     null,
                                     "Invalid input. Please enter a number between 1 and 10.",
@@ -293,9 +308,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                         }
                         updateTable(currentState.getListings(), currentState.getWishlist());
                     }
-                }
-        );
-
+                });
 
         checkboxEditor.addActionListener(
                 evt -> {
@@ -404,6 +417,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setToSearchController(ToSearchController toSearchController) {
         this.toSearchController = toSearchController;
+    }
+
+    public void setToFilterByGenreController(ToFilterByGenreController toFilterByGenreController) {
+        this.toFilterByGenreController = toFilterByGenreController;
     }
 
     public void setToFilterByRatingController(ToFilterByPriceController toFilterByPriceController) {
