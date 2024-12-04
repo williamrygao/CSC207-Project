@@ -1,10 +1,11 @@
 package interface_adapter.sell;
 
-import use_case.sell.SellInputBoundary;
-import use_case.sell.SellInputData;
+import java.awt.*;
 
 import javax.swing.*;
-import java.awt.*;
+
+import use_case.sell.SellInputBoundary;
+import use_case.sell.SellInputData;
 
 /**
  * Controller for the Sell Use Case.

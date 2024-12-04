@@ -14,12 +14,12 @@ public class Main {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder.addLoginView().addSignupView().addHomeView()
                                             .addSellView().addSearchView().addWishlistView().addFilterByPriceView()
-                                            .addSignupUseCase().addLoginUseCase().addLogoutUseCase()
-                                            .addToSellViewUseCase().addToSearchViewUseCase()
-                                            .addToFilterByPriceViewUseCase().addSellUseCase().addSearchUseCase()
+                                            .addSignupUseCase().addLoginUseCase().addLogoutUseCase().addSearchUseCase()
+                                            .addToSellViewUseCase().addToSearchViewUseCase().addFilterByGenreView()
+                                            .addToFilterByPriceViewUseCase().addSellUseCase().addToFilterByGenreViewUseCase()
                                             .addFilterByPriceUseCase().addBackToHomeUseCase().addViewWishlistUseCase()
-                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase()
-                                            .addBackToSignupUseCase().addChangePasswordUseCase()
+                                            .addRemoveFromWishlistUseCase().addAddToWishlistUseCase().addLeaveRatingUseCase()
+                                            .addBackToSignupUseCase().addChangePasswordUseCase().addFilterByGenreUseCase()
                                             .addUpdateListingsUseCase().build();
 
         application.pack();

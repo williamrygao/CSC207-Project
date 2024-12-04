@@ -30,6 +30,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
     /**
      * FirebaseRatingDataAccessObject constructor.
+     *
      * @param firebaseBaseUrl Base URL for the Firebase database.
      */
     public FirebaseRatingDataAccessObject(final String firebaseBaseUrl) {
@@ -39,53 +40,94 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
     @Override
     public boolean existsByBookID(String bookID) {
-        final String url = firebaseBaseUrl + "/ratings/" + bookID + ".json";
-        final Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-
-        try (Response response = httpClient.newCall(request).execute()) {
-            if (response.code() == SUCCESS_CODE) {
-                final JSONObject jsonResponse = new JSONObject(response.body().string());
-                return jsonResponse.length() > 0;
-            }
-        }
-        catch (IOException | JSONException exception) {
-            exception.printStackTrace();
-        }
-        return false;
-    }
-
-    public double getAverageRatingByBookID(String bookID) {
         String url = firebaseBaseUrl + "/ratings/" + bookID + ".json";
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.code() == SUCCESS_CODE) {
-                String responseBody = response.body().string();
-                if (responseBody != null && !responseBody.equals("null")) {
-                    JSONObject jsonResponse = new JSONObject(responseBody);
-                    JSONArray ratingsArray = jsonResponse.getJSONArray("ratings");
-
-                    // Calculate the average rating
-                    double total = 0;
-                    for (int i = 0; i < ratingsArray.length(); i++) {
-                        total += ratingsArray.getInt(i);
-                    }
-                    return total / ratingsArray.length();
+                ResponseBody responseBody = response.body();
+                if (responseBody != null) {
+                    JSONObject jsonResponse = new JSONObject(responseBody.string());
+                    return jsonResponse.length() > 0; // Book exists if JSON is not empty
+                } else {
+                    System.err.println("Response body is null for URL: " + url);
                 }
+            } else {
+                System.err.println("Unexpected response code: " + response.code() + " for URL: " + url);
             }
-        }
-        catch (IOException | JSONException exception) {
+        } catch (IOException | JSONException exception) {
+            System.err.println("Error occurred while checking existence of book ID: " + bookID);
             exception.printStackTrace();
         }
-        return 0.0; // Return 0.0 if no ratings or an error occurs
+        return false; // Default to false if an error occurs
     }
+
+    public float fetchAverageRatingFromDatabase(String bookId) {
+        String url = firebaseBaseUrl + "/ratings/" + bookId + ".json";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+
+                // Handle empty or null responses gracefully
+                if (responseBody.equals("null") || responseBody.trim().isEmpty()) {
+
+                    return 0.0f; // Return default rating
+                }
+
+                try {
+                    // Parse the JSON response
+                    JSONObject jsonResponse = new JSONObject(responseBody);
+                    JSONArray ratingsArray = jsonResponse.optJSONArray("ratings");
+
+                    if (ratingsArray != null && ratingsArray.length() > 0) {
+                        int total = 0;
+                        int validRatingsCount = 0;
+
+                        // Process each rating, filtering out null or invalid values
+                        for (int i = 0; i < ratingsArray.length(); i++) {
+                            if (!ratingsArray.isNull(i)) {
+                                total += ratingsArray.getInt(i);
+                                validRatingsCount++;
+                            }
+                        }
+
+                        // Calculate average if valid ratings are found
+                        if (validRatingsCount > 0) {
+                            return total / (float) validRatingsCount;
+                        } else {
+                            System.err.println("No valid ratings found for bookId: " + bookId);
+                        }
+                    } else {
+
+                    }
+                } catch (JSONException e) {
+                    // Handle malformed JSON
+                    System.err.println("Error parsing JSON for bookId: " + bookId);
+
+                }
+            } else {
+                // Log unsuccessful responses
+                System.err.println("Failed to fetch ratings for bookId: " + bookId);
+                System.err.println("Response code: " + response.code() + ", message: " + response.message());
+            }
+        } catch (IOException e) {
+            // Log network-related issues
+            System.err.println("Error fetching average rating for bookId: " + bookId);
+        }
+
+        return 0.0f; // Default to 0.0 if an error occurs
+    }
+
 
     @Override
     public void save(final Rating rating) {
@@ -148,6 +190,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
 
     /**
      * Retrieves all ratings from the Firebase database.
+     *
      * @return a list of ratings or an empty list if none exist or an error occurs.
      */
     public List<Rating> getAllRatings() {
@@ -259,6 +302,7 @@ public class FirebaseRatingDataAccessObject implements LeaveRatingDataAccessInte
             e.printStackTrace();
         }
     }
+
 
     public List<Listing> filterByRating(int minRating) {
 

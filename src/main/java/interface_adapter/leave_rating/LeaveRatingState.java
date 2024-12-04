@@ -4,11 +4,16 @@ package interface_adapter.leave_rating;
  * The state representing the leave rating process.
  */
 public class LeaveRatingState {
-    private String bookID = "";           // Book identifier
-    private double rating = 0;            // Rating value
-    private String error = "";            // Error message
-    private String successMessage = "";   // Success message
-    private String username = "";         // Username, assuming this is part of the state
+    // Book identifier
+    private String bookID = "";
+    // Rating value
+    private double rating;
+    // Error message
+    private String error = "";
+    // Success message
+    private String successMessage = "";
+    // Username, assuming this is part of the state
+    private String username = "";
 
     // Getters and Setters
     public String getBookID() {
@@ -23,8 +28,8 @@ public class LeaveRatingState {
         return rating;
     }
 
-    public void setNewRating(double rating) {
-        this.rating = rating;
+    public void setNewRating(double bookRating) {
+        this.rating = bookRating;
     }
 
     public String getError() {

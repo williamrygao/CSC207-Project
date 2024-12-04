@@ -1,8 +1,6 @@
 package use_case.filter_by_genre;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import entity.listing.Listing;
 
@@ -13,28 +11,19 @@ import entity.listing.Listing;
  */
 public class FilterByGenreInteractor implements FilterByGenreInputBoundary {
 
-    private static final Logger LOGGER = Logger.getLogger(FilterByGenreInteractor.class.getName());
-
-    /**
-     * Interface for accessing book data.
-     */
     private final FilterByGenreDataAccessInterface dataAccess;
-
-    /**
-     * Interface for presenting the filtered book data to the output boundary.
-     */
-    private final FilterByGenreOutputBoundary outputBoundary;
+    private final FilterByGenreOutputBoundary filterByGenrePresenter;
 
     /**
      * Constructs a FilterByGenreInteractor with the specified data access and output boundary.
      *
-     * @param dataAccess     the interface for accessing book data
-     * @param outputBoundary the interface for presenting filtered data
+     * @param filterByGenreDataAccessInterface    the interface for accessing book data
+     * @param filterByGenreOutputBoundary the interface for presenting filtered data
      */
-    public FilterByGenreInteractor(FilterByGenreDataAccessInterface dataAccess,
-                                   FilterByGenreOutputBoundary outputBoundary) {
-        this.dataAccess = dataAccess;
-        this.outputBoundary = outputBoundary;
+    public FilterByGenreInteractor(FilterByGenreDataAccessInterface filterByGenreDataAccessInterface,
+                                   FilterByGenreOutputBoundary filterByGenreOutputBoundary) {
+        this.dataAccess = filterByGenreDataAccessInterface;
+        this.filterByGenrePresenter = filterByGenreOutputBoundary;
     }
 
     /**
@@ -42,31 +31,26 @@ public class FilterByGenreInteractor implements FilterByGenreInputBoundary {
      *
      * @param inputData the data containing the genre to filter by
      */
+
     @Override
-    public void filterByGenre(FilterByGenreInputData inputData) {
-        // Extract the genre from the input data
+    public void execute(FilterByGenreInputData inputData) {
         final String genre = inputData.getGenre();
 
-        // Validation: genre should not be null or empty
+        // Input validation: If genre is empty or null, prepare a failure view
         if (genre == null || genre.trim().isEmpty()) {
-            LOGGER.log(Level.WARNING, "Received empty or null genre.");
-            throw new IllegalArgumentException("Genre cannot be empty or null.");
+            this.filterByGenrePresenter.prepareFailView("Genre cannot be empty or null.");
         }
 
-        // Retrieve the listings from the data access layer
-        final List<Listing> filteredListings;
-        try {
-            filteredListings = dataAccess.getListingsByGenre(genre);
-        }
-        catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error retrieving listings by genre: " + genre, ex);
-            throw new RuntimeException("Failed to retrieve listings.", ex);
+        // Retrieve filtered listings from the data access layer
+        final List<Listing> Listings = dataAccess.getListingsByGenre(genre);
+
+        // If no listings are found, prepare a failure view
+        if (Listings.isEmpty()) {
+            this.filterByGenrePresenter.prepareFailView("No listings found for the specified genre.");
         }
 
-        // Prepare the output data
-        final FilterByGenreOutputData outputData = new FilterByGenreOutputData(filteredListings);
-
-        // Send the filtered listings to the output boundary
-        outputBoundary.presentFilteredListings(outputData);
+        // Prepare the success view with the filtered listings
+        final FilterByGenreOutputData outputData = new FilterByGenreOutputData(Listings);
+        this.filterByGenrePresenter.prepareSuccessView(outputData);
     }
 }

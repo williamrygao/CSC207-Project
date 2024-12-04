@@ -1,142 +1,62 @@
 package use_case.leave_rating;
 
-import com.google.api.core.ApiFuture;
-import entity.listing.Listing;
-import entity.user.User;
-import entity.user.UserFactory;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import data_access.FirebaseInitializer;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import entity.Rating;
 /**
- * The LeaveRating Interactor for Firebase Realtime Database.
+ * The Leave Rating Interactor.
  */
 public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
-
-    private final DatabaseReference databaseReference;
+    private final LeaveRatingDataAccessInterface ratingDataAccess;
     private final LeaveRatingOutputBoundary leaveRatingPresenter;
-    private final UserFactory userFactory;
 
     /**
-     * Constructor for LeaveRatingInteractor.
-     * @param leaveRatingOutputBoundary the presenter responsible for preparing output
-     * @param userFactory user factory to create user instances
+     * Constructs a LeaveRatingInteractor.
+     *
+     * @param ratingDataAccess      The data access interface for ratings.
+     * @param leaveRatingPresenter  The output boundary for preparing responses.
      */
-    public LeaveRatingInteractor(final LeaveRatingOutputBoundary leaveRatingOutputBoundary, UserFactory userFactory) {
-        // Use FirebaseInitializer to get a reference to the database
-        this.databaseReference = FirebaseInitializer.getRealtimeDatabaseReference();
-        this.leaveRatingPresenter = leaveRatingOutputBoundary;
-        this.userFactory = userFactory;
+    public LeaveRatingInteractor(LeaveRatingDataAccessInterface ratingDataAccess,
+                                 LeaveRatingOutputBoundary leaveRatingPresenter) {
+        this.ratingDataAccess = ratingDataAccess;
+        this.leaveRatingPresenter = leaveRatingPresenter;
     }
 
     /**
-     * Executes the LeaveRating use case.
-     * @param leaveRatingInputData the input data containing rating information
+     * Executes the Leave Rating Use Case.
+     *
+     * @param leaveRatingInputData The input data for leaving a rating.
      */
     @Override
-    public void execute(final LeaveRatingInputData leaveRatingInputData) {
+    public void execute(LeaveRatingInputData leaveRatingInputData) {
         String username = leaveRatingInputData.getUsername();
-        String password = leaveRatingInputData.getPassword();
-        User user = userFactory.create(username, password);
-        Listing listing = leaveRatingInputData.getListing();
         String bookId = leaveRatingInputData.getBookid();
         Integer newRating = leaveRatingInputData.getNewRating();
 
-        if (user == null) {
-            // If user authentication fails, notify failure without error message
-            leaveRatingPresenter.prepareFailView("Authentication failed for user: " + username);
-            return;
+        // Validate that the book exists
+        if (!ratingDataAccess.existsByBookID(bookId)) {
+            leaveRatingPresenter.prepareFailView("Book not found for ID: " + bookId);
         }
 
-        // Reference to the book in Firebase Realtime Database
-        DatabaseReference bookRef = databaseReference.child("books").child(bookId);
+        // Retrieve the current ratings or create a new one
+        Rating rating = ratingDataAccess.getRatingsByBookID(bookId);
+        if (rating == null) {
+            rating = new Rating(bookId);
+        }
 
-        // Add the new rating to the "ratings" array of this book
-        addRating(bookRef, newRating, username);
-    }
-
-    /**
-     * Adds a new rating to the book and updates the average rating.
-     * @param bookRef the reference to the book node in Firebase Realtime Database
-     * @param newRating the new rating value to be added
-     * @param username the username of the user leaving the rating
-     */
-    private void addRating(DatabaseReference bookRef, Integer newRating, String username) {
-        ApiFuture<Void> future = bookRef.child("ratings").push().setValueAsync(newRating);
-
+        // Add the new rating
         try {
-            future.get();
+            rating.addRating(newRating);
+            ratingDataAccess.save(rating);
 
-            updateAverageRating(bookRef);
-            notifySuccess(username);
+            // Prepare the success output
+            LeaveRatingOutputData outputData = new LeaveRatingOutputData(username, false);
+            leaveRatingPresenter.prepareSuccessView(outputData);
+
+        } catch (IllegalArgumentException e) {
+            // Handle invalid rating (e.g., out of range)
+            leaveRatingPresenter.prepareFailView(e.getMessage());
+        } catch (Exception e) {
+            // General failure
+            leaveRatingPresenter.prepareFailView("Failed to leave rating due to unexpected error.");
         }
-        catch (Exception e) {
-            // Handle failure and notify
-            notifyFailure();
-        }
-    }
-
-    /**
-     * Updates the average rating of the book in Firebase Realtime Database.
-     * @param bookRef the reference to the book node in Firebase
-     */
-    private void updateAverageRating(DatabaseReference bookRef) {
-        bookRef.child("ratings").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    List<Integer> ratings = new ArrayList<>();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Integer rating = snapshot.getValue(Integer.class);
-                        if (rating != null) {
-                            ratings.add(rating);
-                        }
-                    }
-
-                    if (!ratings.isEmpty()) {
-                        double average = (double) calculateAverageRating(ratings);
-                        bookRef.child("averageRating").setValueAsync(average);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // No error handling or logging needed
-            }
-        });
-    }
-
-    /**
-     * Calculates the average of the ratings.
-     * @param ratings the list of ratings to calculate the average from
-     * @return the calculated average rating
-     */
-    private double calculateAverageRating(List<Integer> ratings) {
-        return ratings.stream()
-                .mapToInt(Integer::intValue)
-                .average()
-                .orElse(0.0);
-    }
-
-    /**
-     * Prepares the success output for the presenter.
-     * @param username the username of the user leaving the rating
-     */
-    private void notifySuccess(String username) {
-        LeaveRatingOutputData outputData = new LeaveRatingOutputData(username, false);
-        leaveRatingPresenter.prepareSuccessView(outputData);
-    }
-
-    /**
-     * Prepares the failure output for the presenter (no error message).
-     */
-    private void notifyFailure() {
-        leaveRatingPresenter.prepareFailView("Failed to leave rating.");
     }
 }

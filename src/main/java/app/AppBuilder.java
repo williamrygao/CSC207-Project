@@ -15,13 +15,17 @@ import entity.book.BookFactory;
 import entity.user.CommonUserFactory;
 import entity.user.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.filter_by_price.FilterByPriceController;
-import interface_adapter.filter_by_price.FilterByPricePresenter;
-import interface_adapter.filter_by_price.FilterByPriceViewModel;
-import interface_adapter.to_filter_by_price.ToFilterByPriceController;
-import interface_adapter.to_filter_by_price.ToFilterByPricePresenter;
-import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
-import interface_adapter.wishlist.add_to_wishlist.AddToWishlistPresenter;
+import interface_adapter.filter_by_genre.FilterByGenreController;
+import interface_adapter.filter_by_genre.FilterByGenrePresenter;
+import interface_adapter.filter_by_genre.FilterByGenreViewModel;
+import interface_adapter.to_filter_by_genre.ToFilterByGenreController;
+import interface_adapter.to_filter_by_genre.ToFilterByGenrePresenter;
+import use_case.filter_by_genre.FilterByGenreInputBoundary;
+import use_case.filter_by_genre.FilterByGenreInteractor;
+import use_case.filter_by_genre.FilterByGenreOutputBoundary;
+import use_case.to_filter_by_genre.ToFilterByGenreInputBoundary;
+import use_case.to_filter_by_genre.ToFilterByGenreInteractor;
+import use_case.to_filter_by_genre.ToFilterByGenreOutputBoundary;
 import interface_adapter.back_to_home.BackToHomeController;
 import interface_adapter.back_to_home.BackToHomePresenter;
 import interface_adapter.back_to_signup.BackToSignupController;
@@ -29,14 +33,16 @@ import interface_adapter.back_to_signup.BackToSignupPresenter;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.HomeViewModel;
+import interface_adapter.filter_by_price.FilterByPriceController;
+import interface_adapter.filter_by_price.FilterByPricePresenter;
+import interface_adapter.filter_by_price.FilterByPriceViewModel;
+import interface_adapter.leave_rating.LeaveRatingController;
+import interface_adapter.leave_rating.LeaveRatingPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
-import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistPresenter;
-import interface_adapter.wishlist.WishlistViewModel;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.search.SearchViewModel;
@@ -46,23 +52,21 @@ import interface_adapter.sell.SellViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.to_filter_by_price.ToFilterByPriceController;
+import interface_adapter.to_filter_by_price.ToFilterByPricePresenter;
 import interface_adapter.to_search_view.ToSearchController;
 import interface_adapter.to_search_view.ToSearchPresenter;
 import interface_adapter.to_sell.ToSellController;
 import interface_adapter.to_sell.ToSellPresenter;
 import interface_adapter.update_listings.UpdateListingsController;
 import interface_adapter.update_listings.UpdateListingsPresenter;
+import interface_adapter.wishlist.WishlistViewModel;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistController;
+import interface_adapter.wishlist.add_to_wishlist.AddToWishlistPresenter;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistController;
+import interface_adapter.wishlist.remove_from_wishlist.RemoveFromWishlistPresenter;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistController;
 import interface_adapter.wishlist.view_wishlist.ViewWishlistPresenter;
-import use_case.filter_by_price.FilterByPriceInputBoundary;
-import use_case.filter_by_price.FilterByPriceInteractor;
-import use_case.filter_by_price.FilterByPriceOutputBoundary;
-import use_case.to_filter_by_price.ToFilterByPriceInputBoundary;
-import use_case.to_filter_by_price.ToFilterByPriceInteractor;
-import use_case.to_filter_by_price.ToFilterByPriceOutputBoundary;
-import use_case.wishlist.add_to_wishlist.AddToWishlistInputBoundary;
-import use_case.wishlist.add_to_wishlist.AddToWishlistInteractor;
-import use_case.wishlist.add_to_wishlist.AddToWishlistOutputBoundary;
 import use_case.back_to_home.BackToHomeInputBoundary;
 import use_case.back_to_home.BackToHomeInteractor;
 import use_case.back_to_home.BackToHomeOutputBoundary;
@@ -72,15 +76,18 @@ import use_case.back_to_signup.BackToSignupOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.filter_by_price.FilterByPriceInputBoundary;
+import use_case.filter_by_price.FilterByPriceInteractor;
+import use_case.filter_by_price.FilterByPriceOutputBoundary;
+import use_case.leave_rating.LeaveRatingInputBoundary;
+import use_case.leave_rating.LeaveRatingInteractor;
+import use_case.leave_rating.LeaveRatingOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
-import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInputBoundary;
-import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInteractor;
-import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.search.SearchInputBoundary;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
@@ -90,6 +97,9 @@ import use_case.sell.SellOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.to_filter_by_price.ToFilterByPriceInputBoundary;
+import use_case.to_filter_by_price.ToFilterByPriceInteractor;
+import use_case.to_filter_by_price.ToFilterByPriceOutputBoundary;
 import use_case.to_search_view.ToSearchInputBoundary;
 import use_case.to_search_view.ToSearchInteractor;
 import use_case.to_search_view.ToSearchOutputBoundary;
@@ -99,6 +109,12 @@ import use_case.to_sell_view.ToSellOutputBoundary;
 import use_case.update_listings.UpdateListingsInputBoundary;
 import use_case.update_listings.UpdateListingsInteractor;
 import use_case.update_listings.UpdateListingsOutputBoundary;
+import use_case.wishlist.add_to_wishlist.AddToWishlistInputBoundary;
+import use_case.wishlist.add_to_wishlist.AddToWishlistInteractor;
+import use_case.wishlist.add_to_wishlist.AddToWishlistOutputBoundary;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInputBoundary;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistInteractor;
+import use_case.wishlist.remove_from_wishlist.RemoveFromWishlistOutputBoundary;
 import use_case.wishlist.view_wishlist.ViewWishlistInputBoundary;
 import use_case.wishlist.view_wishlist.ViewWishlistInteractor;
 import use_case.wishlist.view_wishlist.ViewWishlistOutputBoundary;
@@ -136,16 +152,16 @@ public class AppBuilder {
             cardLayout, viewManagerModel);
 
     private final Firestore firestore = FirebaseInitializer.initializeFirebase();
-    private final String firebaseBaseURL = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
+    private final String firebaseBaseUrl = "https://csc207project-ed2f9-default-rtdb.firebaseio.com/";
 
     private final FirebaseUserDataAccessObject userDataAccessObject = new
-            FirebaseUserDataAccessObject(userFactory, firebaseBaseURL);
+            FirebaseUserDataAccessObject(userFactory, firebaseBaseUrl);
 
     private final FirebaseListingDataAccessObject listingDataAccessObject = new
-            FirebaseListingDataAccessObject(firebaseBaseURL);
+            FirebaseListingDataAccessObject(firebaseBaseUrl);
 
     private final FirebaseRatingDataAccessObject ratingDataAccessObject = new
-            FirebaseRatingDataAccessObject(firebaseBaseURL);
+            FirebaseRatingDataAccessObject(firebaseBaseUrl);
     /**
      * SignupView.
      */
@@ -173,11 +189,13 @@ public class AppBuilder {
 
     private SellViewModel sellViewModel;
     private SearchViewModel searchViewModel;
+    private FilterByGenreViewModel filterByGenreViewModel;
     private FilterByPriceViewModel filterByPriceViewModel;
     private SellView sellView;
     private SearchView searchView;
     private FilterByPriceView filterByPriceView;
 
+    private FilterByGenreView filterByGenreView;
     private WishlistViewModel wishlistViewModel;
     private WishlistView wishlistView;
 
@@ -238,7 +256,7 @@ public class AppBuilder {
      */
     public AppBuilder addSearchView() {
         searchViewModel = new SearchViewModel();
-        searchView = new SearchView(searchViewModel);
+        searchView = new SearchView(searchViewModel, homeViewModel);
         cardPanel.add(searchView, searchView.getViewName());
         return this;
     }
@@ -251,6 +269,17 @@ public class AppBuilder {
         filterByPriceViewModel = new FilterByPriceViewModel();
         filterByPriceView = new FilterByPriceView(filterByPriceViewModel);
         cardPanel.add(filterByPriceView, filterByPriceView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Filter by genre View to the application.
+     * @return this builder
+     */
+    public AppBuilder addFilterByGenreView() {
+        filterByGenreViewModel = new FilterByGenreViewModel();
+        filterByGenreView = new FilterByGenreView(filterByGenreViewModel);
+        cardPanel.add(filterByGenreView, filterByGenreView.getViewName());
         return this;
     }
 
@@ -336,6 +365,7 @@ public class AppBuilder {
 
     /**
      * Adds the To Sell View Use Case to the application.
+     *
      * @return this builder
      */
     public AppBuilder addToSellViewUseCase() {
@@ -362,6 +392,35 @@ public class AppBuilder {
         final SellController sellController = new SellController(
                 sellInteractor);
         sellView.setSellController(sellController);
+        return this;
+    }
+
+    /**
+     * Adds the To Filter By Genre Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addToFilterByGenreViewUseCase() {
+        final ToFilterByGenreOutputBoundary toFilterByGenreOutputBoundary =
+                new ToFilterByGenrePresenter(viewManagerModel, homeViewModel, filterByGenreViewModel);
+        final ToFilterByGenreInputBoundary toFilterByGenreInteractor =
+                new ToFilterByGenreInteractor(toFilterByGenreOutputBoundary);
+        final ToFilterByGenreController toFilterByGenreController =
+                new ToFilterByGenreController(toFilterByGenreInteractor);
+        homeView.setToFilterByGenreController(toFilterByGenreController);
+        return this;
+    }
+    /**
+     * Adds the Filter By Genre Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addFilterByGenreUseCase() {
+        final FilterByGenreOutputBoundary filterByGenrePresenter =
+                new FilterByGenrePresenter(filterByGenreViewModel, homeViewModel);
+        final FilterByGenreInputBoundary filterByGenreInteractor =
+                new FilterByGenreInteractor(listingDataAccessObject, filterByGenrePresenter);
+        final FilterByGenreController filterByGenreController =
+                new FilterByGenreController(filterByGenreInteractor);
+        filterByGenreView.setFilterByGenreController(filterByGenreController);
         return this;
     }
 
@@ -399,7 +458,7 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Filter By Price Use Case to the application.
+     * Adds the Filter By Rating Use Case to the application.
      * @return this builder
      */
     public AppBuilder addFilterByPriceUseCase() {
@@ -461,6 +520,7 @@ public class AppBuilder {
         sellView.setBackToHomeController(backToHomeController);
         searchView.setBackToHomeController(backToHomeController);
         filterByPriceView.setBackToHomeController(backToHomeController);
+        filterByGenreView.setBackToHomeController(backToHomeController);
         wishlistView.setBackToHomeController(backToHomeController);
         return this;
     }
@@ -487,12 +547,13 @@ public class AppBuilder {
      */
     public AppBuilder addRemoveFromWishlistUseCase() {
         final RemoveFromWishlistOutputBoundary removeFromWishlistOutputBoundary =
-                new RemoveFromWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
+                new RemoveFromWishlistPresenter(wishlistViewModel, homeViewModel, searchViewModel, viewManagerModel);
         final RemoveFromWishlistInputBoundary removeFromWishlistInteractor =
                 new RemoveFromWishlistInteractor(userDataAccessObject, removeFromWishlistOutputBoundary);
         final RemoveFromWishlistController removeFromWishlistController =
                 new RemoveFromWishlistController(removeFromWishlistInteractor);
         homeView.setRemoveFromWishlistController(removeFromWishlistController);
+        searchView.setRemoveFromWishlistController(removeFromWishlistController);
         wishlistView.setRemoveFromWishlistController(removeFromWishlistController);
         return this;
     }
@@ -502,10 +563,17 @@ public class AppBuilder {
      * @return this build
      */
     public AppBuilder addUpdateListingsUseCase() {
-        final UpdateListingsOutputBoundary updateListingsOutputBoundary = new UpdateListingsPresenter(homeViewModel);
-        final UpdateListingsInputBoundary updateListingsInteractor = new UpdateListingsInteractor(userDataAccessObject, listingDataAccessObject, updateListingsOutputBoundary);
-        final UpdateListingsController updateListingsController = new UpdateListingsController(updateListingsInteractor);
+        final UpdateListingsOutputBoundary updateListingsOutputBoundary =
+                new UpdateListingsPresenter(homeViewModel);
+        final UpdateListingsInputBoundary updateListingsInteractor =
+                new UpdateListingsInteractor(
+                        userDataAccessObject,
+                        listingDataAccessObject,
+                        updateListingsOutputBoundary);
+        final UpdateListingsController updateListingsController =
+                new UpdateListingsController(updateListingsInteractor);
         homeView.setUpdateListingsController(updateListingsController);
+        searchView.setUpdateListingsController(updateListingsController);
         return this;
     }
 
@@ -515,12 +583,35 @@ public class AppBuilder {
      */
     public AppBuilder addAddToWishlistUseCase() {
         final AddToWishlistOutputBoundary addToWishlistOutputBoundary =
-                new AddToWishlistPresenter(wishlistViewModel, homeViewModel, viewManagerModel);
+                new AddToWishlistPresenter(wishlistViewModel, homeViewModel, searchViewModel, viewManagerModel);
         final AddToWishlistInputBoundary addToWishlistInteractor =
                 new AddToWishlistInteractor(userDataAccessObject, addToWishlistOutputBoundary);
         final AddToWishlistController addToWishlistController = new AddToWishlistController(addToWishlistInteractor);
         homeView.setAddToWishlistController(addToWishlistController);
+        searchView.setAddToWishlistController(addToWishlistController);
         wishlistView.setAddToWishlistController(addToWishlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Leave Rating Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addLeaveRatingUseCase() {
+        // Create the Output Boundary (Presenter)
+        final LeaveRatingOutputBoundary leaveRatingOutputBoundary =
+                new LeaveRatingPresenter(viewManagerModel, homeViewModel);
+
+        final LeaveRatingInputBoundary leaveRatingInteractor =
+                new LeaveRatingInteractor(ratingDataAccessObject, leaveRatingOutputBoundary);
+
+        // Create the Controller
+        final LeaveRatingController leaveRatingController =
+                new LeaveRatingController(leaveRatingInteractor);
+
+        // Set the Controller in the Home View
+        homeView.setToLeaveRatingController(leaveRatingController);
+
         return this;
     }
 

@@ -1,5 +1,6 @@
 package view;
 
+import entity.listing.Listing;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.leave_rating.LeaveRatingState;
 import interface_adapter.leave_rating.LeaveRatingViewModel;
@@ -84,8 +85,12 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener {
 
             private void documentListenerHelper() {
                 final LeaveRatingState currentState = leaveRatingViewModel.getState();
-                currentState.setNewRating(Double.parseDouble(ratingInputField.getText())); // Fixing the issue
-                leaveRatingViewModel.setState(currentState);
+                try {
+                    currentState.setNewRating(Double.parseDouble(ratingInputField.getText()));
+                    leaveRatingViewModel.setState(currentState);
+                } catch (NumberFormatException e) {
+                    feedbackLabel.setText("Please enter a valid numeric rating.");
+                }
             }
 
             @Override
@@ -126,7 +131,16 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener {
                     if (rating < 1 || rating > 10) {
                         feedbackLabel.setText("Error: Rating must be between 1 and 10.");
                     } else {
-                        leaveRatingController.execute(bookID, rating);
+                        // Example for username, password, and listing retrieval
+                        String username = currentState.getUsername();
+                        String password = "user-password"; // Replace with actual logic to get password
+                        Listing listing = fetchListingByBookID(bookID); // Replace with actual method to get Listing
+
+                        if (listing != null) {
+                            leaveRatingController.execute(username, password, bookID, rating);
+                        } else {
+                            feedbackLabel.setText("Error: Book not found for ID: " + bookID);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     feedbackLabel.setText("Error: Invalid rating value. Please enter a number.");
@@ -145,6 +159,12 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener {
         this.add(feedbackLabel);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons);
+    }
+
+    private Listing fetchListingByBookID(String bookID) {
+        // Placeholder for fetching a Listing object based on bookID
+        // Replace with actual logic to retrieve a Listing
+        return null;
     }
 
     @Override

@@ -1,10 +1,11 @@
 package interface_adapter.filter_by_price;
 
-import use_case.filter_by_price.FilterByPriceInputBoundary;
-import use_case.filter_by_price.FilterByPriceInputData;
+import java.awt.*;
 
 import javax.swing.*;
-import java.awt.*;
+
+import use_case.filter_by_price.FilterByPriceInputBoundary;
+import use_case.filter_by_price.FilterByPriceInputData;
 
 /**
  * The controller for the Filter By Price Use Case.

@@ -1,10 +1,11 @@
 package interface_adapter.search;
 
-import use_case.search.SearchInputBoundary;
-import use_case.search.SearchInputData;
+import java.awt.*;
 
 import javax.swing.*;
-import java.awt.*;
+
+import use_case.search.SearchInputBoundary;
+import use_case.search.SearchInputData;
 
 /**
  * Controller for the Search Use Case.

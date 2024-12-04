@@ -10,19 +10,17 @@ import entity.listing.Listing;
  * The output data for the "Filter Books by Genre" use case.
  * Contains the filtered book listings.
  */
-
 public class FilterByGenreOutputData {
 
-    private final List<Listing> filteredListings;
+    private final List<Listing> Listings;
 
     /**
      * Constructor to initialize the filtered book listings.
      *
-     * @param filteredListings the list of filtered book listings
+     * @param Listings the list of filtered book listings
      */
-
-    public FilterByGenreOutputData(List<Listing> filteredListings) {
-        this.filteredListings = Objects.requireNonNullElseGet(filteredListings, ArrayList::new);
+    public FilterByGenreOutputData(List<Listing> Listings) {
+        this.Listings = Objects.requireNonNullElseGet(Listings, ArrayList::new);
     }
 
     /**
@@ -30,8 +28,7 @@ public class FilterByGenreOutputData {
      *
      * @return a list of filtered book listings
      */
-
-    public List<Listing> getFilteredListings() {
-        return filteredListings;
+    public List<Listing> getListings() {
+        return Listings;
     }
 }

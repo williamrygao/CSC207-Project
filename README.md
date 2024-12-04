@@ -32,16 +32,17 @@ Joe's Bookstore is designed to make the process of browsing and selling books as
 
 **2. Browse Listings**
 
-- View detailed information on all available listings, with the ability to sort by title, author, price, rating, and wishlist status.
+- View detailed information on all available listings, with the ability to sort by title, author, genre, price, rating, and wishlist status.
 
-![Home Page](images/Home-Page.png)
+![Home Page](images/HomePage.png)
 
 **3. Refine Search**
 
 - Restrict the displayed listings by setting a maximum price or minimum rating.<br>
-- Search listings using specific queries such as book title, author, and more.
+- Search listings using specific queries such as book title, author, genre and more.
 
 ![Filter By Price](images/Filter-By-Price.png)
+![Filter By Price](images/Filter-By-Genre.png)
 
 **4. Discover and Sell Books**
 
@@ -87,7 +88,7 @@ Before installing Joe's Bookstore, ensure you have/can access the following:
    Generate an API key to make calls to the Google Books API, which Joe's Bookstore uses to retrieve detailed book data. Instructions can be found at [Google Books API Guide](https://developers.google.com/books/overview). Once you have your API key, store it in a file called api_key.env in your local repository, in the following format:
 
 ```bash
-API_KEY="*your API key here*"   
+API_KEY="your API key here"   
 ```
 
 **5. Firebase Account & Firebase SDK (For contributors):**
@@ -98,8 +99,8 @@ API_KEY="*your API key here*"
 {
   "type": "service_account",
   "project_id": "csc207project-ed2f9",
-  "private_key_id": "*your private key ID here*",
-  "private_key": "-----BEGIN PRIVATE KEY-----\n*your private key here*\n-----END PRIVATE KEY-----\n",
+  "private_key_id": "your private key ID here",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n your private key here \n-----END PRIVATE KEY-----\n",
   "client_email": "firebase-adminsdk-d6nlw@csc207project-ed2f9.iam.gserviceaccount.com",
   "client_id": "105179899008478085244",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
