@@ -1,12 +1,12 @@
 package interface_adapter.filter_by_price;
 
+import java.util.List;
+
 import entity.listing.Listing;
 import interface_adapter.change_password.HomeState;
 import interface_adapter.change_password.HomeViewModel;
 import use_case.filter_by_price.FilterByPriceOutputBoundary;
 import use_case.filter_by_price.FilterByPriceOutputData;
-
-import java.util.List;
 
 /**
  * The Presenter for the Filter By Price Use Case.

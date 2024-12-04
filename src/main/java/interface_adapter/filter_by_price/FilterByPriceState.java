@@ -1,9 +1,9 @@
 package interface_adapter.filter_by_price;
 
-import entity.listing.Listing;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.listing.Listing;
 
 /**
  * The state representing the filter by price process.
