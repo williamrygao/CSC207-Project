@@ -8,7 +8,6 @@ import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import use_case.filter_by_rating.FilterByRatingDataAccessInterface;
 import use_case.leave_rating.LeaveRatingDataAccessInterface;
 
 import java.io.IOException;
