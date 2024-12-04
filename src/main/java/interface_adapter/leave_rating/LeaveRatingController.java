@@ -1,40 +1,47 @@
 package interface_adapter.leave_rating;
 
-public class LeaveRatingController {
-    private final LeaveRatingPresenter presenter;
+import use_case.leave_rating.LeaveRatingInputBoundary;
+import use_case.leave_rating.LeaveRatingInputData;
 
-    public LeaveRatingController(LeaveRatingPresenter presenter) {
-        this.presenter = presenter;
+/**
+ * The Controller for the Leave Rating Use Case.
+ */
+public class LeaveRatingController {
+    private final LeaveRatingInputBoundary leaveRatingInteractor;
+
+    /**
+     * Constructs a LeaveRatingController.
+     *
+     * @param leaveRatingInteractor The input boundary for the Leave Rating use case.
+     */
+    public LeaveRatingController(LeaveRatingInputBoundary leaveRatingInteractor) {
+        this.leaveRatingInteractor = leaveRatingInteractor;
     }
 
-    public void execute(String bookID, double rating) {
+    /**
+     * Executes the Leave Rating Use Case.
+     *
+     * @param username  The username of the user leaving the rating.
+     * @param password  The password of the user.
+     * @param bookID    The ID of the book being rated.
+     * @param newRating The new rating (1-10).
+     */
+    public void execute(String username, String password, String bookID, int newRating) {
         // Validate inputs
         if (bookID == null || bookID.trim().isEmpty()) {
-            presenter.showInvalidRatingMessage("Book ID cannot be empty.");
+
             return;
         }
 
-        if (rating < 1 || rating > 10) {
-            presenter.showInvalidRatingMessage("Rating must be between 1 and 10.");
+        if (newRating < 1 || newRating > 10) {
+
             return;
         }
 
-        // Interact with the Firebase database (placeholder logic)
-        boolean success = updateBookRatingInDatabase(bookID, rating);
+        // Create the input data object
+        LeaveRatingInputData inputData = new LeaveRatingInputData(username, password, bookID, newRating);
 
-        if (success) {
-            presenter.showSuccessMessage("Successfully rated the book with ID: " + bookID + ".");
-        }
-        else {
-            presenter.showErrorMessage("Failed to update the rating for the book.");
-        }
-    }
-
-    // Placeholder for Firebase interaction
-    private boolean updateBookRatingInDatabase(String bookID, double rating) {
-        // Actual implementation will interact with Firebase to store the rating
-        // Replace this with actual database code
-        System.out.println("Updated bookID " + bookID + " with rating " + rating);
-        return true; // Simulate success
+        // Pass the input data to the interactor
+        leaveRatingInteractor.execute(inputData);
     }
 }

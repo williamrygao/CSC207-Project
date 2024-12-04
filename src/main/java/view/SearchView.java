@@ -33,6 +33,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final HomeViewModel homeViewModel;
     private BackToHomeController backToHomeController;
     private SearchController searchController;
+
     private UpdateListingsController updateListingsController;
     private AddToWishlistController addToWishlistController;
     private RemoveFromWishlistController removeFromWishlistController;
@@ -80,7 +81,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         username = new JLabel();
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "Book ID", "Rating", "Wishlist"};
+        final String[] searchColumnNames = {"Title", "Author(s)", "Price", "BookID", "Rating"};
 
         // Initial data for the table (empty)
         tableModel = new DefaultTableModel(searchColumnNames, 0) {
@@ -105,7 +106,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
         final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
         filteredBookTable.getColumnModel().getColumn(five).setCellEditor(checkboxEditor);
-
+      
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(filteredBookTable);
 
@@ -289,10 +290,9 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                             // Refresh the table to reflect changes
                             tableModel.fireTableDataChanged();
                         }
-                        // Note this action listener is very different from the HomView implementation, because
-                        // the row number will change after filtering search, so we would get an error if we used
-                        // the get row implementation. This makes the checking of the wishlist more complicated.
-                        // This took me a long time to debug and get working.
+                        // Note: This action listener is different from the HomeView implementation because the row number
+                        // changes after filtering the search. Using the 'getRow' method directly would cause errors due to this.
+                        // As a result, checking the wishlist becomes more complex. This took significant debugging to resolve.
                     }
                 }
         );
@@ -368,8 +368,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     listing.getBook().getAuthors(),
                     listing.getPrice(),
                     listing.getBook().getBookId(),
-                    listing.getBook().getRating(), isInWishlist}
-            );
+                    listing.getBook().getRating()});
         }
         return filteredListings.size();
     }
