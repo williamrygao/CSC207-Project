@@ -1,7 +1,5 @@
 package entity;
 
-package entity.user;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import entity.listing.Listing;

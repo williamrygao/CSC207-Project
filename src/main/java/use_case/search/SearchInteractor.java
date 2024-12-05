@@ -31,12 +31,54 @@ public class SearchInteractor implements SearchInputBoundary {
 
         final List<Listing> allListings = bookDataAccessObject.getListings();
 
-        // Perform partial search and filter listings based on any of the fields
+        // Perform search and filter listings based on any of the fields
         for (Listing listing : allListings) {
-            if ((bookID.isEmpty() || listing.getBook().getBookId().contains(bookID))
-                    && (authors.isEmpty() || listing.getBook().getAuthors().contains(authors))
-                    && (title.isEmpty() || listing.getBook().getTitle().contains(title))
-                    && (price.isEmpty() || listing.getPrice().contains(price))) {
+
+            // Safely handle null and trim input fields before comparison
+            String bookIdToSearch = "";
+            if (bookID != null) {
+                bookIdToSearch = bookID.trim().toLowerCase();
+            }
+
+            String authorsToSearch = "";
+            if (authors != null) {
+                authorsToSearch = authors.trim().toLowerCase();
+            }
+
+            String titleToSearch = "";
+            if (title != null) {
+                titleToSearch = title.trim().toLowerCase();
+            }
+
+            String priceToSearch = "";
+            if (price != null) {
+                priceToSearch = price.trim().toLowerCase();
+            }
+
+            boolean matches = false;
+
+            // Check if bookID is not empty and matches
+            if (!bookIdToSearch.isEmpty() && listing.getBook().getBookId().toLowerCase().contains(bookIdToSearch)) {
+                matches = true;
+            }
+
+            // Check if authors is not empty and matches
+            if (!authorsToSearch.isEmpty() && listing.getBook().getAuthors().toLowerCase().contains(authorsToSearch)) {
+                matches = true;
+            }
+
+            // Check if title is not empty and matches
+            if (!titleToSearch.isEmpty() && listing.getBook().getTitle().toLowerCase().contains(titleToSearch)) {
+                matches = true;
+            }
+
+            // Check if price is not empty and matches
+            if (!priceToSearch.isEmpty() && listing.getPrice().toLowerCase().contains(priceToSearch)) {
+                matches = true;
+            }
+
+            // If there's a match, add the listing to the filtered list
+            if (matches) {
                 matchingListings.add(listing);
             }
         }

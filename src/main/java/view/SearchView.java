@@ -3,7 +3,6 @@ package view;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -55,10 +54,12 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
     public SearchView(SearchViewModel searchViewModel, HomeViewModel homeViewModel) {
 
+        // Integer constants
         final int twenty = 20;
         final int ten = 10;
         final int five = 5;
         final int four = 5;
+
         this.searchViewModel = searchViewModel;
         this.homeViewModel = homeViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
@@ -71,11 +72,13 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         final JLabel title = new JLabel("Search Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Initialize all text boxes (JTextPanels)
         final LabelTextPanel searchByBookID = new LabelTextPanel(new JLabel("Book ID"), bookIDInputField);
         final LabelTextPanel searchByAuthors = new LabelTextPanel(new JLabel("Author"), authorsInputField);
         final LabelTextPanel searchByTitle = new LabelTextPanel(new JLabel("Title"), bookTitleInputField);
         final LabelTextPanel searchByPrice = new LabelTextPanel(new JLabel("Price"), priceInputField);
 
+        // Username display
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
         usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
         username = new JLabel();
@@ -100,16 +103,19 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             }
         };
 
+        // Table to display filtered result
         filteredBookTable = new JTable(tableModel);
         sorter = new TableRowSorter<>(tableModel);
         filteredBookTable.setRowSorter(sorter);
 
+        // Wishlist in last column
         final CheckboxCellEditor checkboxEditor = new CheckboxCellEditor();
         filteredBookTable.getColumnModel().getColumn(five).setCellEditor(checkboxEditor);
-      
+
         // Add scroll pane for the table
         final JScrollPane tableScrollPane = new JScrollPane(filteredBookTable);
 
+        // Layout
         final JPanel listings = new JPanel();
         listings.setLayout(new BorderLayout());
         listings.add(tableScrollPane, BorderLayout.CENTER);
@@ -118,6 +124,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         searchLabel = new JLabel("Please input book ID, author(s), title, and/or price of book to search.");
         searchLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Rest of Search Screen Layout
         final JPanel topButtons = new JPanel();
         searchButton = new JButton("Generate New Search");
         topButtons.add(searchButton);
@@ -128,6 +135,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        // Set book ID to what the user types
         bookIDInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -152,6 +160,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             }
         });
 
+        // Set authors to what the user types
         authorsInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -176,6 +185,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             }
         });
 
+        // Set title to what the user types
         bookTitleInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -200,6 +210,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             }
         });
 
+        // Set price to what the user types
         priceInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -224,6 +235,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             }
         });
 
+        // Back button to HomeView
         back.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
@@ -233,9 +245,9 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        // Search button for search use case
         searchButton.addActionListener(
-                // This creates an anonymous subclass of ActionListener and
-                // instantiates it.
+                // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(searchButton)) {
                         final String userID = usernameInfo.getText();
@@ -244,28 +256,45 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                         final String bookTitle = bookTitleInputField.getText();
                         final String price = priceInputField.getText();
 
+                        // Create error when user does not input anything
                         if ((bookID == null || bookID.isEmpty()) && (authors == null || authors.isEmpty())
                                 && (bookTitle == null || bookTitle.isEmpty()) && (price == null || price.isEmpty())) {
                             searchController.message(SearchView.this, "Error, please input a valid book ID, "
                                     + "authors, and/or title of book to search.", "Error");
+                            tableModel.setRowCount(0);
                         }
+                        // Call search controller
                         else {
                             final String priceMessage = searchController.getSearchResults(
                                     userID, bookID, authors, bookTitle, price);
-                            final int itemsFound = updateListingsTable(bookID, authors, bookTitle, price);
-                            createSearchMessage(priceMessage, itemsFound);
+
+                            // After the search, the presenter will update the listings in the ViewModel
+                            final SearchState searchState = searchViewModel.getState();
+                            final List<Listing> matchingListings = searchState.getListings();
+
+                            // Listings are null, so treat it as no results
+                            if (matchingListings == null) {
+                                JOptionPane.showMessageDialog(SearchView.this, "No matching listings found.",
+                                        "Search Failed", JOptionPane.ERROR_MESSAGE);
+                            }
+                            // Else listings are found, update the table
+                            else {
+                                // Listings are found, update table
+                                final int itemsFound = updateListingsTable(matchingListings);
+                                createSearchMessage(priceMessage, itemsFound);
+                            }
                         }
                     }
                 }
         );
 
+        // Wishlist implementation in the filtered table
         checkboxEditor.addActionListener(
                 evt -> {
                     final int row = filteredBookTable.getEditingRow();
                     if (row != -1) {
                         final SearchState currentState = searchViewModel.getState();
                         final Boolean isChecked = (Boolean) filteredBookTable.getValueAt(row, 5);
-
                         final String bookId = (String) filteredBookTable.getValueAt(row, 3);
 
                         // Find the listing by bookId (instead of row)
@@ -277,7 +306,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                             }
                         }
 
-                        // If we found the listing, update wishlist
+                        // Update wishlist, if we found the listing
                         if (listingToModify != null) {
                             final String currentUsername = currentState.getUsername();
                             if (!isChecked) {
@@ -290,13 +319,15 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                             // Refresh the table to reflect changes
                             tableModel.fireTableDataChanged();
                         }
-                        // Note: This action listener is different from the HomeView implementation because the row number
-                        // changes after filtering the search. Using the 'getRow' method directly would cause errors due to this.
-                        // As a result, checking the wishlist becomes more complex. This took significant debugging to resolve.
+                        // Note: This action listener is different from the HomeView's implementation because the row
+                        // number changes after filtering the search. Using the 'getRow' method directly would cause
+                        // errors due to this. As a result, checking the wishlist becomes more complex. This took
+                        // significant debugging to resolve.
                     }
                 }
         );
 
+        // Add all relevant items to display
         this.add(Box.createVerticalStrut(twenty));
         this.add(title);
         this.add(Box.createVerticalStrut(twenty));
@@ -321,47 +352,17 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Method that implements logic for code to search through database and find
-     * suitable books relative to search query.
-     * @param bookID the bookID listed for book
-     * @param authors the authors listed for book
-     * @param title the title listed for book
-     * @param price the price listed for book
-     * @return the number of books that match search query (to be used in output message to user)
+     * Method that updates listings table with books that match search query.
+     * @param listings the filtered listings to add to table after search has been generated
+     * @return the number of books that match search query (for displaying user output message)
      */
-    private int updateListingsTable(String bookID, String authors, String title, String price) {
+    private int updateListingsTable(List<Listing> listings) {
         // Retrieve all current wishlist from home view
         final List<Listing> currentWishlist = homeViewModel.getState().getWishlist();
-        // Retrieve all listings from the model
-        final List<Listing> listings = searchViewModel.getState().getListings();
-        final List<Listing> filteredListings = new ArrayList<>();
-
-        // Check each listing for a match with the search term
-        for (Listing listing : listings) {
-            boolean matches = true;
-            // Check if the search term is in the title, author(s), bookId, or price
-            if (!bookID.isEmpty() && !listing.getBook().getBookId().toLowerCase().contains(bookID.toLowerCase())) {
-                matches = false;
-            }
-            if (!authors.isEmpty() && !listing.getBook().getAuthors().toLowerCase().contains(authors.toLowerCase())) {
-                matches = false;
-            }
-            if (!title.isEmpty() && !listing.getBook().getTitle().toLowerCase().contains(title.toLowerCase())) {
-                matches = false;
-            }
-            if (!price.isEmpty() && !listing.getPrice().toLowerCase().contains(price.toLowerCase())) {
-                matches = false;
-            }
-            // If there's a match, add the listing to the filtered list
-            if (matches) {
-                filteredListings.add(listing);
-            }
-        }
-
         // Clear table
         tableModel.setRowCount(0);
         // Update table with filtered listings only
-        for (Listing listing : filteredListings) {
+        for (Listing listing : listings) {
             final boolean isInWishlist = currentWishlist.contains(listing);
             tableModel.addRow(new Object[]{
                     listing.getBook().getTitle(),
@@ -370,7 +371,8 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     listing.getBook().getBookId(),
                     listing.getBook().getRating(), isInWishlist});
         }
-        return filteredListings.size();
+        // Number of books that match (for displaying user output message)
+        return listings.size();
     }
 
     @Override
@@ -383,9 +385,9 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             final HomeState state = (HomeState) evt.getNewValue();
             updateListingsController.execute(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("updateTable")) {
+        if ("Search Results Updated".equals(evt.getPropertyName())) {
             final SearchState state = (SearchState) evt.getNewValue();
-            updateListingsTable(state.getBookID(), state.getAuthors(), state.getTitle(), state.getPrice());
+            updateListingsTable(state.getListings());
         }
         else if (evt.getPropertyName().equals("addedToWishlist")) {
             final SearchState state = (SearchState) evt.getNewValue();
@@ -434,6 +436,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
      */
     public void createSearchMessage(String searchMessage, int itemsFound) {
         if (itemsFound == 0) {
+            tableModel.setRowCount(0);
             JOptionPane.showMessageDialog(SearchView.this, " We could not find any books that fit your"
                     + " search query.", "Search Failed", JOptionPane.ERROR_MESSAGE);
         }
