@@ -33,13 +33,29 @@ public class SearchInteractor implements SearchInputBoundary {
 
         // Perform search and filter listings based on any of the fields
         for (Listing listing : allListings) {
-            boolean matches = false;
 
             // Safely handle null and trim input fields before comparison
-            final String bookIdToSearch = safeTrim(bookID);
-            final String authorsToSearch = safeTrim(authors);
-            final String titleToSearch = safeTrim(title);
-            final String priceToSearch = safeTrim(price);
+            String bookIdToSearch = "";
+            if (bookID != null) {
+                bookIdToSearch = bookID.trim().toLowerCase();
+            }
+
+            String authorsToSearch = "";
+            if (authors != null) {
+                authorsToSearch = authors.trim().toLowerCase();
+            }
+
+            String titleToSearch = "";
+            if (title != null) {
+                titleToSearch = title.trim().toLowerCase();
+            }
+
+            String priceToSearch = "";
+            if (price != null) {
+                priceToSearch = price.trim().toLowerCase();
+            }
+
+            boolean matches = false;
 
             // Check if bookID is not empty and matches
             if (!bookIdToSearch.isEmpty() && listing.getBook().getBookId().toLowerCase().contains(bookIdToSearch)) {
@@ -76,15 +92,6 @@ public class SearchInteractor implements SearchInputBoundary {
             // No results found
             userPresenter.prepareFailView("No matching results found");
         }
-    }
-
-    // Helper method to handle null or empty strings
-    private String safeTrim(String input) {
-        String result = "";
-        if (input != null) {
-            result = input.trim().toLowerCase();
-        }
-        return result;
     }
 }
 
