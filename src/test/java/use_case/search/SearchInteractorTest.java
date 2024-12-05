@@ -3,13 +3,14 @@ package use_case.search;
 import data_access.FirebaseListingDataAccessObject;
 import entity.listing.Listing;
 import entity.book.Book;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchInteractorTest {
@@ -29,15 +30,68 @@ public class SearchInteractorTest {
     void testExecute_SuccessfulSearch() {
         // Arrange: Set up mock data
         Listing listing1 = mock(Listing.class);
-        when(listing1.getBook()).thenReturn(mock(Book.class));
-        when(listing1.getBook().getTitle()).thenReturn("Great Book");
-        when(listing1.getBook().getAuthors()).thenReturn("John Doe");
+        Book book1 = mock(Book.class);
+        when(listing1.getBook()).thenReturn(book1);
+        when(book1.getBookId()).thenReturn("123");
+        when(book1.getAuthors()).thenReturn("Shakespeare");
+        when(book1.getTitle()).thenReturn("Hamlet");
+        when(listing1.getPrice()).thenReturn("20");
+
+        Listing listing2 = mock(Listing.class);
+        Book book2 = mock(Book.class);
+        when(listing2.getBook()).thenReturn(book2);
+        when(book2.getBookId()).thenReturn("456");
+        when(book2.getAuthors()).thenReturn("Dickens");
+        when(book2.getTitle()).thenReturn("A Tale of Two Cities");
+        when(listing2.getPrice()).thenReturn("25");
+
+        List<Listing> allListings = List.of(listing1, listing2);
+
+        // Mock the data access object to return the listings
+        when(bookDataAccessObject.getListings()).thenReturn(allListings);
+
+        // Prepare search input (will match listing1)
+        String bookID = "123";
+        String authors = "Shakespeare";
+        String title = "Hamlet";
+        String price = "";
+
+        SearchInputData searchInputData = new SearchInputData("user1", bookID, authors, title, price);
+
+        // Act: Execute the search
+        searchInteractor.execute(searchInputData);
+
+        // Assert: Verify success and that the correct output is passed to the presenter
+        ArgumentCaptor<SearchOutputData> argumentCaptor = ArgumentCaptor.forClass(SearchOutputData.class);
+        verify(searchOutputBoundary).prepareSuccessView(argumentCaptor.capture());
+
+        SearchOutputData outputData = argumentCaptor.getValue();
+
+        // Assert that the correct listing (listing1) is returned
+        assertEquals("user1", outputData.getUsername());
+        assertEquals(1, outputData.getListings().size());
+        assertEquals("123", outputData.getListings().get(0).getBook().getBookId());
+        assertEquals("Shakespeare", outputData.getListings().get(0).getBook().getAuthors());
+        assertEquals("Hamlet", outputData.getListings().get(0).getBook().getTitle());
+    }
+
+    @Test
+    void testExecute_FailureSearch() {
+        // Arrange: Set up mock data
+        Listing listing1 = mock(Listing.class);
+        Book book1 = mock(Book.class);
+        when(listing1.getBook()).thenReturn(book1);
+        when(book1.getBookId()).thenReturn("123");
+        when(book1.getAuthors()).thenReturn("John Doe");
+        when(book1.getTitle()).thenReturn("Great Book");
         when(listing1.getPrice()).thenReturn("50");
 
         Listing listing2 = mock(Listing.class);
-        when(listing2.getBook()).thenReturn(mock(Book.class));
-        when(listing2.getBook().getTitle()).thenReturn("Another Book");
-        when(listing2.getBook().getAuthors()).thenReturn("Jane Doe");
+        Book book2 = mock(Book.class);
+        when(listing2.getBook()).thenReturn(book2);
+        when(book2.getBookId()).thenReturn("456");
+        when(book2.getAuthors()).thenReturn("Jane Doe");
+        when(book2.getTitle()).thenReturn("Another Book");
         when(listing2.getPrice()).thenReturn("30");
 
         List<Listing> allListings = List.of(listing1, listing2);
@@ -45,291 +99,147 @@ public class SearchInteractorTest {
         // Setup mock to return all listings
         when(bookDataAccessObject.getListings()).thenReturn(allListings);
 
-        // Set up search query that matches listing1
-        String bookID = "";
-        String authors = "John Doe";
-        String title = "Great Book";
-        String price = "50";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Only the correct listing should be returned (listing1)
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_NoResultsFound() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        Listing listing2 = mock(Listing.class);
-        List<Listing> allListings = List.of(listing1, listing2);
-
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query that does not match any listings
+        // Set up search query that does not match any listing
         String bookID = "nonexistentID";
-        String authors = "unknownAuthor";
-        String title = "nonexistentTitle";
-        String price = "100";
+        String authors = "nonexistentAuthor";
+        String title = "Nonexistent Book";
+        String price = "999";
 
         // Act: Execute the search
         SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
         searchInteractor.execute(searchInputData);
 
-        // Assert: No listings should match the criteria
+        // Assert: Verify that the failure message is passed to the presenter
         verify(searchOutputBoundary).prepareFailView("No matching results found");
     }
 
     @Test
-    void testExecute_EmptySearchFields() {
-        // Arrange: Setup mock data
+    void testExecute_FailureSearch_AllNull() {
+        // Arrange: Set up mock data
         Listing listing1 = mock(Listing.class);
+        Book book1 = mock(Book.class);
+        when(listing1.getBook()).thenReturn(book1);
+        when(book1.getBookId()).thenReturn(null);
+        when(book1.getAuthors()).thenReturn(null);
+        when(book1.getTitle()).thenReturn(null);
+        when(listing1.getPrice()).thenReturn(null);
+
         Listing listing2 = mock(Listing.class);
+        Book book2 = mock(Book.class);
+        when(listing2.getBook()).thenReturn(book2);
+        when(book2.getBookId()).thenReturn(null);
+        when(book2.getAuthors()).thenReturn(null);
+        when(book2.getTitle()).thenReturn(null);
+        when(listing2.getPrice()).thenReturn(null);
+
         List<Listing> allListings = List.of(listing1, listing2);
 
         // Setup mock to return all listings
         when(bookDataAccessObject.getListings()).thenReturn(allListings);
 
-        // Set up search query (all fields are empty)
+        // Set up search query that does not match any listing
+        String bookID = null;
+        String authors = null;
+        String title = null;
+        String price = null;
+
+        // Act: Execute the search
+        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
+        SearchOutputData searchOutputData = new SearchOutputData("username", allListings, false);
+        searchInteractor.execute(searchInputData);
+
+        // Assert: Verify that the failure message is passed to the presenter
+        verify(searchOutputBoundary).prepareFailView("No matching results found");
+        assertFalse(searchOutputData.isUseCaseFailed());
+    }
+
+    @Test
+    void testExecute_NoMatchingResults() {
+        // Arrange: Set up mock data
+        Listing listing1 = mock(Listing.class);
+        Book book1 = mock(Book.class);
+        when(listing1.getBook()).thenReturn(book1);
+        when(book1.getBookId()).thenReturn("123");
+        when(book1.getAuthors()).thenReturn("Shakespeare");
+        when(book1.getTitle()).thenReturn("Hamlet");
+        when(listing1.getPrice()).thenReturn("20");
+
+        Listing listing2 = mock(Listing.class);
+        Book book2 = mock(Book.class);
+        when(listing2.getBook()).thenReturn(book2);
+        when(book2.getBookId()).thenReturn("456");
+        when(book2.getAuthors()).thenReturn("Dickens");
+        when(book2.getTitle()).thenReturn("A Tale of Two Cities");
+        when(listing2.getPrice()).thenReturn("25");
+
+        List<Listing> allListings = List.of(listing1, listing2);
+
+        // Mock the data access object to return the listings
+        when(bookDataAccessObject.getListings()).thenReturn(allListings);
+
+        // Prepare search input (no match)
+        String bookID = "999"; // Non-matching book ID
+        String authors = "Hemingway"; // Non-matching author
+        String title = "The Old Man and the Sea"; // Non-matching title
+        String price = "30"; // Non-matching price
+
+        SearchInputData searchInputData = new SearchInputData("user1", bookID, authors, title, price);
+        SearchOutputData searchOutputData = new SearchOutputData("user1", allListings, false);
+
+        // Act: Execute the search
+        searchInteractor.execute(searchInputData);
+
+        // Assert: Verify the failure message
+        verify(searchOutputBoundary).prepareFailView(eq("No matching results found"));
+        assertFalse(searchOutputData.isUseCaseFailed());
+    }
+
+    @Test
+    void testExecute_PartialMatch() {
+        // Arrange: Set up mock data
+        Listing listing1 = mock(Listing.class);
+        Book book1 = mock(Book.class);
+        when(listing1.getBook()).thenReturn(book1);
+        when(book1.getBookId()).thenReturn("123");
+        when(book1.getAuthors()).thenReturn("Shakespeare");
+        when(book1.getTitle()).thenReturn("Hamlet");
+        when(listing1.getPrice()).thenReturn("20");
+
+        Listing listing2 = mock(Listing.class);
+        Book book2 = mock(Book.class);
+        when(listing2.getBook()).thenReturn(book2);
+        when(book2.getBookId()).thenReturn("456");
+        when(book2.getAuthors()).thenReturn("Dickens");
+        when(book2.getTitle()).thenReturn("A Tale of Two Cities");
+        when(listing2.getPrice()).thenReturn("25");
+
+        List<Listing> allListings = List.of(listing1, listing2);
+
+        // Mock the data access object to return the listings
+        when(bookDataAccessObject.getListings()).thenReturn(allListings);
+
+        // Prepare search input (partial match on authors and price)
         String bookID = "";
-        String authors = "";
+        String authors = "Dickens"; // Partial match on author
         String title = "";
-        String price = "";
+        String price = "25"; // Partial match on price
+
+        SearchInputData searchInputData = new SearchInputData("user1", bookID, authors, title, price);
 
         // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
         searchInteractor.execute(searchInputData);
 
-        // Assert: All listings should be returned (since no filters are applied)
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
+        // Assert: Verify success and that the correct output is passed to the presenter
+        ArgumentCaptor<SearchOutputData> argumentCaptor = ArgumentCaptor.forClass(SearchOutputData.class);
+        verify(searchOutputBoundary).prepareSuccessView(argumentCaptor.capture());
 
-    @Test
-    void testExecute_OnlyBookTitleMatches() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        Listing listing2 = mock(Listing.class);
-        List<Listing> allListings = List.of(listing1, listing2);
+        SearchOutputData outputData = argumentCaptor.getValue();
 
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query (only title is provided)
-        String bookID = "";
-        String authors = "";
-        String title = "Great Book";
-        String price = "";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify only listings that match the title are included
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_OnlyBookAuthorsMatches() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        Listing listing2 = mock(Listing.class);
-        List<Listing> allListings = List.of(listing1, listing2);
-
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query (only authors is provided)
-        String bookID = "";
-        String authors = "John Doe";
-        String title = "";
-        String price = "";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify only listings that match the authors are included
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_OnlyBookPriceMatches() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        Listing listing2 = mock(Listing.class);
-        List<Listing> allListings = List.of(listing1, listing2);
-
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query (only price is provided)
-        String bookID = "";
-        String authors = "";
-        String title = "";
-        String price = "50";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify only listings that match the price are included
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_CaseInsensitiveSearch() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        when(listing1.getBook()).thenReturn(mock(Book.class));
-        when(listing1.getBook().getTitle()).thenReturn("Great Book");
-        when(listing1.getBook().getAuthors()).thenReturn("John Doe");
-        when(listing1.getPrice()).thenReturn("50");
-
-        List<Listing> allListings = List.of(listing1);
-
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query with different letter casing
-        String bookID = "";
-        String authors = "john doe";
-        String title = "great book";
-        String price = "50";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: The search should match, verifying case insensitivity
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_MultipleFieldsMatches() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        when(listing1.getBook()).thenReturn(mock(Book.class));
-        when(listing1.getBook().getTitle()).thenReturn("Great Book");
-        when(listing1.getBook().getAuthors()).thenReturn("John Doe");
-        when(listing1.getPrice()).thenReturn("50");
-
-        Listing listing2 = mock(Listing.class);
-        when(listing2.getBook()).thenReturn(mock(Book.class));
-        when(listing2.getBook().getTitle()).thenReturn("Great Book");
-        when(listing2.getBook().getAuthors()).thenReturn("Jane Doe");
-        when(listing2.getPrice()).thenReturn("30");
-
-        List<Listing> allListings = List.of(listing1, listing2);
-
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query that matches multiple fields
-        String bookID = "";
-        String authors = "John Doe";
-        String title = "Great Book";
-        String price = "50";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify only the listing that matches all criteria is returned
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_ExactMatchSearch() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        when(listing1.getBook()).thenReturn(mock(Book.class));
-        when(listing1.getBook().getTitle()).thenReturn("Perfect Match");
-        when(listing1.getBook().getAuthors()).thenReturn("John Smith");
-        when(listing1.getPrice()).thenReturn("25");
-
-        List<Listing> allListings = List.of(listing1);
-
-        // Setup mock to return all listings
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query that matches exactly
-        String bookID = "";
-        String authors = "John Smith";
-        String title = "Perfect Match";
-        String price = "25";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify the exact match is returned
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_MatchOnlyBookID() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        when(listing1.getBook()).thenReturn(mock(Book.class));
-        when(listing1.getBook().getTitle()).thenReturn("Another Book");
-        when(listing1.getBook().getAuthors()).thenReturn("John Doe");
-        when(listing1.getPrice()).thenReturn("50");
-
-        Listing listing2 = mock(Listing.class);
-        when(listing2.getBook()).thenReturn(mock(Book.class));
-        when(listing2.getBook().getTitle()).thenReturn("Book Not Matching");
-        when(listing2.getBook().getAuthors()).thenReturn("Jane Doe");
-        when(listing2.getPrice()).thenReturn("30");
-
-        List<Listing> allListings = List.of(listing1, listing2);
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query with only bookID matching
-        String bookID = "123"; // Matches bookID for listing1
-        String authors = "";
-        String title = "";
-        String price = "";
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify only the listing that matches the bookID is returned
-        verify(searchOutputBoundary).prepareSuccessView(any());
-    }
-
-    @Test
-    void testExecute_MatchOnlyPrice() {
-        // Arrange: Set up mock data
-        Listing listing1 = mock(Listing.class);
-        when(listing1.getBook()).thenReturn(mock(Book.class));
-        when(listing1.getBook().getTitle()).thenReturn("Some Book");
-        when(listing1.getBook().getAuthors()).thenReturn("John Doe");
-        when(listing1.getPrice()).thenReturn("50");
-
-        Listing listing2 = mock(Listing.class);
-        when(listing2.getBook()).thenReturn(mock(Book.class));
-        when(listing2.getBook().getTitle()).thenReturn("Another Book");
-        when(listing2.getBook().getAuthors()).thenReturn("Jane Doe");
-        when(listing2.getPrice()).thenReturn("30");
-
-        List<Listing> allListings = List.of(listing1, listing2);
-        when(bookDataAccessObject.getListings()).thenReturn(allListings);
-
-        // Set up search query with only price matching
-        String bookID = "";
-        String authors = "";
-        String title = "";
-        String price = "50"; // Matches price for listing1
-
-        // Act: Execute the search
-        SearchInputData searchInputData = new SearchInputData("username", bookID, authors, title, price);
-        searchInteractor.execute(searchInputData);
-
-        // Assert: Verify only the listing that matches the price is returned
-        verify(searchOutputBoundary).prepareSuccessView(any());
+        // Assert that the correct listing (listing2) is returned
+        assertEquals("user1", outputData.getUsername());
+        assertEquals(1, outputData.getListings().size());
+        assertEquals("456", outputData.getListings().get(0).getBook().getBookId());
+        assertEquals("Dickens", outputData.getListings().get(0).getBook().getAuthors());
+        assertEquals("A Tale of Two Cities", outputData.getListings().get(0).getBook().getTitle());
     }
 }
